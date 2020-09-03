@@ -2,7 +2,7 @@
   "name": "MILIZE TEST",
   "short_name": "MTEST",
   "lang": "ja",
-  "start_url": "https://afg-inc.github.io/PWA/Test/",
+  "start_url": "/index.html",
   "display": "fullscreen",
   "orientation": "portrait",
   "icons": [
