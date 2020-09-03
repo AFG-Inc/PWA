@@ -15,10 +15,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
 </head>
 
-    <body onload="openCamera();">
-        <center>
-        <video width=720 height=720 autoplay playsinline></video>
-        </center>
+    <body bgcolor="LightYellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="resiz();">
+        
+        <video autoplay playsinline></video>
+        <canvas id="canvas" style="position:absolute; top:0px; left:0px;"></canvas>
+        <img id="shaba" src="shaba.png" style="position:absolute; top:0px; left:0px;">
+        <div id="labe" style="position:absolute; top:20px; left:20px;">AAA</div>
+        
     </body>
 
     <script>
