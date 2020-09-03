@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="application-name" content="MTEST">
+<meta name="apple-mobile-web-app-title" content="MTEST">
+<meta name="msapplication-starturl" content="https://afg-inc.github.io/PWA/Test/">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" sizes="180x180" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+</head>
+
+    <body bgcolor="Yellow">
+
+    </body>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => {
+                  console.log('Service worker registered.', reg);
+                });
+          });
+        }
+    </script>
+
+</html>
