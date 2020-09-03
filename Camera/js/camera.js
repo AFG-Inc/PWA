@@ -10,7 +10,7 @@ function openCamera() {
             });
         }
     } : null);
-    var constraints = { video: { facingMode: 'environment', width: 1280, height: 720 } };
+    var constraints = { video: { facingMode: 'environment', width: 720, height: 720 } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
