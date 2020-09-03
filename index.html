@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="application-name" content="MILCAM">
+<meta name="apple-mobile-web-app-title" content="MILCAM">
+<meta name="msapplication-starturl" content="https://afg-inc.github.io/PWA/Camera/">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" sizes="180x180" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+</head>
+
+    <body onload="openCamera();">
+        <video autoplay playsinline></video>
+    </body>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => {
+                  console.log('Service worker registered.', reg);
+                });
+          });
+        }
+    </script>
+    <script src="js/camera.js"></script>
+
+</html>
