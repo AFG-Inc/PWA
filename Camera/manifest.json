@@ -1,6 +1,6 @@
 {
-  "name": "MILIZE TEST",
-  "short_name": "MTEST",
+  "name": "MILIZE CAMERA",
+  "short_name": "MILCAM",
   "lang": "ja",
   "start_url": "/index.html",
   "display": "fullscreen",
