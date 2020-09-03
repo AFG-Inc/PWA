@@ -1,5 +1,5 @@
-var CACHE_NAME = 'pwa-test-caches';
-var urlsToCache = ['/', '/index.html'];
+const CACHE_NAME = 'pwa-test-caches';
+const urlsToCache = ['/index.html'];
 
 self.addEventListener('install', function(event) {
     event.waitUntil(
