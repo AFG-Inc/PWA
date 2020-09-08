@@ -1,6 +1,6 @@
 var video = document.querySelector('video');
 video.hidden = true;
-var canvas=document.querySelector('canvas');
+var canvas=document.getElementById('canvas');
 var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
