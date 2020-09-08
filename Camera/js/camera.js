@@ -1,4 +1,4 @@
-var video = document.querySelector('video');
+var video = document.getElementById('video');
 video.hidden = true;
 var canvas=document.getElementById('canvas');
 var labe =document.getElementById('labe');
@@ -69,7 +69,8 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-    labe.innerText = w + " " + h;
+    //labe.innerText = w + " " + h;
+	labe.innerText = navigator.userAgent;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.position = "absolute";
