@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/images/180x180.png" sizes="180x180">
+<link rel="apple-touch-icon" href="/icon.png" sizes="180x180">
 </head>
 
     <body bgcolor="LightYellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="resiz();">
@@ -17,7 +17,7 @@
         <div id="labe" style="position:absolute; top:20px; left:20px;">AAA</div>
         
     </body>
-
+    <script src="js/camera.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
@@ -28,6 +28,6 @@
           });
         }
     </script>
-    <script src="js/camera.js"></script>
+
 
 </html>
