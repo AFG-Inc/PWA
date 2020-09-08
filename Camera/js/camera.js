@@ -23,8 +23,8 @@ function openCamera() {
     var constraints = { audio: false, video: { facingMode: 'environment', width: 480, height: 640 } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
-			video.src = window.webkitURL.createObjectURL(stream);
-            //video.srcObject = stream;
+			//video.src = window.webkitURL.createObjectURL(stream);
+            video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
             };
