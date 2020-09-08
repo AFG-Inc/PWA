@@ -20,13 +20,14 @@ function openCamera() {
             });
         }
     } : null);
-    var constraints = { video: { facingMode: 'environment', width: 480, height: 640 } };
+    var constraints = { audio: false, video: { facingMode: 'environment', width: 480, height: 640 } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
-            video.srcObject = stream;
-            //video.onloadedmetadata = function(e) {
-            //    video.play();
-            //};
+			video.src = window.webkitURL.createObjectURL(stream);
+            //video.srcObject = stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
         })
         .catch(function(err) {
             console.log(err);
