@@ -1,5 +1,6 @@
 var video = document.getElementById('video');
 video.hidden = true;
+viseo.style.left = "-10000px";  
 var canvas=document.getElementById('canvas');
 var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
