@@ -1,17 +1,15 @@
 var video = document.getElementById('video');
 video.hidden = true;
-viseo.style.left = "-10000px";  
+//viseo.style.left = "-10000px";  
 var canvas=document.getElementById('canvas');
 var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
 resiz();
+snap();
 
 function openCamera() {
-
-
-
     navigator.mediaDevices = navigator.mediaDevices
     || ((navigator.mozGetUserMedia 
     || navigator.webkitGetUserMedia) ? {
@@ -26,16 +24,14 @@ function openCamera() {
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
-            video.onloadedmetadata = function(e) {
-                video.play();
-            };
+            //video.onloadedmetadata = function(e) {
+            //    video.play();
+            //};
         })
         .catch(function(err) {
             console.log(err);
         });
-
-    snap();
-
+    
 }
 
 function snap() {
@@ -70,8 +66,8 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-    //labe.innerText = w + " " + h;
-	labe.innerText = navigator.userAgent;
+    labe.innerText = w + " " + h;
+	//labe.innerText = navigator.userAgent;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.position = "absolute";
