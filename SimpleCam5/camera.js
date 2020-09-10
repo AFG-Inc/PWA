@@ -9,7 +9,8 @@ var ww, hh;
 var context=canvas.getContext('2d');
 var videoasp;
 videoasp = 0.75;
-resiz();
+ww = 0;
+hh = 0;
 snap();
 
 
@@ -29,17 +30,14 @@ function openCamera() {
             ww = photoSettings.imageWidth;
 			hh = photoSettings.imageHeight;
 			videoasp = ww / hh;
-		    //labe.innerText = ww + " x " + hh + "  ASP:" + videoasp;
-			
 		})
         .catch(function(err) {
             console.log(err);
         });
-
-
 }
 
 function snap() {
+	resiz();		
     context.drawImage(video,0,0,w,h);
     var x = Math.round(canvas.width / 4.0);
     var y = Math.round(x * 2.0);
@@ -70,15 +68,13 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-    //labe.innerText = w + " " + h + " vasp:" + videoasp;
-	//labe.innerText = navigator.userAgent;
-	
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+
+	//labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
-    canvas.style.position = "absolute";
+    //canvas.style.position = "absolute";
     canvas.style.left = leftPos + "px";  
     shaba.width   = w;
-    shaba.style.position = "absolute";
+    //shaba.style.position = "absolute";
     shaba.style.left = leftPos + "px";  
 }
