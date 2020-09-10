@@ -11,7 +11,7 @@ snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: 960, height: 1280 } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
