@@ -5,11 +5,13 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
+openCamera();
 resiz();
 snap();
 
+
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment' } };
+    var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 480 }, height: { ideal: 640 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
