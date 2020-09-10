@@ -9,7 +9,6 @@ resiz();
 snap();
 
 function openCamera() {
-	resiz();
     var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
@@ -21,11 +20,12 @@ function openCamera() {
         .catch(function(err) {
             console.log(err);
         });
-   
+ 
 }
 
 function snap() {
-    context.drawImage(video,0,0,w,h);
+    //context.drawImage(video,0,0,w,h);
+    context.drawImage(video,0,0);
 
     var x = Math.round(canvas.width / 4.0);
     var y = Math.round(x * 2.0);
