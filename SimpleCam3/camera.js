@@ -27,8 +27,8 @@ function openCamera() {
 		.then(function(photoSettings) {
             const ww = photoSettings.imageWidth;
 			const hh = photoSettings.imageHeight;
-			videoasp = ww / hh;
-		    labe.innerText = ww + " x " + hh + "  ASP:" + videoasp;
+			videoasp = hh / ww;
+		    //labe.innerText = ww + " x " + hh + "  ASP:" + videoasp;
 			
 		})
         .catch(function(err) {
@@ -71,6 +71,8 @@ function resiz() {
     }
     //labe.innerText = w + " " + h + " vasp:" + videoasp;
 	//labe.innerText = navigator.userAgent;
+	
+	labe.innerText = w + " x " + h + "  ASP:" + videoasp;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.position = "absolute";
