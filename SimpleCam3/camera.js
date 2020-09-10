@@ -24,9 +24,7 @@ function openCamera() {
 }
 
 function snap() {
-    //context.drawImage(video,0,0,w,h);
-    context.drawImage(video,0,0);
-
+    context.drawImage(video,0,0,w,h);
     var x = Math.round(canvas.width / 4.0);
     var y = Math.round(x * 2.0);
 
