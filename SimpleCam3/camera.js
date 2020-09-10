@@ -5,17 +5,17 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
-resiz();
 snap();
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: 480, height: 640 } };
+	resiz();
+    var constraints = { audio: false, video: { facingMode: 'environment', width: w, height: h } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
-            video.onloadedmetadata = function(e) {
-                video.play();
-            };
+            //video.onloadedmetadata = function(e) {
+            //    video.play();
+            //};
         })
         .catch(function(err) {
             console.log(err);
