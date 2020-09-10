@@ -11,7 +11,7 @@ snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: 480, height: 640 } };
+    var constraints = { audio: false, video: { facingMode: 'environment', width: 960, height: 1280 } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -46,6 +46,7 @@ function snap() {
 }
 
 function resiz() {
+	var videoasp = video.width / video.height;
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < 0.75){
        w = Math.round(window.innerWidth);
@@ -56,14 +57,13 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-    labe.innerText = w + " " + h;
+    labe.innerText = w + " " + h + " vasp:" + videoasp;
 	//labe.innerText = navigator.userAgent;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.position = "absolute";
     canvas.style.left = leftPos + "px";  
     shaba.width   = w;
-    shaba.height  = h;
     shaba.style.position = "absolute";
     shaba.style.left = leftPos + "px";  
 }
