@@ -3,27 +3,39 @@ video.hidden = true;
 var canvas=document.getElementById('canvas');
 var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
+var timg =document.getElementById('tst');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
-//var imageCapture;
+var videoasp;
+videoasp = 0.75;
 resiz();
 snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 480 }, height: { ideal: 640 } } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
             };
-			//imageCapture = new ImageCapture(stream);
+			const track = video.srcObject.getVideoTracks()[0];
+			const imageCapture = new ImageCapture(track);
+			return imageCapture.getPhotoSettings();
         })
+		.then(function(photoSettings) {
+            const ww = photoSettings.imageWidth;
+			const hh = photoSettings.imageHeight;
+			videoasp = ww / hh;
+		    labe.innerText = ww + " x " + hh + "  ASP:" + videoasp;
+			
+		})
         .catch(function(err) {
             console.log(err);
         });
- 
+
+
 }
 
 function snap() {
@@ -47,22 +59,13 @@ function snap() {
 }
 
 function resiz() {
-    //var timg = document.getElementById('tst');
-    //imageCapture.takePhoto()
-    // .then(blob => {
-    //   img.src = URL.createObjectURL(blob);
-    //   img.onload = () => { URL.revokeObjectURL(this.src); }
-    // })
-    // .catch(error => console.error('takePhoto() error:', error));	
-	
-	//var videoasp = video.width / video.height;
     var aspect = window.innerWidth / window.innerHeight;
-    if (aspect < 0.75){
+    if (aspect < videoasp){
        w = Math.round(window.innerWidth);
-       h = Math.round(window.innerWidth / 0.75);
+       h = Math.round(window.innerWidth / videoasp);
        leftPos = 0;
     } else {
-       w = Math.round(window.innerHeight * 0.75);
+       w = Math.round(window.innerHeight * videoasp);
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
