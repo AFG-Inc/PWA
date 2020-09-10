@@ -5,10 +5,11 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
+resiz();
 snap();
 
 function openCamera() {
-	resiz();
+	
     var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {

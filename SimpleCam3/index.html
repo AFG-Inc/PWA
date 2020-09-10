@@ -5,9 +5,8 @@
 <meta charset="utf-8">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="msapplication-starturl" content="https://afg-inc.github.io/PWA/SimpleCam3/">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icon.png" sizes="180x180">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png" sizes="180x180">
 </head>
 
     <body bgcolor="Yellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="resiz();">
@@ -18,16 +17,6 @@
         <div id="labe" style="position:absolute; top:20px; left:20px;">AAA</div>
         
     </body>
-    <script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then((reg) => {
-                  console.log('Service worker registered.', reg);
-                });
-          });
-        }
-    </script>
     <script src="camera.js"></script>
 
 </html>
