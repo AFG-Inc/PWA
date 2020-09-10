@@ -5,6 +5,7 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var timg =document.getElementById('tst');
 var w,h,leftPos;
+var ww, hh;
 var context=canvas.getContext('2d');
 var videoasp;
 videoasp = 0.75;
@@ -13,7 +14,7 @@ snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: 460, height: 640 } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -25,9 +26,9 @@ function openCamera() {
 			return imageCapture.getPhotoSettings();
         })
 		.then(function(photoSettings) {
-            const ww = photoSettings.imageWidth;
-			const hh = photoSettings.imageHeight;
-			videoasp = hh / ww;
+            ww = photoSettings.imageWidth;
+			hh = photoSettings.imageHeight;
+			videoasp = ww / hh;
 		    //labe.innerText = ww + " x " + hh + "  ASP:" + videoasp;
 			
 		})
@@ -72,7 +73,7 @@ function resiz() {
     //labe.innerText = w + " " + h + " vasp:" + videoasp;
 	//labe.innerText = navigator.userAgent;
 	
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp;
+	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.position = "absolute";
