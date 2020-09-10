@@ -9,13 +9,13 @@ snap();
 
 function openCamera() {
 	resiz();
-    var constraints = { audio: false, video: { facingMode: 'environment', width: w, height: h } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
-            //video.onloadedmetadata = function(e) {
-            //    video.play();
-            //};
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
         })
         .catch(function(err) {
             console.log(err);
