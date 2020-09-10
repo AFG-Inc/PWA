@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SIM CAM 3</title>
+<meta charset="utf-8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="/icon.png" sizes="180x180">
+</head>
+
+    <body bgcolor="Yellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="resiz();">
+        
+        <video id="video" autoplay playsinline="true" muted style="position:absolute; top:0px; left:0px;" onclick="snap();"></video>
+        <canvas id="canvas" style="position:absolute; top:0px; left:0px;"></canvas>
+        <img id="shaba" src="shaba.png" style="position:absolute; top:0px; left:0px;">
+        <div id="labe" style="position:absolute; top:20px; left:20px;">AAA</div>
+        
+    </body>
+
+    <script src="camera.js"></script>
+
+</html>
