@@ -2,17 +2,25 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>SimpleCam2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="index.css" />
   <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/icon.png" sizes="180x180">
 </head>
 <body>
   <canvas id="canvas"></canvas>
   <div id="videobox">
     <video id="video" autoplay playsinline></video>
   </div>
+      <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => {
+                  console.log('Service worker registered.', reg);
+                });
+          });
+        }
+    </script>
   <script src="index.js"></script>
 </body>
 </html>
