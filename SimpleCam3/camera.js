@@ -5,19 +5,20 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var w,h,leftPos;
 var context=canvas.getContext('2d');
-openCamera();
+//var imageCapture;
 resiz();
 snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment' } };
+    var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 480 }, height: { ideal: 640 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
             };
+			//imageCapture = new ImageCapture(stream);
         })
         .catch(function(err) {
             console.log(err);
@@ -46,6 +47,14 @@ function snap() {
 }
 
 function resiz() {
+    //var timg = document.getElementById('tst');
+    //imageCapture.takePhoto()
+    // .then(blob => {
+    //   img.src = URL.createObjectURL(blob);
+    //   img.onload = () => { URL.revokeObjectURL(this.src); }
+    // })
+    // .catch(error => console.error('takePhoto() error:', error));	
+	
 	//var videoasp = video.width / video.height;
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < 0.75){
