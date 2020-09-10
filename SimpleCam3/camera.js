@@ -46,7 +46,7 @@ function snap() {
 }
 
 function resiz() {
-	var videoasp = video.width / video.height;
+	//var videoasp = video.width / video.height;
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < 0.75){
        w = Math.round(window.innerWidth);
@@ -57,7 +57,7 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-    labe.innerText = w + " " + h + " vasp:" + videoasp;
+    //labe.innerText = w + " " + h + " vasp:" + videoasp;
 	//labe.innerText = navigator.userAgent;
     canvas.width   = w;
     canvas.height  = h;
