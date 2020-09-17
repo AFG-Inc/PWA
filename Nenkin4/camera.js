@@ -5,12 +5,9 @@ var labe     = document.getElementById('labe');
 var shaba    = document.getElementById('shaba');
 var timg     = document.getElementById('tst');
 var w,h,leftPos = 0;
-var vw, vh;
+var vw, vh   = 0;
 var context=canvas.getContext('2d');
 var videoasp = 0.75;
-vw = 0;
-vh = 0;
-//snap();
 
 
 function openCamera() {
@@ -35,7 +32,7 @@ function openCamera() {
 }
 
 function snap() {
-	//resiz();		
+	resiz();		
     context.drawImage(video,0,0,w,h);
     //var x = Math.round(canvas.width / 4.0);
     //var y = Math.round(x * 2.0);
