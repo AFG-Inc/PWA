@@ -4,7 +4,7 @@ var canvas   = document.getElementById('canvas');
 var labe     = document.getElementById('labe');
 var shaba    = document.getElementById('shaba');
 var timg     = document.getElementById('tst');
-var w,h,leftPos;
+var w,h,leftPos = 0;
 var vw, vh;
 var context=canvas.getContext('2d');
 var videoasp = 0.75;
