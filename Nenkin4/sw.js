@@ -1,5 +1,5 @@
 var CACHE_NAME = 'nenkin-test-caches';
-var urlsToCache = ['/index.html', '/camera.js'];
+var urlsToCache = ['/index.html', '/camera.js', '/manifest.json'];
 
 self.addEventListener('install', function(event) {
     event.waitUntil(
