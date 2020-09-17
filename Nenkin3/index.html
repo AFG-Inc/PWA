@@ -10,7 +10,7 @@
 </head>
     <body bgcolor="LightYellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="resiz();">
         
-        <video id="video" autoplay playsinline="true" muted style="position:absolute; top:0px; left:0px;" onclick="snap();"></video>
+        <video id="video" autoplay playsinline="true" muted style="position:absolute; top:0px; left:0px;" onloadeddata="loadedmeta();"></video>
         <canvas id="canvas" style="position:absolute; top:0px; left:0px;"></canvas>
         <img id="shaba" src="shablon.png" style="position:absolute; top:0px; left:0px;">
         <img id="tst" style="position:absolute; top:-100px; left:-100px;">
