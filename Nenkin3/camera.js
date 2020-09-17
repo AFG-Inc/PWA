@@ -51,11 +51,11 @@ function snap() {
 }
 
 function loadedmeta(){
-	vw = video.videoWidth;
-	vh = video.videoHeight;
-	if ((vw!=undefined) && (vh!=undefined) && (vh!=0)) {
-		videoasp = vw / vh;
-	}	
+	//vw = video.videoWidth;
+	//vh = video.videoHeight;
+	//if ((vw!=undefined) && (vh!=undefined) && (vh!=0)) {
+	//	videoasp = vw / vh;
+	//}	
 	resiz();
 	snap();
 }
@@ -72,7 +72,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
+	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
     canvas.width   = w;
     canvas.height  = h;
     //canvas.style.position = "absolute";
