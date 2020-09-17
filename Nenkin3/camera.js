@@ -12,6 +12,8 @@ var videoasp;
 videoasp = 0.75;
 ww = 0;
 hh = 0;
+//vw = 0;
+//vh = 0;
 snap();
 
 
@@ -65,9 +67,12 @@ function snap() {
 }
 
 function resiz() {
+	
 	vw = video.videoWidth;
 	vh = video.videoHeight;
-	videoasp = vw / vh;
+	if ((vw!=undefined) && (vh!=undefined)) {
+		videoasp = vw / vh;
+	}
 	
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
