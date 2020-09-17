@@ -19,17 +19,18 @@ function openCamera() {
     var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 10000 }, height: { ideal: 6250 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
-			labe.innerText = "A";
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
-				labe.innerText = "C";
+				vw = video.videoWidth;
+	            vh = video.videoHeight;
+				videoasp = vw / vh;
+				resiz();
+				snap();
             };
-			labe.innerText = "B";
         })
         .catch(function(err) {
             console.log(err);
-			labe.innerText = "E";
         });
 }
 
@@ -54,20 +55,6 @@ function snap() {
     setTimeout(snap, 10);
 }
 
-function loadedmeta(){
-	labe.innerText = "AAA";
-	vw = video.videoWidth;
-	labe.innerText = "BBB";
-	vh = video.videoHeight;
-	labe.innerText = "CCC";
-	if ((vw!=undefined) && (vh!=undefined) && (vh!=0)) {
-		videoasp = vw / vh;
-	}	
-	labe.innerText = "DDD";
-	resiz();
-	snap();
-}
-
 function resiz() {
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
@@ -79,12 +66,10 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-	//labe.innerText = w + " / " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
+	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
     canvas.width   = w;
     canvas.height  = h;
-    //canvas.style.position = "absolute";
     canvas.style.left = leftPos + "px";  
     shaba.width   = w;
-    //shaba.style.position = "absolute";
     shaba.style.left = leftPos + "px";  
 }
