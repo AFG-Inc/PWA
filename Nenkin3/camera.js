@@ -6,6 +6,7 @@ var shaba =document.getElementById('shaba');
 var timg =document.getElementById('tst');
 var w,h,leftPos;
 var ww, hh;
+var vw, vh;
 var context=canvas.getContext('2d');
 var videoasp;
 videoasp = 0.75;
@@ -29,6 +30,10 @@ function openCamera() {
 			return imageCapture.getPhotoSettings();
         })
 		.then(function(photoSettings) {
+			
+			vw = video.videoWidth;
+			vh = video.videoHeight;
+			
             ww = photoSettings.imageWidth;
 			hh = photoSettings.imageHeight;
 			videoasp = ww / hh;
@@ -71,7 +76,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
     canvas.width   = w;
     canvas.height  = h;
     //canvas.style.position = "absolute";
