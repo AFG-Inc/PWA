@@ -1,0 +1,11 @@
+{
+    "name": "Simple CAM 5",
+    "short_name": "SIMPLE CAM5",
+    "icons": [{
+          "src": "icon.png",
+          "sizes": "180x180",
+          "type": "image/png"
+        }],
+    "start_url": "index.html",
+    "display": "browser"
+}
