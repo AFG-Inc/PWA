@@ -69,9 +69,7 @@ function loadedmeta(){
 }
 
 function resiz() {
-	labe.innerText = "A1";
     var aspect = window.innerWidth / window.innerHeight;
-	labe.innerText = "A2";
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
        h = Math.round(window.innerWidth / videoasp);
@@ -81,8 +79,6 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
-
-    labe.innerText = "A3";
 	//labe.innerText = w + " / " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
     canvas.width   = w;
     canvas.height  = h;
@@ -91,5 +87,4 @@ function resiz() {
     shaba.width   = w;
     //shaba.style.position = "absolute";
     shaba.style.left = leftPos + "px";  
-	labe.innerText = "A4";
 }
