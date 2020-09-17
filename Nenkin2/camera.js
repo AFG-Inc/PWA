@@ -8,6 +8,7 @@ var w,h,leftPos;
 var ww, hh;
 var context=canvas.getContext('2d');
 var videoasp;
+var photoSet;
 videoasp = 0.75;
 ww = 0;
 hh = 0;
@@ -29,6 +30,7 @@ function openCamera() {
 			return imageCapture.getPhotoSettings();
         })
 		.then(function(photoSettings) {
+			photoSet = photoSettings;
             ww = photoSettings.imageWidth;
 			hh = photoSettings.imageHeight;
 			videoasp = ww / hh;
@@ -39,7 +41,10 @@ function openCamera() {
 }
 
 function snap() {
-	resiz();		
+	resiz();	
+	ww = photoSettings.imageWidth;
+	hh = photoSettings.imageHeight;
+	videoasp = ww / hh;	
     context.drawImage(video,0,0,w,h);
     //var x = Math.round(canvas.width / 4.0);
     //var y = Math.round(x * 2.0);
