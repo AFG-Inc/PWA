@@ -1,14 +1,13 @@
-var video = document.getElementById('video');
+var video    = document.getElementById('video');
 video.hidden = true;
-var canvas=document.getElementById('canvas');
-var labe =document.getElementById('labe');
-var shaba =document.getElementById('shaba');
-var timg =document.getElementById('tst');
+var canvas   = document.getElementById('canvas');
+var labe     = document.getElementById('labe');
+var shaba    = document.getElementById('shaba');
+var timg     = document.getElementById('tst');
 var w,h,leftPos;
 var vw, vh;
 var context=canvas.getContext('2d');
-var videoasp;
-videoasp = 0.75;
+var videoasp = 0.75;
 vw = 0;
 vh = 0;
 snap();
@@ -51,14 +50,15 @@ function snap() {
     setTimeout(snap, 10);
 }
 
-function resiz() {
-	
+function loadedmeta(){
 	vw = video.videoWidth;
 	vh = video.videoHeight;
 	if ((vw!=undefined) && (vh!=undefined) && (vh!=0)) {
 		videoasp = vw / vh;
-	}
-	
+	}	
+}
+
+function resiz() {
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
@@ -70,7 +70,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " xx " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
+	labe.innerText = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + vw + " x " + vh;
     canvas.width   = w;
     canvas.height  = h;
     //canvas.style.position = "absolute";
