@@ -42,9 +42,6 @@ function openCamera() {
 
 function snap() {
 	resiz();	
-	ww = photoSettings.imageWidth;
-	hh = photoSettings.imageHeight;
-	videoasp = ww / hh;	
     context.drawImage(video,0,0,w,h);
     //var x = Math.round(canvas.width / 4.0);
     //var y = Math.round(x * 2.0);
