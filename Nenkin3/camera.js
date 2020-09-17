@@ -31,12 +31,12 @@ function openCamera() {
         })
 		.then(function(photoSettings) {
 			
-			vw = video.videoWidth;
-			vh = video.videoHeight;
+			//vw = video.videoWidth;
+			//vh = video.videoHeight;
 			
-            ww = photoSettings.imageWidth;
-			hh = photoSettings.imageHeight;
-			videoasp = ww / hh;
+            //ww = photoSettings.imageWidth;
+			//hh = photoSettings.imageHeight;
+			//videoasp = ww / hh;
 		})
         .catch(function(err) {
             console.log(err);
@@ -65,6 +65,10 @@ function snap() {
 }
 
 function resiz() {
+	vw = video.videoWidth;
+	vh = video.videoHeight;
+	videoasp = vw / vh;
+	
     var aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
