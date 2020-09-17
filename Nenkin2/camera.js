@@ -8,15 +8,14 @@ var w,h,leftPos;
 var ww, hh;
 var context=canvas.getContext('2d');
 var videoasp;
-videoasp = 1.6;
-ww = 640;
-hh = 480;
+videoasp = 0.75;
+ww = 0;
+hh = 0;
 snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 10000 }, height: { ideal: 6250 } } };
-    //var constraints = { audio: false, video: { facingMode: 'environment' } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -39,8 +38,7 @@ function openCamera() {
 
 function snap() {
 	resiz();		
-    //context.drawImage(video,0,0,w,h,0,0,w,h);
-    context.drawImage(video,0,0,ww,hh);
+    context.drawImage(video,0,0,w,h);
     //var x = Math.round(canvas.width / 4.0);
     //var y = Math.round(x * 2.0);
 
