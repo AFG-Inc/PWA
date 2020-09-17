@@ -5,15 +5,12 @@ var labe =document.getElementById('labe');
 var shaba =document.getElementById('shaba');
 var timg =document.getElementById('tst');
 var w,h,leftPos;
-var ww, hh;
 var vw, vh;
 var context=canvas.getContext('2d');
 var videoasp;
 videoasp = 0.75;
-ww = 0;
-hh = 0;
-//vw = 0;
-//vh = 0;
+vw = 0;
+vh = 0;
 snap();
 
 
@@ -27,19 +24,7 @@ function openCamera() {
             video.onloadedmetadata = function(e) {
                 video.play();
             };
-			const track = video.srcObject.getVideoTracks()[0];
-			const imageCapture = new ImageCapture(track);
-			return imageCapture.getPhotoSettings();
         })
-		.then(function(photoSettings) {
-			
-			//vw = video.videoWidth;
-			//vh = video.videoHeight;
-			
-            //ww = photoSettings.imageWidth;
-			//hh = photoSettings.imageHeight;
-			//videoasp = ww / hh;
-		})
         .catch(function(err) {
             console.log(err);
         });
@@ -70,7 +55,7 @@ function resiz() {
 	
 	vw = video.videoWidth;
 	vh = video.videoHeight;
-	if ((vw!=undefined) && (vh!=undefined)) {
+	if ((vw!=undefined) && (vh!=undefined) && (vh!=0)) {
 		videoasp = vw / vh;
 	}
 	
