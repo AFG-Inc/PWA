@@ -30,7 +30,7 @@ function openCamera() {
 		.then(function(photoSettings) {
             ww = photoSettings.imageWidth;
 			hh = photoSettings.imageHeight;
-			videoasp = ww / hh;
+			//videoasp = ww / hh;
 		})
         .catch(function(err) {
             console.log(err);
@@ -39,8 +39,8 @@ function openCamera() {
 
 function snap() {
 	resiz();		
-    context.drawImage(video,0,0,w,h,0,0,w,h);
-    //context.drawImage(video,0,0,w,h);
+    //context.drawImage(video,0,0,w,h,0,0,w,h);
+    context.drawImage(video,0,0,w,h);
     //var x = Math.round(canvas.width / 4.0);
     //var y = Math.round(x * 2.0);
 
@@ -60,7 +60,7 @@ function snap() {
 }
 
 function resiz() {
-    //var aspect = window.innerWidth / window.innerHeight;
+    var aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
        h = Math.round(window.innerWidth / videoasp);
