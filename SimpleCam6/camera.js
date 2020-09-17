@@ -12,20 +12,19 @@ videoasp = 0.75;
 ww = 0;
 hh = 0;
 
-
 function openCamera() {
-	var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 6250 }, height: { ideal: 10000 } } };
+	var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 480 }, height: { ideal: 640 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
+			    ww = video.videoWidth;
+			    hh = video.videoHeight;
+			    videoasp = ww / hh;
+			    resiz();
+			    snap();
             };
-			ww = video.videoWidth;
-			hh = video.videoHeight;
-			videoasp = ww / hh;
-			resiz();
-			snap();
         })
         .catch(function(err) {
             console.log(err);
@@ -33,7 +32,6 @@ function openCamera() {
 }
 
 function snap() {
-	//resiz();		
     context.drawImage(video,0,0,w,h);
     var x = Math.round(canvas.width / 4.0);
     var y = Math.round(x * 2.0);
