@@ -17,6 +17,19 @@
         <div id="labe" style="position:absolute; top:20px; left:20px;">Resolution</div>
         
     </body>
-
+	<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('sw.js')
+        .then(registration => {
+          registration.onupdatefound = function() {
+            console.log('アップデートがあります！');
+            registration.update();
+          }
+        })
+        .catch(err => {
+      });
+    }
+    </script>
     <script src="camera.js"></script>
 </html>
