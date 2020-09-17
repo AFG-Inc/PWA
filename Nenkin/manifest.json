@@ -1,11 +1,12 @@
 {
-    "name": "Simple CAM 5",
-    "short_name": "SIMPLE CAM5",
+    "name": "MILIZE年金定期便",
+    "short_name": "年金定期便",
     "icons": [{
           "src": "icon.png",
           "sizes": "180x180",
           "type": "image/png"
         }],
     "start_url": "index.html",
-    "display": "browser"
+    "display": "browser",
+	"orientation": "landscape"
 }
