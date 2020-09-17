@@ -30,7 +30,7 @@ function openCamera() {
 		.then(function(photoSettings) {
             ww = photoSettings.imageWidth;
 			hh = photoSettings.imageHeight;
-			//videoasp = ww / hh;
+			videoasp = ww / hh;
 		})
         .catch(function(err) {
             console.log(err);
