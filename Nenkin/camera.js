@@ -15,7 +15,8 @@ snap();
 
 
 function openCamera() {
-    var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 10000 }, height: { ideal: 6250 } } };
+    //var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 10000 }, height: { ideal: 6250 } } };
+    var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -38,22 +39,22 @@ function openCamera() {
 
 function snap() {
 	resiz();		
-    //context.drawImage(video,0,0,w,h,0,0,w,h);
-    context.drawImage(video,0,0,w,h);
-    var x = Math.round(canvas.width / 4.0);
-    var y = Math.round(x * 2.0);
+    context.drawImage(video,0,0,w,h,0,0,w,h);
+    //context.drawImage(video,0,0,w,h);
+    //var x = Math.round(canvas.width / 4.0);
+    //var y = Math.round(x * 2.0);
 
-    var imageData = context.getImageData(x, x, y, y);
-    var data = imageData.data;
-    var sred;
+    //var imageData = context.getImageData(x, x, y, y);
+    //var data = imageData.data;
+    //var sred;
  
-    for (var i = 0; i < data.length; i += 4) {
-      sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-      data[i]     = sred;
-      data[i + 1] = sred;
-      data[i + 2] = sred;
-     }
-    context.putImageData(imageData, x, x);
+    //for (var i = 0; i < data.length; i += 4) {
+    //  sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
+    //  data[i]     = sred;
+    //  data[i + 1] = sred;
+    //  data[i + 2] = sred;
+    // }
+    //context.putImageData(imageData, x, x);
 
     setTimeout(snap, 10);
 }
