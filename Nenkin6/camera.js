@@ -13,7 +13,7 @@ ww = 0;
 hh = 0;
 
 function openCamera() {
-	var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 10000 }, height: { ideal: 6500 } } };
+	var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 5000 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
