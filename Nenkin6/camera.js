@@ -65,7 +65,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " Xxa " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.left = leftPos + "px";  
