@@ -13,7 +13,7 @@ ww = 0;
 hh = 0;
 
 function openCamera() {
-	var constraints = { audio: false, video: { facingMode: 'environment', frameRate: 10, width: { ideal: 4500 } } };
+	var constraints = { audio: false, video: { facingMode: 'environment', frameRate: 30, width: { ideal: 4100 } } };
 	//var constraints = { audio: false, video: { facingMode: 'environment' } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
@@ -33,6 +33,7 @@ function openCamera() {
 }
 
 function snap() {
+    resiz();
     context.drawImage(video,0,0,w,h);
     var x = Math.round(canvas.width / 4.0);
     var y = Math.round(x * 2.0);
@@ -64,7 +65,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " XxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.left = leftPos + "px";  
