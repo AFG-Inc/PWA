@@ -32,20 +32,20 @@ function openCamera() {
 
 function snap() {
     context.drawImage(video,0,0,w,h,0,0,w,h);
-    var x = Math.round(canvas.width / 4.0);
-    var y = Math.round(x * 2.0);
+    //var x = Math.round(canvas.width / 4.0);
+    //var y = Math.round(x * 2.0);
 
-    var imageData = context.getImageData(x, x, y, y);
-    var data = imageData.data;
-    var sred;
+    //var imageData = context.getImageData(x, x, y, y);
+    //var data = imageData.data;
+    //var sred;
  
-    for (var i = 0; i < data.length; i += 4) {
-      sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-      data[i]     = sred;
-      data[i + 1] = sred;
-      data[i + 2] = sred;
-     }
-    context.putImageData(imageData, x, x);
+    //for (var i = 0; i < data.length; i += 4) {
+    //  sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
+    //  data[i]     = sred;
+    //  data[i + 1] = sred;
+    //  data[i + 2] = sred;
+    // }
+    //context.putImageData(imageData, x, x);
 
     setTimeout(snap, 10);
 }
@@ -62,7 +62,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.left = leftPos + "px";  
