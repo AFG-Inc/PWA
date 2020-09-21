@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>年金定期便2</title>
+<title>SIM CAM 6</title>
 <meta charset="utf-8">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,19 +17,6 @@
         <div id="labe" style="position:absolute; top:20px; left:20px;">Resolution</div>
         
     </body>
-	<script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(registration => {
-          registration.onupdatefound = function() {
-            console.log('アップデートがあります！');
-            registration.update();
-          }
-        })
-        .catch(err => {
-      });
-    }
-    </script>
+
     <script src="camera.js"></script>
 </html>
