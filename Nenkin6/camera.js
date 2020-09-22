@@ -79,11 +79,8 @@ function resiz() {
        h = Math.round(window.innerHeight);
        leftPos         = Math.round((window.innerWidth - w) / 2.0)
     }
-    if (vasp < videoasp){
-        shaba.width     = w;
-    } else {
-        shaba.height    = h;
-    }
+    shaba.width        = w;
+    shaba.height       = h;
 	labe.innerText     = w + " x1 " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     canvas.width       = w;
     canvas.height      = h;
