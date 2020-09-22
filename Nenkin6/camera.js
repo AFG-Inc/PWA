@@ -1,27 +1,27 @@
-var video = document.getElementById('video');
+let video    = document.getElementById('video');
+let canvas   = document.getElementById('canvas');
+let canvasB  = document.getElementById('canvasB');
+let labe     = document.getElementById('labe');
+let shaba    = document.getElementById('shaba');
+let timg     = document.getElementById('tst');
+let ww       = 0;
+let hh       = 0;
+let context  = canvas.getContext('2d');
+let contextB = canvasB.getContext('2d');
+let videoasp = 1.6;
 video.hidden = true;
-var canvas=document.getElementById('canvas');
-var labe =document.getElementById('labe');
-var shaba =document.getElementById('shaba');
-var timg =document.getElementById('tst');
-var w,h,leftPos;
-var ww, hh;
-var context=canvas.getContext('2d');
-var videoasp;
-videoasp = 0.75;
-ww = 0;
-hh = 0;
+let w,h,leftPos;
 
 function openCamera() {
-	var constraints = { audio: false, video: { facingMode: 'environment', frameRate: 60, width: { ideal: 3840 } } };
+	let constraints = { audio: false, video: { facingMode: 'environment', frameRate: 30, width: { ideal: 3840 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
-			    ww = video.videoWidth;
-			    hh = video.videoHeight;
-			    videoasp = ww / hh;
+                hh = video.videoHeight;
+			    ww = Math.round(hh * videoasp); //video.videoWidth;
+			    //videoasp = ww / hh;
 			    resiz();
 			    snap();
             };
@@ -33,27 +33,29 @@ function openCamera() {
 
 function snap() {
     video.play();
-    context.drawImage(video,0,0,w,h);
-    var x = Math.round(canvas.width / 4.0);
-    var y = Math.round(x * 2.0);
+    context.drawImage(video,0,0,ww,hh,0,0,w,h);
+    contextB.drawImage(video,0,0);
+    // //let x = Math.round(canvas.width / 4.0);
+    // //let y = Math.round(x * 2.0);
 
-    var imageData = context.getImageData(x, x, y, y);
-    var data = imageData.data;
-    var sred;
+    let imageData = contextB.getImageData(0, 0, ww, hh);
+    //let imageData = contextB.getImageData(0, 0, 100, 100);
+    let data      = imageData.data;
+    let sred      = 0;
  
-    for (var i = 0; i < data.length; i += 4) {
-      sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-      data[i]     = sred;
-      data[i + 1] = sred;
-      data[i + 2] = sred;
-     }
-    context.putImageData(imageData, x, x);
+    for (let i = 0; i < data.length; i += 4) {
+        sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
+        data[i]     = sred;
+        data[i + 1] = sred;
+        data[i + 2] = sred;
+    }
+    contextB.putImageData(imageData, 0, 0);
 
-    setTimeout(snap, 10);
+    setTimeout(snap, 50);
 }
 
 function resiz() {
-    var aspect = window.innerWidth / window.innerHeight;
+    let aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
        h = Math.round(window.innerWidth / videoasp);
@@ -64,10 +66,15 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
-    canvas.width   = w;
-    canvas.height  = h;
-    canvas.style.left = leftPos + "px";  
-    shaba.width   = w;
-    shaba.style.left = leftPos + "px";  
+	labe.innerText     = w + " xd " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+    canvas.width       = w;
+    canvas.height      = h;
+    canvas.style.left  = leftPos + "px";  
+    shaba.width        = w;
+    shaba.style.left   = leftPos + "px";  
+    canvasB.width      = ww;
+    canvasB.height     = hh;
+    canvasB.style.left = 0 + "px";  
+    canvasB.style.top  = h + "px";  
+
 }
