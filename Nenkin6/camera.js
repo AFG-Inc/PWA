@@ -14,15 +14,7 @@ video.hidden = true;
 let w,h,leftPos;
 
 function openCamera() {
-    let constraints;
-    //let winw = window.innerWidth;
-    //let winh = window.innerWidth;
-    //if (winw > winh){
-        //constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
-        //} else {
-    //    constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 2160 }, height: { ideal: 3840 } } };
-    //}
+    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -83,8 +75,6 @@ function resiz() {
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
-    //shaba.width        = w;
-    //shaba.height       = h;
     shaba.style.left   = leftPos + "px";  
     canvasB.width      = ww;
     canvasB.height     = hh;
