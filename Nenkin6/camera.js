@@ -31,6 +31,11 @@ function openCamera() {
                 hh   = video.videoHeight;
                 ww   = video.videoWidth;
                 vasp = ww / hh;
+                if (vasp < videoasp){
+                    hh = Math.round(ww/videoasp);
+                } else {
+                    ww = Math.round(hh * videoasp);
+                }                
 			    resiz();
 			    snap();
             };
@@ -42,12 +47,8 @@ function openCamera() {
 
 function snap() {
     video.play();
-    if (vasp < videoasp){
-        context.drawImage(video,0,0,ww,Math.round(ww/videoasp),0,0,w,h);
-    } else {
-        context.drawImage(video,0,0,Math.round(hh * videoasp),hh,0,0,w,h);
-    }
-    contextB.drawImage(video,0,0);
+    context.drawImage(video,0,0,ww,hh,0,0,w,h);
+    contextB.drawImage(video,0,0,ww,hh,0,0,ww,hh);
 
     let imageData = contextB.getImageData(0, 0, ww, hh);
     let data      = imageData.data;
