@@ -33,7 +33,8 @@ function openCamera() {
 
 function snap() {
     video.play();
-    context.drawImage(video,0,0,w,h);
+    //context.drawImage(video,0,0,w,h);
+    context.drawImage(video,0,0);
     contextB.drawImage(video,0,0);
     // //let x = Math.round(canvas.width / 4.0);
     // //let y = Math.round(x * 2.0);
@@ -66,7 +67,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText     = w + " dxd " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText     = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
