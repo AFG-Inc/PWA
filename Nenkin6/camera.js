@@ -8,15 +8,15 @@ let ww       = 0;
 let hh       = 0;
 let context  = canvas.getContext('2d');
 let contextB = canvasB.getContext('2d');
-let videoasp = 1.78;
+let videoasp = 1.6;
 video.hidden = true;
 let w,h,leftPos;
 
 function openCamera() {
     let constraints;
-    w = window.innerWidth;
-    h = window.innerWidth;
-    if (w > h){
+    let winw = window.innerWidth;
+    let winh = window.innerWidth;
+    if (winw > winh){
         constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
     } else {
         constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 2160 }, height: { ideal: 3840 } } };
@@ -39,7 +39,7 @@ function openCamera() {
 
 function snap() {
     video.play();
-    context.drawImage(video,0,0,w,h);
+    context.drawImage(video,0,0,ww,hh);
     contextB.drawImage(video,0,0);
 
     let imageData = contextB.getImageData(0, 0, ww, hh);
@@ -69,7 +69,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText     = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText     = w + " xXx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
