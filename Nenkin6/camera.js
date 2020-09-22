@@ -12,6 +12,7 @@ let videoasp = 1.6;
 let vasp     = 0;
 video.hidden = true;
 let w,h,leftPos;
+let cameraOK = false;
 
 function openCamera() {
     let winw = window.innerWidth;
@@ -32,7 +33,8 @@ function openCamera() {
                         hh = Math.round(ww/videoasp);
                     } else {
                         ww = Math.round(hh * videoasp);
-                    }                
+                    }          
+                    cameraOK = true;      
                     resiz();
                     snap();
                 };
@@ -64,20 +66,25 @@ function snap() {
 }
 
 function resiz() {
+    if (cameraOK == false){
+        openCamera();
+    }
     let aspect = window.innerWidth / window.innerHeight;
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
        h = Math.round(window.innerWidth / videoasp);
-       shaba.width     = w;
        leftPos         = 0;
     } else {
        w = Math.round(window.innerHeight * videoasp);
        h = Math.round(window.innerHeight);
-       shaba.height    = h;
        leftPos         = Math.round((window.innerWidth - w) / 2.0)
     }
-
-	labe.innerText     = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    if (vasp < videoasp){
+        shaba.width     = w;
+    } else {
+        shaba.height    = h;
+    }
+	labe.innerText     = w + " x1 " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
