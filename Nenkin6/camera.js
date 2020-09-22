@@ -9,25 +9,28 @@ let hh       = 0;
 let context  = canvas.getContext('2d');
 let contextB = canvasB.getContext('2d');
 let videoasp = 1.6;
+let vasp     = 0;
 video.hidden = true;
 let w,h,leftPos;
 
 function openCamera() {
     let constraints;
-    let winw = window.innerWidth;
-    let winh = window.innerWidth;
-    if (winw > winh){
-        constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
-    } else {
-        constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 2160 }, height: { ideal: 3840 } } };
-    }
+    //let winw = window.innerWidth;
+    //let winh = window.innerWidth;
+    //if (winw > winh){
+        //constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
+        //} else {
+    //    constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 2160 }, height: { ideal: 3840 } } };
+    //}
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
-                hh = video.videoHeight;
-			    ww = video.videoWidth;
+                hh   = video.videoHeight;
+                ww   = video.videoWidth;
+                vasp = ww / hh;
 			    resiz();
 			    snap();
             };
@@ -39,7 +42,11 @@ function openCamera() {
 
 function snap() {
     video.play();
-    context.drawImage(video,0,0,ww,hh);
+    if (vasp < videoasp){
+        context.drawImage(video,0,0,ww,Math.round(ww/videoasp),0,0,w,h);
+    } else {
+        context.drawImage(video,0,0,Math.round(hh * videoasp),hh,0,0,w,h);
+    }
     contextB.drawImage(video,0,0);
 
     let imageData = contextB.getImageData(0, 0, ww, hh);
@@ -62,19 +69,21 @@ function resiz() {
     if (aspect < videoasp){
        w = Math.round(window.innerWidth);
        h = Math.round(window.innerWidth / videoasp);
-       leftPos = 0;
+       shaba.width     = w;
+       leftPos         = 0;
     } else {
        w = Math.round(window.innerHeight * videoasp);
        h = Math.round(window.innerHeight);
-       leftPos = Math.round((window.innerWidth - w) / 2.0)
+       shaba.height    = h;
+       leftPos         = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText     = w + " xXx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText     = w + " Xw " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
     //shaba.width        = w;
-    shaba.height       = h;
+    //shaba.height       = h;
     shaba.style.left   = leftPos + "px";  
     canvasB.width      = ww;
     canvasB.height     = hh;
