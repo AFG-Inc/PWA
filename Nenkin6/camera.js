@@ -14,27 +14,33 @@ video.hidden = true;
 let w,h,leftPos;
 
 function openCamera() {
-    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.onloadedmetadata = function(e) {
-                video.play();
-                hh   = video.videoHeight;
-                ww   = video.videoWidth;
-                vasp = ww / hh;
-                if (vasp < videoasp){
-                    hh = Math.round(ww/videoasp);
-                } else {
-                    ww = Math.round(hh * videoasp);
-                }                
-			    resiz();
-			    snap();
-            };
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
+    let winw = window.innerWidth;
+    let winh = window.innerWidth;
+    if (winh > winw){
+        alert("端末の向きを横にしてください");
+    } else {
+        let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.onloadedmetadata = function(e) {
+                    video.play();
+                    hh   = video.videoHeight;
+                    ww   = video.videoWidth;
+                    vasp = ww / hh;
+                    if (vasp < videoasp){
+                        hh = Math.round(ww/videoasp);
+                    } else {
+                        ww = Math.round(hh * videoasp);
+                    }                
+                    resiz();
+                    snap();
+                };
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    }
 }
 
 function snap() {
@@ -71,7 +77,7 @@ function resiz() {
        leftPos         = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText     = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+	labe.innerText     = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
