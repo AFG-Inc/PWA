@@ -8,20 +8,26 @@ let ww       = 0;
 let hh       = 0;
 let context  = canvas.getContext('2d');
 let contextB = canvasB.getContext('2d');
-let videoasp = 1.6;
+let videoasp = 1.78;
 video.hidden = true;
 let w,h,leftPos;
 
 function openCamera() {
-	let constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
+    let constraints;
+    w = window.innerWidth;
+    h = window.innerWidth;
+    if (w > h){
+        constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } } };
+    } else {
+        constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 2160 }, height: { ideal: 3840 } } };
+    }
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
                 hh = video.videoHeight;
-			    ww = Math.round(hh * videoasp); //video.videoWidth;
-			    //videoasp = ww / hh;
+			    ww = video.videoWidth;
 			    resiz();
 			    snap();
             };
@@ -33,7 +39,7 @@ function openCamera() {
 
 function snap() {
     video.play();
-    context.drawImage(video,0,0,w,h,0,0,ww,hh);
+    context.drawImage(video,0,0,w,h);
     contextB.drawImage(video,0,0);
 
     let imageData = contextB.getImageData(0, 0, ww, hh);
@@ -63,11 +69,12 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText     = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText     = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width       = w;
     canvas.height      = h;
     canvas.style.left  = leftPos + "px";  
-    shaba.width        = w;
+    //shaba.width        = w;
+    shaba.height       = h;
     shaba.style.left   = leftPos + "px";  
     canvasB.width      = ww;
     canvasB.height     = hh;
