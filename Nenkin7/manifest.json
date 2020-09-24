@@ -1,11 +1,12 @@
 {
-    "name": "Simple CAM 6",
-    "short_name": "SIMPLE CAM6",
+    "name": "Simple CAM 7",
+    "short_name": "SIMPLE CAM7",
     "icons": [{
           "src": "icon.png",
           "sizes": "180x180",
           "type": "image/png"
         }],
     "start_url": "index.html",
-    "display": "browser"
+    "display": "browser",
+    "orientation": "landscape"
 }
