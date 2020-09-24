@@ -41,8 +41,7 @@ let  SmallBuffMax      = new Uint32Array(1000, 1000);
 let  SmallBuffMin      = new Uint32Array(1000, 1000);
   // 比較データ関連
 let  NowSquareSmall    = new Uint32Array(TestSquareSmall * TestSquareSmall);
-let  KanjiList         = '';
-loadText('KanjiList.str', KanjiList);
+
 let  KanjiSmall        = new Uint32Array(FontCount,TestSquareSmall * TestSquareSmall * KanjiCount);
 let  KanjiZure         = new Uint32Array(KanjiCount);
 let  KanjiFont         = new Uint32Array(KanjiCount);
@@ -53,8 +52,9 @@ let  isShow            = Boolean;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
-let  textHtml          = '';
-loadText('Teikibin.htm', textHtml);
+
+loadText('KanjiList.str', 'KanjiList');
+loadText('Teikibin.htm', 'textHtml');
 
 // OCR用↑↑↑ ===========================================================================================
 
@@ -116,7 +116,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " x1 " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     label2.innerText   = KanjiList;
     label2.style.left  = "10px";  
     label2.style.top   = Math.round(h/2.0) + "px";  
@@ -133,15 +133,13 @@ function resiz() {
     canvas.style.top   = h + "px";  
 }
 
-function loadText(filename, outtext) {
+function loadText(filename, elementID) {
     let xhttp = new XMLHttpRequest();
     xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            outtext = this.responseText;
-        } else {
-            outtext = 'error';
-        }
+            document.getElementById(elementID).innerText = this.responseText;
+        } 
     }
     xhttp.open("GET", filename, true);
     xhttp.send();
