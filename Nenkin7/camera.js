@@ -59,7 +59,7 @@ let  keyok             = false;
 let  KanjiList         = document.getElementById('KanjiList');
 let  textHtml          = document.getElementById('textHtml');
 
-KanjiList.value = 'KANJI';
+//KanjiList.value = 'KANJI';
 loadText('KanjiList.str', 'KanjiList');
 loadText('Teikibin.htm', 'textHtml');
 
@@ -133,7 +133,7 @@ function resiz() {
     }
     let tmpStr2 = '';
     for (let i=0; i<TestSquareSmall; i++){
-        tmpStr2 = tmpStr2 + KanjiSmall[KanjiSmall * 1 + i] + ',';
+        tmpStr2 = tmpStr2 + KanjiSmall[KanjiSmallLen * 1 + i] + ',';
     }
 
     label2.innerText   = tmpStr;
@@ -171,7 +171,7 @@ function loadData(filename, fontNum) {
             let arrayBuffer  = xhttp.response; 
             if (arrayBuffer) {
                 let outdata   = new Uint8Array(arrayBuffer);
-                alert(outdata.length);
+                //alert(outdata.length);
                 for (let i=0; i<outdata.length; i++){
                     KanjiSmall[KanjiSmallLen*fontNum + i] = outdata[i];
                 }
