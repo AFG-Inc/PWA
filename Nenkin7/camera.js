@@ -14,6 +14,7 @@ let timg     = document.getElementById('tst');
 let ww       = 0;
 let hh       = 0;
 let context  = canvas.getContext('2d');
+let context2 = mainimg.getContext('2d');
 let videoasp = 1.6;
 let vasp     = 0;
 video.hidden = true;
@@ -61,6 +62,10 @@ KanjiList.value = 'KANJI';
 loadText('KanjiList.str', 'KanjiList');
 loadText('Teikibin.htm', 'textHtml');
 
+for (let i=0; i<FontCount; i++){
+    loadData(i+'.dat', i);
+}
+
 // OCR用↑↑↑ ===========================================================================================
 
 function openCamera() {
@@ -90,8 +95,9 @@ function openCamera() {
 function snap() {
     video.play();
     context.drawImage(video,0,0,ww,hh,0,0,ww,hh);
+    context2.drawImage(video,0,0,ww,hh,0,0,w,h);
 
-    mainimg.src = canvas.toDataURL();
+    //mainimg.src = canvas.toDataURL();
 
     let imageData = context.getImageData(0, 0, ww, hh);
     let data      = imageData.data;
@@ -124,13 +130,13 @@ function resiz() {
     label.innerText    = w + " xxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = '';
-    //for (let i=0; i<TestSquareSmall; i++){
-    //    tmpStr = tmpStr + KanjiSmall[0,i];
-    //}
+    for (let i=0; i<TestSquareSmall; i++){
+        tmpStr = tmpStr + KanjiSmall[0,i];
+    }
     let tmpStr2 = '';
-    //for (let i=0; i<TestSquareSmall; i++){
-    //    tmpStr2 = tmpStr2 + KanjiSmall[1,i];
-    //}
+    for (let i=0; i<TestSquareSmall; i++){
+        tmpStr2 = tmpStr2 + KanjiSmall[1,i];
+    }
 
     label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
@@ -150,7 +156,6 @@ function resiz() {
 
 function loadText(filename, elementID) {
     let xhttp = new XMLHttpRequest();
-    //xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById(elementID).value = this.responseText;
