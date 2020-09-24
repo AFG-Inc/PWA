@@ -171,9 +171,9 @@ function loadData(filename, fontNum) {
             let arrayBuffer  = xhttp.response; 
             if (arrayBuffer) {
                 let outdata   = new Uint8Array(arrayBuffer);
-                let small     = new Uint32Array(KanjiSmall, KanjiSmallLen*fontNum, KanjiSmallLen);
+                alert(outdata.length);
                 for (let i=0; i<outdata.length; i++){
-                    small[i] = outdata[i];
+                    KanjiSmall[KanjiSmallLen*fontNum + i] = outdata[i];
                 }
             } 
         }
