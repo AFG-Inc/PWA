@@ -39,13 +39,13 @@ let  MinLetterH        = 0;
 let  LettersCount      = 0;
 let  isUseCamera       = false;
 let  takePicture       = false;
-let  SmallBuffMax      = new Uint32Array(1000, 1000);
-let  SmallBuffMin      = new Uint32Array(1000, 1000);
+let  SmallBuffMax      = new Uint32Array(1000 * 1000);
+let  SmallBuffMin      = new Uint32Array(1000 * 1000);
   // 比較データ関連
 let  NowSquareSmall    = new Uint32Array(TestSquareSmall * TestSquareSmall);
 
-let  KanjiSmallBuf     = new ArrayBuffer(FontCount * TestSquareSmall * TestSquareSmall * KanjiCount);
-let  KanjiSmall        = new Uint32Array(KanjiSmallBuf, FontCount, TestSquareSmall * TestSquareSmall * KanjiCount);
+let  KanjiSmallLen     = TestSquareSmall * TestSquareSmall * KanjiCount;
+let  KanjiSmall        = new Uint32Array(FontCount * KanjiSmallLen);
 let  KanjiZure         = new Uint32Array(KanjiCount);
 let  KanjiFont         = new Uint32Array(KanjiCount);
   // SHOW
@@ -125,15 +125,15 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " xOx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = '';
     for (let i=0; i<TestSquareSmall; i++){
-        tmpStr = tmpStr + KanjiSmall[0,i] + ',';
+        tmpStr = tmpStr + KanjiSmall[KanjiSmallLen * 0 + i] + ',';
     }
     let tmpStr2 = '';
     for (let i=0; i<TestSquareSmall; i++){
-        tmpStr2 = tmpStr2 + KanjiSmall[1,i] + ',';
+        tmpStr2 = tmpStr2 + KanjiSmall[KanjiSmall * 1 + i] + ',';
     }
 
     label2.innerText   = tmpStr;
@@ -171,8 +171,9 @@ function loadData(filename, fontNum) {
             let arrayBuffer  = xhttp.response; 
             if (arrayBuffer) {
                 let outdata   = new Uint8Array(arrayBuffer);
+                let small     = new Uint32Array(KanjiSmall, KanjiSmallLen*fontNum, KanjiSmallLen);
                 for (let i=0; i<outdata.length; i++){
-                    KanjiSmall[fontNum,i] = outdata[i];
+                    small[i] = outdata[i];
                 }
             } 
         }
