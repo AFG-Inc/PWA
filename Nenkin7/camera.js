@@ -17,6 +17,7 @@ let context  = canvas.getContext('2d');
 let videoasp = 1.6;
 let vasp     = 0;
 video.hidden = true;
+canvas.hidden = true;
 let w,h,leftPos;
 
 // OCR用↓↓↓ ===========================================================================================
