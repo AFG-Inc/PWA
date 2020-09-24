@@ -123,13 +123,13 @@ function resiz() {
     label.innerText    = w + " xxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = '';
-    for (let i=0; i<TestSquareSmall; i++){
-        tmpStr = tmpStr + KanjiSmall[0,i];
-    }
+    //for (let i=0; i<TestSquareSmall; i++){
+    //    tmpStr = tmpStr + KanjiSmall[0,i];
+    //}
     let tmpStr2 = '';
-    for (let i=0; i<TestSquareSmall; i++){
-        tmpStr2 = tmpStr2 + KanjiSmall[1,i];
-    }
+    //for (let i=0; i<TestSquareSmall; i++){
+    //    tmpStr2 = tmpStr2 + KanjiSmall[1,i];
+    //}
 
     label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
@@ -149,7 +149,7 @@ function resiz() {
 
 function loadText(filename, elementID) {
     let xhttp = new XMLHttpRequest();
-    xhttp.responseType       = "text";
+    //xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById(elementID).value = this.responseText;
