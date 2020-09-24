@@ -53,6 +53,7 @@ let  isShow            = Boolean;
 let  testNum           = 0;
 let  keyok             = false;
 
+document.getElementById('KanjiList').value = 'KANJI';
 loadText('KanjiList.str', 'KanjiList');
 loadText('Teikibin.htm', 'textHtml');
 
@@ -135,10 +136,10 @@ function resiz() {
 
 function loadText(filename, elementID) {
     let xhttp = new XMLHttpRequest();
-    xhttp.responseType       = "text";
+    //xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementById(elementID).innerText = this.responseText;
+            document.getElementById(elementID).value = this.responseText;
         } 
     }
     xhttp.open("GET", filename, true);
