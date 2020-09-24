@@ -53,11 +53,12 @@ let  isShow            = Boolean;
 let  testNum           = 0;
 let  keyok             = false;
 
-document.getElementById('KanjiList').value = 'KANJI';
-let KanjiList = 'KLIST';
-KanjiList = loadText('KanjiList.str');
-let textHtml = 'THTML';
-let textHtml = loadText('Teikibin.htm');
+let  KanjiList         = document.getElementById('KanjiList');
+let  textHtml          = document.getElementById('textHtml');
+
+KanjiList.value = 'KANJI';
+loadText('KanjiList.str', 'KanjiList');
+loadText('Teikibin.htm', 'textHtml');
 
 // OCR用↑↑↑ ===========================================================================================
 
@@ -119,11 +120,21 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
-    label2.innerText   = KanjiList;
+    label.innerText    = w + " xxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+
+    let tmpStr = '';
+    for (let i=0; i<TestSquareSmall; i++){
+        tmpStr = tmpStr + KanjiSmall[0,i];
+    }
+    let tmpStr2 = '';
+    for (let i=0; i<TestSquareSmall; i++){
+        tmpStr2 = tmpStr2 + KanjiSmall[1,i];
+    }
+
+    label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
     label2.style.top   = Math.round(h/2.0) + "px";  
-    label3.innerText   = textHtml;
+    label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
     label3.style.top   = Math.round(h + 40) + "px";  
     mainimg.width      = w;
@@ -136,29 +147,29 @@ function resiz() {
     canvas.style.top   = h + "px";  
 }
 
-function loadText(filename) {
+function loadText(filename, elementID) {
     let xhttp = new XMLHttpRequest();
-    //xhttp.responseType       = "text";
+    xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //document.getElementById(elementID).value = this.responseText;
-            //elementID = this.responseText;
-            
-            return this.responseText;
+            document.getElementById(elementID).value = this.responseText;
         } 
     }
     xhttp.open("GET", filename, true);
     xhttp.send();
 }
 
-function loadData(filename, outdata) {
+function loadData(filename, fontNum) {
     let xhttp = new XMLHttpRequest();
     xhttp.responseType       = "arraybuffer";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let arrayBuffer  = xhttp.response; 
             if (arrayBuffer) {
-               outdata       = new Uint8Array(arrayBuffer);
+                let outdata   = new Uint8Array(arrayBuffer);
+                for (let i=0; i<outdata.length; i++){
+                    KanjiSmall[fontNum,i] = outdata[i];
+                }
             } 
         }
     }
