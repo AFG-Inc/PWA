@@ -54,10 +54,10 @@ let  testNum           = 0;
 let  keyok             = false;
 
 document.getElementById('KanjiList').value = 'KANJI';
-let KanjiList;
-loadText('KanjiList.str', KanjiList);
-let textHtml;
-loadText('Teikibin.htm', textHtml);
+let KanjiList = 'KLIST';
+KanjiList = loadText('KanjiList.str');
+let textHtml = 'THTML';
+let textHtml = loadText('Teikibin.htm');
 
 // OCR用↑↑↑ ===========================================================================================
 
@@ -119,7 +119,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " xxx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
     label2.innerText   = KanjiList;
     label2.style.left  = "10px";  
     label2.style.top   = Math.round(h/2.0) + "px";  
@@ -136,13 +136,15 @@ function resiz() {
     canvas.style.top   = h + "px";  
 }
 
-function loadText(filename, elementID) {
+function loadText(filename) {
     let xhttp = new XMLHttpRequest();
     //xhttp.responseType       = "text";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             //document.getElementById(elementID).value = this.responseText;
-            elementID = this.responseText;
+            //elementID = this.responseText;
+            
+            return this.responseText;
         } 
     }
     xhttp.open("GET", filename, true);
