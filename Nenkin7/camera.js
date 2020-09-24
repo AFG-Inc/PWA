@@ -44,7 +44,8 @@ let  SmallBuffMin      = new Uint32Array(1000, 1000);
   // 比較データ関連
 let  NowSquareSmall    = new Uint32Array(TestSquareSmall * TestSquareSmall);
 
-let  KanjiSmall        = new Uint32Array(FontCount,TestSquareSmall * TestSquareSmall * KanjiCount);
+let  KanjiSmallBuf     = new ArrayBuffer(FontCount * TestSquareSmall * TestSquareSmall * KanjiCount);
+let  KanjiSmall        = new Uint32Array(KanjiSmallBuf, FontCount, TestSquareSmall * TestSquareSmall * KanjiCount);
 let  KanjiZure         = new Uint32Array(KanjiCount);
 let  KanjiFont         = new Uint32Array(KanjiCount);
   // SHOW
@@ -124,7 +125,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = '';
     for (let i=0; i<TestSquareSmall; i++){
@@ -173,7 +174,7 @@ function loadData(filename, fontNum) {
             if (arrayBuffer) {
                 alert('3. ' + filename);
                 let outdata   = new Uint8Array(arrayBuffer);
-                for (let i=0; i<TestSquareSmall * TestSquareSmall * KanjiCount; i++){
+                for (let i=0; i<outdata.length; i++){
                     KanjiSmall[fontNum,i] = outdata[i];
                 }
             } 
