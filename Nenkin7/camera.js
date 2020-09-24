@@ -45,7 +45,7 @@ let  SmallBuffMin      = new Uint32Array(1000, 1000);
 let  NowSquareSmall    = new Uint32Array(TestSquareSmall * TestSquareSmall);
 
 let  KanjiSmallBuf     = new ArrayBuffer(FontCount * TestSquareSmall * TestSquareSmall * KanjiCount);
-let  KanjiSmall        = new Uint32Array(KanjiSmallBuf, FontCount,TestSquareSmall * TestSquareSmall * KanjiCount);
+let  KanjiSmall        = new Uint32Array(KanjiSmallBuf, FontCount, TestSquareSmall * TestSquareSmall * KanjiCount);
 let  KanjiZure         = new Uint32Array(KanjiCount);
 let  KanjiFont         = new Uint32Array(KanjiCount);
   // SHOW
@@ -125,7 +125,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = '';
     for (let i=0; i<TestSquareSmall; i++){
