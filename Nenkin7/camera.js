@@ -126,13 +126,13 @@ function resiz() {
     shaba.height       = h;
     label.innerText    = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
-    let tmpStr = 'a';
+    let tmpStr = '';
     for (let i=0; i<TestSquareSmall; i++){
-        tmpStr = tmpStr + KanjiSmall[0,i];
+        tmpStr = tmpStr + KanjiSmall[0,i] + ',';
     }
-    let tmpStr2 = 'b';
+    let tmpStr2 = '';
     for (let i=0; i<TestSquareSmall; i++){
-        tmpStr2 = tmpStr2 + KanjiSmall[1,i];
+        tmpStr2 = tmpStr2 + KanjiSmall[1,i] + ',';
     }
 
     label2.innerText   = tmpStr;
@@ -170,7 +170,7 @@ function loadData(filename, fontNum) {
             let arrayBuffer  = xhttp.response; 
             if (arrayBuffer) {
                 let outdata   = new Uint8Array(arrayBuffer);
-                for (let i=0; i<outdata.length; i++){
+                for (let i=0; i<arrayBuffer.length; i++){
                     KanjiSmall[fontNum,i] = outdata[i];
                 }
             } 
