@@ -164,15 +164,12 @@ function loadText(filename, elementID) {
 }
 
 function loadData(filename, fontNum) {
-    alert('1. ' + filename);
     let xhttp = new XMLHttpRequest();
     xhttp.responseType       = "arraybuffer";
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let arrayBuffer  = xhttp.response; 
-            alert('2. ' + filename);
             if (arrayBuffer) {
-                alert('3. ' + filename);
                 let outdata   = new Uint8Array(arrayBuffer);
                 for (let i=0; i<outdata.length; i++){
                     KanjiSmall[fontNum,i] = outdata[i];
