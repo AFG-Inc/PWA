@@ -93,9 +93,10 @@ function openCamera() {
 }
 
 function snap() {
-    video.play();
+    //video.play();
     context.drawImage(video,0,0,ww,hh,0,0,ww,hh);
-    context2.drawImage(video,0,0,ww,hh,0,0,w,h);
+    context2.drawImage(canvas,0,0,w,h);
+    //context2.drawImage(video,0,0,ww,hh,0,0,w,h);
 
     //mainimg.src = canvas.toDataURL();
 
@@ -127,13 +128,13 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " XxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
-    let tmpStr = '';
+    let tmpStr = 'a';
     for (let i=0; i<TestSquareSmall; i++){
         tmpStr = tmpStr + KanjiSmall[0,i];
     }
-    let tmpStr2 = '';
+    let tmpStr2 = 'b';
     for (let i=0; i<TestSquareSmall; i++){
         tmpStr2 = tmpStr2 + KanjiSmall[1,i];
     }
