@@ -93,24 +93,20 @@ function openCamera() {
 }
 
 function snap() {
-    //video.play();
     context.drawImage(video,0,0,ww,hh,0,0,ww,hh);
     context2.drawImage(canvas,0,0,w,h);
-    //context2.drawImage(video,0,0,ww,hh,0,0,w,h);
 
-    //mainimg.src = canvas.toDataURL();
-
-    let imageData = context.getImageData(0, 0, ww, hh);
-    let data      = imageData.data;
-    let sred      = 0;
+    // let imageData = context.getImageData(0, 0, ww, hh);
+    // let data      = imageData.data;
+    // let sred      = 0;
  
-    for (let i = 0; i < data.length; i += 4) {
-        sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-        data[i]     = sred;
-        data[i + 1] = sred;
-        data[i + 2] = sred;
-    }
-    context.putImageData(imageData, 0, 0);
+    // for (let i = 0; i < data.length; i += 4) {
+    //     sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
+    //     data[i]     = sred;
+    //     data[i + 1] = sred;
+    //     data[i + 2] = sred;
+    // }
+    // context.putImageData(imageData, 0, 0);
 
     setTimeout(snap, 50);
 }
@@ -128,7 +124,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " XxX " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " Xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     let tmpStr = 'a';
     for (let i=0; i<TestSquareSmall; i++){
