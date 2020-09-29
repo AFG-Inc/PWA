@@ -557,7 +557,8 @@ function GetClustersFromLettersCollection(LetterRecs,
             }
         }
     }
-    label3.innerText   = KanjiList.value.charAt(20);
+    //label3.innerText   = KanjiList.value.charAt(20);
+    label3.innerText   = OutText + ' + ' + sss + ' * ' + KanjiList.value.charAt(19);
     return OutText;
 }
 
@@ -738,7 +739,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
