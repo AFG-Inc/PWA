@@ -69,12 +69,12 @@ let  textHtml          = document.getElementById('textHtml');
 loadText('KanjiList.str', 'KanjiList');
 loadText('Teikibin.htm', 'textHtml');
 
-// Random setup
-for (let j=0; j<KanjiSmallLen; j++){
-    for (let i=0; i<FontCount; i++){
-        KanjiSmall[KanjiSmallLen*i + j] = Math.random() * 255;
-    }
-}
+// // Random setup
+// for (let j=0; j<KanjiSmallLen; j++){
+//     for (let i=0; i<FontCount; i++){
+//         KanjiSmall[KanjiSmallLen*i + j] = Math.random() * 255;
+//     }
+// }
 
 for (let i=0; i<FontCount; i++){
     loadData(i+'.dat', i);
@@ -482,7 +482,7 @@ function GetClustersFromLettersCollection(LetterRecs,
     let filterOk  = false;
     let sss       = '';
     let keylen    = 0;
-    let OutText   = '';
+    let OutText   = 'AA';
     let kWords    = KeyWords.split('|');
 
     // Clusterization
@@ -557,6 +557,7 @@ function GetClustersFromLettersCollection(LetterRecs,
             }
         }
     }
+    label3.innerText   = KanjiList.value.charAt(20);
     return OutText;
 }
 
@@ -737,7 +738,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xOx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
@@ -750,8 +751,9 @@ function resiz() {
 
     //label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
-    label2.style.top   = Math.round(h/2.0) + "px";  
-    label3.innerText   = tmpStr2;
+    //label2.style.top   = Math.round(h/2.0) + "px";  
+    label2.style.top   = Math.round(h - 60) + "px";  
+    //label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
     label3.style.top   = Math.round(h - 40) + "px";  
     mainimg.width      = w;
