@@ -482,95 +482,7 @@ function ManDistance(x1,y1,x2,y2) {
     return manX + manY;
 }
 
-function GetClustersFromLettersCollection(LetterRecs,
-    stepX,
-    stepY,
-    KeyWords){
-    
-    let i,j,k     = 0;
-    let x,y       = 0;
-    let clarray   = new Array();
-    let isNewCl   = false;
-    let filterOk  = false;
-    let sss       = '';
-    let keylen    = 0;
-    let OutText   = '';
-    let kWords    = KeyWords.split('|');
 
-    // Clusterization
-    for (i = 0; i < LetterRecs.length; i++) {
-        isNewCl = true;
-        for ( y = 0; y < clarray.length; y++ ) {
-            for ( x = 0; x < clarray[y].length; x++ ){
-                ManDistance(LetterRecs[clarray[y][x]][0], LetterRecs[clarray[y][x]][1], LetterRecs[i][0], LetterRecs[i][1]);
-                if ((manX  < (LetterRecs[i][2] - LetterRecs[i][0]) * stepX) &&
-                    (manY  < (LetterRecs[i][3] - LetterRecs[i][1]) * stepY)) {
-                    clarray[y].push(i);
-                    isNewCl = false;
-                    break;
-                }
-            }
-            if ( isNewCl == false ) {
-                break;
-            }
-        }
-        if ( isNewCl == true ) {
-            let clline = new Array();
-            clline.push(i);
-            clarray.push(clline);
-        } 
-    }
-  
-    //SORT
-    if ( clarray.length > 0 ){
-        for ( y = 0; y < clarray.length; y++ ) {
-            for( i = 0; i < clarray[y].length; i++ ){
-                for ( x = 1; x < clarray[y].length; x++ ){
-                    if ( LetterRecs[clarray[y][x]][0] < LetterRecs[clarray[y][x-1]][0] ) {
-                        j = clarray[y][x];
-                        clarray[y][x]   = clarray[y][x-1];
-                        clarray[y][x-1] = j;
-                    }
-                }
-            }
-        }
-    }
-    //TST
-    testNum   = 0;
-    keylen    = kWords.length;
-    for ( y = 0; y < clarray.length; y++ ) {
-        sss   = '';
-        for ( x = 0; x < clarray[y].length; x++ ){
-            j = clarray[y][x];
-            filterOk = true;
-            if ( x > 0 ){
-                if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
-            }
-            if ( clarray[y].length >= keylen ) {
-                MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
-                KanjiAnalize();
-                for ( i = 0; i < KanjiNumsLen; i++ ) {
-                    if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
-                        sss = sss + KanjiList.value.charAt(KanjiNums[i]);
-                        break;
-                    }
-                }
-                testNum++;
-            }
-        }
-        j   = clarray[y][0];
-        sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
-        for ( k = 0; k < kWords.length; k++ ) {
-            if ( sss.length >= kWords[k].length ) {
-                if ( kWords[k].indexOf(sss) >= 0 ) {
-                    OutText = OutText + '|' + sss;
-                }
-            }
-        }
-    }
-    //label3.innerText   = sss;
-    return OutText;
-}
 
 function KanjiAnalize() {
     let  i;              
@@ -691,6 +603,95 @@ function MakeTestSquare(Buff,
     }
 }
 
+function GetClustersFromLettersCollection(LetterRecs,
+    stepX,
+    stepY,
+    KeyWords){
+    
+    let i,j,k     = 0;
+    let x,y       = 0;
+    let clarray   = new Array();
+    let isNewCl   = false;
+    let filterOk  = false;
+    let sss       = '';
+    let keylen    = 0;
+    let OutText   = '';
+    let kWords    = KeyWords.split('|');
+
+    // Clusterization
+    for (i = 0; i < LetterRecs.length; i++) {
+        isNewCl = true;
+        for ( y = 0; y < clarray.length; y++ ) {
+            for ( x = 0; x < clarray[y].length; x++ ){
+                ManDistance(LetterRecs[clarray[y][x]][0], LetterRecs[clarray[y][x]][1], LetterRecs[i][0], LetterRecs[i][1]);
+                if ((manX  < (LetterRecs[i][2] - LetterRecs[i][0]) * stepX) &&
+                    (manY  < (LetterRecs[i][3] - LetterRecs[i][1]) * stepY)) {
+                    clarray[y].push(i);
+                    isNewCl = false;
+                    break;
+                }
+            }
+            if ( isNewCl == false ) {
+                break;
+            }
+        }
+        if ( isNewCl == true ) {
+            let clline = new Array();
+            clline.push(i);
+            clarray.push(clline);
+        } 
+    }
+  
+    //SORT
+    if ( clarray.length > 0 ){
+        for ( y = 0; y < clarray.length; y++ ) {
+            for( i = 0; i < clarray[y].length; i++ ){
+                for ( x = 1; x < clarray[y].length; x++ ){
+                    if ( LetterRecs[clarray[y][x]][0] < LetterRecs[clarray[y][x-1]][0] ) {
+                        j = clarray[y][x];
+                        clarray[y][x]   = clarray[y][x-1];
+                        clarray[y][x-1] = j;
+                    }
+                }
+            }
+        }
+    }
+    //TST
+    testNum   = 0;
+    keylen    = kWords.length;
+    for ( y = 0; y < clarray.length; y++ ) {
+        sss   = '';
+        for ( x = 0; x < clarray[y].length; x++ ){
+            j = clarray[y][x];
+            filterOk = true;
+            if ( x > 0 ){
+                if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
+            }
+            if ( clarray[y].length >= keylen ) {
+                MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
+                KanjiAnalize();
+                for ( i = 0; i < KanjiNumsLen; i++ ) {
+                    if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
+                        sss = sss + KanjiList.value.charAt(KanjiNums[i]);
+                        break;
+                    }
+                }
+                testNum++;
+            }
+        }
+        j   = clarray[y][0];
+        sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
+        //for ( k = 0; k < kWords.length; k++ ) {
+        //    if ( sss.length >= kWords[k].length ) {
+        //        if ( kWords[k].indexOf(sss) >= 0 ) {
+                    OutText = OutText + '|' + sss;
+        //        }
+        //    }
+        //}
+    }
+    //label3.innerText   = sss;
+    return OutText;
+}
 
 function OCRWork() {
     let LetterRecrs = new Uint32Array(400); // Letter sqares
@@ -758,7 +759,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " XY " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " XYZ " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
