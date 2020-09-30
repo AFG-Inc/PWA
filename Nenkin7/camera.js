@@ -61,17 +61,18 @@ let  isShowLetterRect  = true;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
+let  manX, manY        = 0;
 
 let  KanjiList         = document.getElementById('KanjiList');
 let  textHtml          = document.getElementById('textHtml');
 
-//KanjiList.value = 'KANJI';
+//KanjiList.value = '※〒0123456789*()～これまでのと月円年金加入国民合歳特別■';
 loadText('KanjiList.str', 'KanjiList');
 loadText('Teikibin.htm', 'textHtml');
 
-// // Random setup
-// for (let j=0; j<KanjiSmallLen; j++){
-//     for (let i=0; i<FontCount; i++){
+// Random setup
+// for (let i=0; i<FontCount; i++){
+//     for (let j=0; j<KanjiSmallLen; j++){
 //         KanjiSmall[KanjiSmallLen*i + j] = Math.random() * 255;
 //     }
 // }
@@ -96,7 +97,8 @@ function openCamera() {
     // }
 
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'auto', focusDistance: 0.01 };
-    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 20000 };
+    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 20000 };
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 20000 };
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'none', focusDistance: 20000 };
     navigator.mediaDevices.getUserMedia(constraints)
@@ -412,6 +414,7 @@ function getBoxesFromBufferArea(buff,
     let i          = 0;
     let x, y       = 0;
     let wr, hr     = 0;
+    let wc, hc     = 0;
     let StartX     = 0; 
     let StartY     = 0;
     let NowRect    = RectF(0,0,0,0);
@@ -419,12 +422,6 @@ function getBoxesFromBufferArea(buff,
     let collection = new Array();
     let addRect    = true;
     let aWidth     = 0;
-
-    //let tmpStr     = `${MinLetterW} ${MinLetterH} ${MaxLetterW} ${MaxLetterH} ${buff[0]} ${StepX} ${StepY}`;
-    //let tmpStr     = `${KeyWords} ${width} ${height} ${area[0]} ${buff[0]} ${StepX} ${StepY}`;
-    //let tmpStr     = KeyWords;
-    //label2.innerText   = tmpStr;
-
 
     if ( isShowLetterRect == true ) {
         context.strokeStyle = "rgb(0,128,0)";
@@ -437,14 +434,28 @@ function getBoxesFromBufferArea(buff,
             MinLetterW, MinLetterH, MaxLetterW, MaxLetterH);
             if (NowRect[0] < 100000) { // No error
                 addRect = true;
-                for ( i = 0;  i < collection.length; i++ ) {
-                    if ( collection[i] == NowRect ) {
-                        addRect = false;
-                        break;
-                    }
-                }
                 wr = NowRect[2] - NowRect[0];
                 hr = NowRect[3] - NowRect[1];
+                for ( i = 0;  i < collection.length; i++ ) {
+                    if (( collection[i][0] == NowRect[0] ) &&
+                        ( collection[i][1] == NowRect[1] ) &&
+                        ( collection[i][2] == NowRect[2] ) &&
+                        ( collection[i][3] == NowRect[3] )) {
+                        addRect = false;
+                        break;
+                    } else {
+                        if (( collection[i][0] == NowRect[0] ) &&
+                            ( collection[i][1] == NowRect[1] )) {
+                            wc = collection[2] - collection[0];
+                            hc = collection[3] - collection[1];
+                            if (Math.abs(wc-hc) > Math.abs(wr-hr)){
+                                collection[i] = NowRect;
+                            }
+                            addRect = false;
+                            break;
+                        }
+                    }
+                }
                 //if ((wr > hr * 1.3) || (hr > wr * 1.3)) { addRect = false }
                 //if (wr > hr * stepX) { addRect = false }
                 if ( addRect == true ) {
@@ -459,14 +470,16 @@ function getBoxesFromBufferArea(buff,
         }
     }
 
-    if ( count > 0 ) { averageWidth = aWidth / count }
+    if ( count > 0 ) { 
+        averageWidth = aWidth / count 
+    }
     return GetClustersFromLettersCollection(collection, StepX, StepY, KeyWords);
 }
 
-function ManDistance(x1,y1,x2,y2, xx, yy) {
-    xx = Math.abs(x2-x1);
-    yy = Math.abs(y2-y1);
-    return xx + yy;
+function ManDistance(x1,y1,x2,y2) {
+    manX = Math.abs(x2-x1);
+    manY = Math.abs(y2-y1);
+    return manX + manY;
 }
 
 function GetClustersFromLettersCollection(LetterRecs,
@@ -476,13 +489,12 @@ function GetClustersFromLettersCollection(LetterRecs,
     
     let i,j,k     = 0;
     let x,y       = 0;
-    let xxx,yyy   = 0;
     let clarray   = new Array();
     let isNewCl   = false;
     let filterOk  = false;
     let sss       = '';
     let keylen    = 0;
-    let OutText   = 'AA';
+    let OutText   = '';
     let kWords    = KeyWords.split('|');
 
     // Clusterization
@@ -490,23 +502,26 @@ function GetClustersFromLettersCollection(LetterRecs,
         isNewCl = true;
         for ( y = 0; y < clarray.length; y++ ) {
             for ( x = 0; x < clarray[y].length; x++ ){
-                ManDistance(LetterRecs[clarray[y][x]][0], LetterRecs[clarray[y][x]][1], LetterRecs[i][0], LetterRecs[i][1], xxx, yyy);
-                if ((xxx  < (LetterRecs[i][2] - LetterRecs[i][0]) * stepX) &&
-                    (yyy  < (LetterRecs[i][3] - LetterRecs[i][1]) * stepY)) {
+                ManDistance(LetterRecs[clarray[y][x]][0], LetterRecs[clarray[y][x]][1], LetterRecs[i][0], LetterRecs[i][1]);
+                if ((manX  < (LetterRecs[i][2] - LetterRecs[i][0]) * stepX) &&
+                    (manY  < (LetterRecs[i][3] - LetterRecs[i][1]) * stepY)) {
                     clarray[y].push(i);
                     isNewCl = false;
                     break;
                 }
             }
-            if ( isNewCl == true ) {
-                clarray.push(new Array().push(i));
-            } else {
+            if ( isNewCl == false ) {
                 break;
             }
         }
+        if ( isNewCl == true ) {
+            let clline = new Array();
+            clline.push(i);
+            clarray.push(clline);
+        } 
     }
-
-    // SORT
+  
+    //SORT
     if ( clarray.length > 0 ){
         for ( y = 0; y < clarray.length; y++ ) {
             for( i = 0; i < clarray[y].length; i++ ){
@@ -520,7 +535,6 @@ function GetClustersFromLettersCollection(LetterRecs,
             }
         }
     }
-
     //TST
     testNum   = 0;
     keylen    = kWords.length;
@@ -544,21 +558,16 @@ function GetClustersFromLettersCollection(LetterRecs,
                 testNum++;
             }
         }
-
         j   = clarray[y][0];
         sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
-
         for ( k = 0; k < kWords.length; k++ ) {
-            keylen = kWords[k].length;
-            if ( length(sss) >= keylen ) {
+            if ( sss.length >= kWords[k].length ) {
                 if ( kWords[k].indexOf(sss) > 0 ) {
                     OutText = OutText + '|' + sss;
                 }
             }
         }
     }
-    //label3.innerText   = KanjiList.value.charAt(20);
-    label3.innerText   = OutText + ' + ' + sss + ' * ' + KanjiList.value.charAt(19);
     return OutText;
 }
 
@@ -584,10 +593,10 @@ function KanjiAnalize() {
     for (i=0; i<FontCount; i++) {
         Smes = 0;
         for (j=0; j<KanjiCount; j++) {
-            NowZure= 0;
+            NowZure = 0;
             for (k=0; k<SquareSmall; k++) {
-              NowZure = NowZure + abs( KanjiSmall[i,Smes + k] - NowSquareSmall[k] );
-		    }
+              NowZure = NowZure + Math.abs( KanjiSmall[KanjiSmallLen*i + Smes + k] - NowSquareSmall[k] );
+            }
             if (NowZure < KanjiZure[j]) { KanjiZure[j] = NowZure }
             if (NowZure > MaxZure)      { MaxZure      = NowZure }
             if (NowZure < MinZure)      { MinZure      = NowZure }
@@ -648,9 +657,9 @@ function MakeTestSquare(Buff,
             while (NowY < StopY) {
                 NowX = sStartX;
                 while (NowX < StopX) {
-                    x = Math.trunc( rect.Top  + NowY );
-                    y = Math.trunc( rect.Left + NowX );
-                    colsum = colsum + Buff[ x * width + y ];
+                    x = Math.trunc( rect[0] + NowX );
+                    y = Math.trunc( rect[1] + NowY );
+                    colsum = colsum + Buff[ y * width + x ];
                     sum++;
                     NowX   = NowX + StepX;
                 }
@@ -772,7 +781,7 @@ function resiz() {
     MaxLetterW         = Math.round(ww / 50.0);
     MaxLetterH         = MaxLetterW;
     MinLetterW         = Math.round(MaxLetterW / 10.0);
-    MinLetterH         = Math.round(MaxLetterH /  5.0);
+    MinLetterH         = Math.round(hh / 50.0);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
