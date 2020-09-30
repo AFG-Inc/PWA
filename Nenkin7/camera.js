@@ -748,7 +748,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " xXx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
