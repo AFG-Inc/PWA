@@ -560,13 +560,13 @@ function GetClustersFromLettersCollection(LetterRecs,
         }
         j   = clarray[y][0];
         sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
-        for ( k = 0; k < kWords.length; k++ ) {
-            if ( sss.length >= kWords[k].length ) {
-                if ( kWords[k].indexOf(sss) > 0 ) {
+        //for ( k = 0; k < kWords.length; k++ ) {
+        //    if ( sss.length >= kWords[k].length ) {
+        //        if ( kWords[k].indexOf(sss) > 0 ) {
                     OutText = OutText + '|' + sss;
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
     }
     label3.innerText   = sss;
     return OutText;
@@ -749,7 +749,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " xXx " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " Xo " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
