@@ -562,7 +562,7 @@ function GetClustersFromLettersCollection(LetterRecs,
         sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
         for ( k = 0; k < kWords.length; k++ ) {
             if ( sss.length >= kWords[k].length ) {
-                if ( kWords[k].indexOf(sss) > 0 ) {
+                if ( kWords[k].indexOf(sss) >= 0 ) {
                     OutText = OutText + '|' + sss;
                 }
             }
@@ -720,7 +720,7 @@ function OCRWork() {
     keyword = 'これまでの';
     res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.3, 0.4, keyword );
     label2.innerText   = res;
-    if (res.indexOf(keyword) > 0) { 
+    if (res.indexOf(keyword) >= 0) { 
         keyok   = true; 
         label3.innerText   = '●';
     } else {
@@ -758,7 +758,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " Xyu " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " XY " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
