@@ -560,15 +560,15 @@ function GetClustersFromLettersCollection(LetterRecs,
         }
         j   = clarray[y][0];
         sss = sss + '[' + Math.trunc(LetterRecs[j][0]) + ',' + Math.trunc(LetterRecs[j][1]) + ']';
-        //for ( k = 0; k < kWords.length; k++ ) {
-        //    if ( sss.length >= kWords[k].length ) {
-        //        if ( kWords[k].indexOf(sss) > 0 ) {
+        for ( k = 0; k < kWords.length; k++ ) {
+            if ( sss.length >= kWords[k].length ) {
+                if ( kWords[k].indexOf(sss) > 0 ) {
                     OutText = OutText + '|' + sss;
-        //        }
-        //    }
-        //}
+                }
+            }
+        }
     }
-    label3.innerText   = sss;
+    //label3.innerText   = sss;
     return OutText;
 }
 
@@ -713,12 +713,21 @@ function OCRWork() {
     // context2.putImageData(imageData, 10, 10);
 
     //label2.innerText   = "OKK1";
-    keyok   = true;
+    keyok   = false;
     tmpRect = RectF(0, 0, Math.trunc(BuffW/3.5), Math.trunc(BuffH/12.0));
     TakeBWPicture(tmpRect);
-    keyword = 'これまでの年金加入';
+    //keyword = 'これまでの年金加入';
+    keyword = 'これまでの';
     res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.3, 0.4, keyword );
     label2.innerText   = res;
+    if (res.indexOf(keyword) > 0) { 
+        keyok   = true; 
+        label3.innerText   = '●';
+    } else {
+        label3.innerText   = '〇';
+    }
+
+    
 
     // if (keyok == true){
     //     tmpRect = RectF(0, Math.trunc(BuffH/2.9), Math.trunc(BuffW/4.0), Math.trunc(BuffH/11.0)+Math.trunc(BuffH/2.9));
@@ -749,7 +758,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " Xo " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    label.innerText    = w + " Xyu " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
