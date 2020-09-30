@@ -568,6 +568,7 @@ function GetClustersFromLettersCollection(LetterRecs,
             }
         }
     }
+    label3.innerText   = sss;
     return OutText;
 }
 
