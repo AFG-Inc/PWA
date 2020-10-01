@@ -20,7 +20,7 @@ let vasp     = 0;
 
 let videostop= false;
 video.hidden = true;
-//canvas.hidden = true;
+canvas.hidden = true;
 let w,h,leftPos;
 
 // OCR用↓↓↓ ===========================================================================================
@@ -56,9 +56,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = true;
+let  isShowBlue        = false;
 let  isShow            = false;
-let  isShowLetterRect  = true;
+let  isShowLetterRect  = false;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
@@ -700,7 +700,6 @@ function GetClustersFromLettersCollection(LetterRecs,
 
 function OCRWork() {
     let i, j        = 0;
-    let LetterRecrs = new Uint32Array(400); // Letter sqares
     let tmpRect     = new Uint32Array(4);   // OCR area Rect
     let tsukiarray  = new Array();
     let gnumbers    = false;
@@ -709,10 +708,10 @@ function OCRWork() {
     let xStr, yStr  = '';
     let numStr      = '';
     let keyword     = '';
-    //let aveWidth    = 0.0;
     let outStr      = '';
     let tmpStr      = '';
     let nowChar     = '';
+    let prefix      = '';
     let poss1       = 0;
     let poss2       = 0;
     let number      = 0;
@@ -741,10 +740,10 @@ function OCRWork() {
     //label2.innerText   = res;
     if (res.indexOf(keyword) >= 0) { 
         keyok  = true; 
-        label3.innerText   = '●';
+        //label3.innerText   = '●';
         outStr = outStr + res;
     } else {
-        label3.innerText   = '〇';
+        //label3.innerText   = '〇';
         keyok  = false; 
     }
 
@@ -759,10 +758,10 @@ function OCRWork() {
         //label2.innerText   = res;
         if (res.indexOf(keyword) >= 0) { 
             keyok   = true; 
-            label3.innerText   = '●●';
+            //label3.innerText   = '●●';
             outStr = outStr + res;
         } else {
-            label3.innerText   = '●〇';
+            //label3.innerText   = '●〇';
             keyok   = false; 
         }
     }
@@ -837,14 +836,6 @@ function OCRWork() {
             }
         }
 
-        //label2.innerText   = tsukiarray.toString();
-        label2.innerText   = tsukiarray + ' LEN: ' + tsukiarray.length;
-
-        tsukiarray.sort(function (a, b) { return a[0] - b[0] });
-        tsukiarray.sort(function (a, b) { return a[1] - b[1] });
-
-        label3.innerText   = tsukiarray + ' LEN: ' + tsukiarray.length;
-
         //label3.innerText   = '月: ' + tsukicount;
         tmpStr = '';
     } 
@@ -852,13 +843,39 @@ function OCRWork() {
 
     if ((keyok == true) && (tsukicount == 11)) {
         // Output to web page
-        //for ( i = 1; i<= 11; i++) {
-        //    if (i < 10) { prefix = '●0' } else { prefix = '●' }
-        //    nowtext.replace( prefix+IntToStr(i), tsukiarray[i][2]);
-        //}
+
+        let arr1 = tsukiarray.slice(0,4).sort(function (a, b) { return a[0] - b[0] });
+        let arr2 = tsukiarray.slice(4,7).sort(function (a, b) { return a[0] - b[0] });
+        let arr3 = tsukiarray.slice(7).sort(function (a, b) { return a[0] - b[0] });
+        
+
+        for ( i = 1; i<= 4; i++) {
+            prefix = '●0' + i;
+            tmpStr  = String(arr1[i-1][2]);
+            nowtext = nowtext.replace( prefix, tmpStr );
+        }
+
+        for ( i = 5; i<= 7; i++) {
+            prefix = '●0' + i;
+            tmpStr  = String(arr2[i-5][2]);
+            nowtext = nowtext.replace( prefix, tmpStr );
+        }
+
+        for ( i = 8; i<= 11; i++) {
+            if (i < 10) { 
+                prefix = '●0' + i;
+            } else { 
+                prefix = '●' + i;
+            }
+            tmpStr  = String(arr3[i-8][2]);
+            nowtext = nowtext.replace( prefix, tmpStr );
+        }
+
+
+        shaba.hidden = true;
         mainimg.hidden = true;
         label2.innerText  = 'OK WEB'; 
-        document.getElementById("outbody").innerText = 'AAA';
+        document.getElementById("outbody").innerHTML = nowtext;
         videostop = true;
 
         let vstream = video.srcObject;
@@ -868,100 +885,7 @@ function OCRWork() {
         });
         video.srcObject = null;
 
-        //video.stop();
-        
-        //document.body.innerHTML = tsukiarray;
     
-        // SetLength(sss,   11);
-        // SetLength(ichiX, 11);
-        // SetLength(ichiY, 11);
-    
-        // for i := 0 to 10 do
-        //     begin
-        //     poss1:=Pos('月', Memo1.Lines[i]);
-        //     tmpStr:=copy(Memo1.Lines[i],0,poss1-1);
-        //     sss[i]   := tmpStr;
-        //     tmpStr   := copy(Memo1.Lines[i],poss1+2, Length(Memo1.Lines[i])-1);
-        //     Splitted := tmpStr.Split([',']);
-        //     ichiX[i] := StrToInt(Splitted[0]);
-        //     ichiY[i] := StrToInt(Splitted[1]);
-        //     end;
-    
-        // // SORTING
-    
-        // for i := 0 to 3 do
-        //     begin
-        //     for j := 1 to 3 do
-        //     begin
-        //     if ichiX[j]<ichiX[j-1] then
-        //         begin
-        //         k:=ichiX[j];
-        //         ichiX[j]:=ichiX[j-1];
-        //         ichiX[j-1]:=k;
-        //         k:=ichiY[j];
-        //         ichiY[j]:=ichiY[j-1];
-        //         ichiY[j-1]:=k;
-        //         tmpStr:=sss[j];
-        //         sss[j]:=sss[j-1];
-        //         sss[j-1]:=tmpStr;
-        //         end;
-        //     end;
-        //     end;
-        // for i := 4 to 6 do
-        //     begin
-        //     for j := 5 to 6 do
-        //     begin
-        //     if ichiX[j]<ichiX[j-1] then
-        //         begin
-        //         k:=ichiX[j];
-        //         ichiX[j]:=ichiX[j-1];
-        //         ichiX[j-1]:=k;
-        //         k:=ichiY[j];
-        //         ichiY[j]:=ichiY[j-1];
-        //         ichiY[j-1]:=k;
-        //         tmpStr:=sss[j];
-        //         sss[j]:=sss[j-1];
-        //         sss[j-1]:=tmpStr;
-        //         end;
-        //     end;
-        //     end;
-        // for i := 7 to 10 do
-        //     begin
-        //     for j := 8 to 10 do
-        //     begin
-        //     if ichiX[j]<ichiX[j-1] then
-        //         begin
-        //         k:=ichiX[j];
-        //         ichiX[j]:=ichiX[j-1];
-        //         ichiX[j-1]:=k;
-        //         k:=ichiY[j];
-        //         ichiY[j]:=ichiY[j-1];
-        //         ichiY[j-1]:=k;
-        //         tmpStr:=sss[j];
-        //         sss[j]:=sss[j-1];
-        //         sss[j-1]:=tmpStr;
-        //         end;
-        //     end;
-        //     end;
-    
-        // // Output to web page
-        // for i := 1 to 11 do
-        //     begin
-        //     if i<10 then prefix:= '●0' else prefix:= '●';
-        //     nowtext:=StringReplace(nowtext, prefix+IntToStr(i), sss[i-1], [rfReplaceAll]);
-        //     end;
-    
-    
-        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr  + '</body>', [rfReplaceAll]);
-        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr3 + '</body>', [rfReplaceAll]);
-        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr4 + '</body>', [rfReplaceAll]);
-        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr5 + '</body>', [rfReplaceAll]);
-        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr6 + '</body>', [rfReplaceAll]);
-    
-        // WebBrowser1.LoadFromStrings(nowtext,'');
-        // ImageTest.Bitmap.assign(ImageCam.Bitmap);
-        // //ImageTest.Bitmap.assign(BitmapBlue);
-        // //ImageTest.Bitmap.assign(BitmapBlack);
   
         keyok   = true; 
         //label3.innerText   = '●●●';
@@ -989,7 +913,7 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    label.innerText    = w + " XYZ " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    //label.innerText    = w + " XYZ " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
 
     //let tmpStr = '';
     //for (let i=0; i<TestSquareSmall; i++){
