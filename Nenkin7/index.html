@@ -7,10 +7,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel ="manifest" href="manifest.json">
 <link rel ="apple-touch-icon" href="icon.png" sizes="180x180">
+
+<style type="text/css">
+    td.diagonalRising
+    {
+       background: linear-gradient(to right bottom, #ffffff 0%,#ffffff     
+       49.9%,#ffffff 50%,#0000ff 50.1%,#ffffff 51.1%,#ffffff 100%);
+    }
+    
+    table.bluetable {
+    border-collapse: collapse;
+    border:2px #0000ff solid;
+    }
+    
+    table.bluetable th,
+    table.bluetable td {
+    border:1px #0000ff solid;
+    }
+    
+    table.noborder {
+    border-collapse: collapse;
+    border:0px #ffffff solid;
+    }
+    
+    table.noborder th,
+    table.noborder td {
+    border:0px #ffffff solid;
+    }
+    
+</style>
+
 </head>
     <body bgcolor="LightYellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0 onload="openCamera();" onresize="openCamera();">
-        <input type=text id="KanjiList" value="AAA"><br>
-        <input type=text id="textHtml"  value="BBB">
+        <input type=hidden id="KanjiList" value="AAA"><br>
+        <input type=hidden id="textHtml"  value="BBB">
         
         <video  id="video" autoplay playsinline="true" muted style="position:absolute; top:0px; left:0px;" onclick="snap();"></video>
         <canvas id="mainimg" style="position:absolute; top:0px; left:0px;"></canvas>
@@ -20,7 +50,10 @@
         <div id="label"  style="position:absolute; top:20px; left:20px;">Resolution</div>
         <div id="label2" style="position:absolute; top:20px; left:20px;">Binnary</div>
         <div id="label3" style="position:absolute; top:20px; left:20px;">Binnary</div>
-        
+
+        <center>
+        <div id="outbody"></div>
+        </center>
     </body>
 
     <script src="camera.js"></script>

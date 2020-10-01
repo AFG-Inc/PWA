@@ -18,6 +18,7 @@ let context2 = mainimg.getContext('2d');
 let videoasp = 1.6;
 let vasp     = 0;
 
+let videostop= false;
 video.hidden = true;
 //canvas.hidden = true;
 let w,h,leftPos;
@@ -66,9 +67,10 @@ let  manX, manY        = 0;
 let  KanjiList         = document.getElementById('KanjiList');
 let  textHtml          = document.getElementById('textHtml');
 
-//KanjiList.value = '※〒0123456789*()～これまでのと月円年金加入国民合歳特別■';
-loadText('KanjiList.str', 'KanjiList');
-loadText('Teikibin.htm', 'textHtml');
+KanjiList.value = '※〒0123456789*()～これまでのと月円年金加入国民合歳特別■';
+//loadText('KanjiList.str', 'KanjiList');
+loadText('https://afg-inc.github.io/PWA/Nenkin7/Teikibin.htm', 'textHtml');
+//loadText('Teikibin.htm', 'textHtml');
 
 // Random setup
 // for (let i=0; i<FontCount; i++){
@@ -78,29 +80,30 @@ loadText('Teikibin.htm', 'textHtml');
 // }
 
 for (let i=0; i<FontCount; i++){
-    loadData(i+'.dat', i);
+    //loadData(i+'.dat', i);
+    loadData('https://afg-inc.github.io/PWA/Nenkin7/' + i + '.dat', i);
 }
 
 // OCR用↑↑↑ ===========================================================================================
 
 function openCamera() {
-
+    // let sst = '';
     // let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
 
     // for (let constraint in supportedConstraints) {
     //   if (supportedConstraints.hasOwnProperty(constraint)) {
-    //     let elem = document.createElement("li");
-        
-    //     elem.innerHTML = "<code>" + constraint + "</code>";
-    //     constraintList.appendChild(elem);
+    //     sst = sst + constraint + ' \ ';
     //   }
     // }
 
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'auto', focusDistance: 0.01 };
+    // label3.innerText   = sst;
+
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 0.01 };
     let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 20000 };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 20000 };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'none', focusDistance: 20000 };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 0.137 };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 0.137 };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'auto', focusDistance: 0.137 };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'none', focusDistance: 0.137 };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -145,7 +148,9 @@ function snap() {
         OCRWork();
     }
 
-    setTimeout(snap, 50);
+    if (videostop == false){
+        setTimeout(snap, 50);
+    }
 }
 
 function RectF(left, top, right, bottom) {
@@ -694,11 +699,24 @@ function GetClustersFromLettersCollection(LetterRecs,
 }
 
 function OCRWork() {
+    let i, j        = 0;
     let LetterRecrs = new Uint32Array(400); // Letter sqares
     let tmpRect     = new Uint32Array(4);   // OCR area Rect
+    let tsukiarray  = new Array();
+    let gnumbers    = false;
+    let gX, gY      = false;
     let nowtext     = textHtml.value;
+    let xStr, yStr  = '';
+    let numStr      = '';
     let keyword     = '';
-    let aveWidth    = 0.0;
+    //let aveWidth    = 0.0;
+    let outStr      = '';
+    let tmpStr      = '';
+    let nowChar     = '';
+    let poss1       = 0;
+    let poss2       = 0;
+    let number      = 0;
+    let tsukicount  = 0;
     let res;
 
     // let imageData = context2.getImageData(10, 10, 80, 80);
@@ -713,35 +731,247 @@ function OCRWork() {
     // }
     // context2.putImageData(imageData, 10, 10);
 
-    //label2.innerText   = "OKK1";
-    keyok   = false;
-    tmpRect = RectF(0, 0, Math.trunc(BuffW/3.5), Math.trunc(BuffH/12.0));
+    
+    // Sign 1
+    tmpRect = RectF(0, 0, Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.09)); // 0 ~ 1.0 percent
     TakeBWPicture(tmpRect);
-    //keyword = 'これまでの年金加入';
-    keyword = 'これまでの';
-    res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.3, 0.4, keyword );
-    label2.innerText   = res;
+    keyword = 'れまでの年金';
+    //keyword = 'これまでの';
+    res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword );
+    //label2.innerText   = res;
     if (res.indexOf(keyword) >= 0) { 
-        keyok   = true; 
+        keyok  = true; 
         label3.innerText   = '●';
+        outStr = outStr + res;
     } else {
         label3.innerText   = '〇';
+        keyok  = false; 
     }
 
     
+    // Sign 2
+    if (keyok == true){
+        tmpRect = RectF(0, Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.20), Math.trunc(BuffH * 0.43));
+        TakeBWPicture(tmpRect);
+        //keyword:= '老齢年金';
+        keyword = '年金の';
+        res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword);
+        //label2.innerText   = res;
+        if (res.indexOf(keyword) >= 0) { 
+            keyok   = true; 
+            label3.innerText   = '●●';
+            outStr = outStr + res;
+        } else {
+            label3.innerText   = '●〇';
+            keyok   = false; 
+        }
+    }
 
-    // if (keyok == true){
-    //     tmpRect = RectF(0, Math.trunc(BuffH/2.9), Math.trunc(BuffW/4.0), Math.trunc(BuffH/11.0)+Math.trunc(BuffH/2.9));
-    //     TakeBWPicture(tmpRect);
-    //     //keyword:= '老齢年金';
-    //     keyword = '年金の';
-    //     //res := getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.4, 0.4, keyword, LetterRecrs, aveWidth);
-    //     //if pos(keyword, res)<=0 then
-    //     //begin
-    //     //keyok:= False;
-    //     //end;
-    //     //outStr:=outStr + ' ' + res;
-    // }
+    // 月
+    if (keyok   == true){
+        tmpRect  = RectF(0, Math.trunc(BuffH * 0.14), BuffW, Math.trunc(BuffH * 0.36));
+        TakeBWPicture(tmpRect);
+        keyword  = '月';
+        res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 2.5, 0.5, keyword);
+        numStr   = '';
+        xStr     = '';
+        yStr     = '';
+        gnumbers = true;
+        gX       = false;
+        gY       = false;
+        //label2.innerText  = 'OK1'; 
+        for ( i  = 0; i  <= res.length; i++ ){
+            nowChar       = res.charAt(i);
+            if (gX == true) {
+                if (nowChar!=',') { 
+                    xStr = xStr + nowChar
+                }
+            }
+            if (gY == true) {
+                if (nowChar!=']') { 
+                    yStr = yStr + nowChar; 
+                }
+            }
+            if (  nowChar == '[') {
+                gnumbers  = false;
+                gX        = true;
+            }
+            if (  nowChar == ',') {
+                gY        = true;
+                gX        = false;
+            }            
+
+            if (  nowChar == ']') {
+                gnumbers  = false;
+                gY        = false;
+            }
+            if ( gnumbers == true ){
+                number = res.charCodeAt(i);
+                if (number < 100) {
+                    numStr = numStr + nowChar;
+                }
+            }
+
+            if (( nowChar == '|') || (i == res.length)){
+                poss1 = tmpStr.indexOf('[');
+                poss2 = tmpStr.indexOf('月');
+                if ( poss2 == poss1-1 ) {
+
+                    let ara   = new Array();
+                    ara.push(parseInt(xStr));
+                    ara.push(parseInt(yStr));
+                    ara.push(parseInt(numStr));
+                    tsukiarray.push(ara);
+                    tsukicount++;
+                }
+                tmpStr   = '';
+                numStr   = '';
+                xStr     = '';
+                yStr     = '';
+
+                gnumbers = true;
+                gX       = false;
+                gY       = false;
+            } else {
+                tmpStr   = tmpStr + nowChar;
+            }
+        }
+
+        //label2.innerText   = tsukiarray.toString();
+        label2.innerText   = tsukiarray + ' LEN: ' + tsukiarray.length;
+
+        tsukiarray.sort(function (a, b) { return a[0] - b[0] });
+        tsukiarray.sort(function (a, b) { return a[1] - b[1] });
+
+        label3.innerText   = tsukiarray + ' LEN: ' + tsukiarray.length;
+
+        //label3.innerText   = '月: ' + tsukicount;
+        tmpStr = '';
+    } 
+
+
+    if ((keyok == true) && (tsukicount == 11)) {
+        // Output to web page
+        //for ( i = 1; i<= 11; i++) {
+        //    if (i < 10) { prefix = '●0' } else { prefix = '●' }
+        //    nowtext.replace( prefix+IntToStr(i), tsukiarray[i][2]);
+        //}
+        mainimg.hidden = true;
+        label2.innerText  = 'OK WEB'; 
+        document.getElementById("outbody").innerText = 'AAA';
+        videostop = true;
+
+        let vstream = video.srcObject;
+        let tracks  = vstream.getTracks();
+        tracks.forEach(function(track) {
+          track.stop();
+        });
+        video.srcObject = null;
+
+        //video.stop();
+        
+        //document.body.innerHTML = tsukiarray;
+    
+        // SetLength(sss,   11);
+        // SetLength(ichiX, 11);
+        // SetLength(ichiY, 11);
+    
+        // for i := 0 to 10 do
+        //     begin
+        //     poss1:=Pos('月', Memo1.Lines[i]);
+        //     tmpStr:=copy(Memo1.Lines[i],0,poss1-1);
+        //     sss[i]   := tmpStr;
+        //     tmpStr   := copy(Memo1.Lines[i],poss1+2, Length(Memo1.Lines[i])-1);
+        //     Splitted := tmpStr.Split([',']);
+        //     ichiX[i] := StrToInt(Splitted[0]);
+        //     ichiY[i] := StrToInt(Splitted[1]);
+        //     end;
+    
+        // // SORTING
+    
+        // for i := 0 to 3 do
+        //     begin
+        //     for j := 1 to 3 do
+        //     begin
+        //     if ichiX[j]<ichiX[j-1] then
+        //         begin
+        //         k:=ichiX[j];
+        //         ichiX[j]:=ichiX[j-1];
+        //         ichiX[j-1]:=k;
+        //         k:=ichiY[j];
+        //         ichiY[j]:=ichiY[j-1];
+        //         ichiY[j-1]:=k;
+        //         tmpStr:=sss[j];
+        //         sss[j]:=sss[j-1];
+        //         sss[j-1]:=tmpStr;
+        //         end;
+        //     end;
+        //     end;
+        // for i := 4 to 6 do
+        //     begin
+        //     for j := 5 to 6 do
+        //     begin
+        //     if ichiX[j]<ichiX[j-1] then
+        //         begin
+        //         k:=ichiX[j];
+        //         ichiX[j]:=ichiX[j-1];
+        //         ichiX[j-1]:=k;
+        //         k:=ichiY[j];
+        //         ichiY[j]:=ichiY[j-1];
+        //         ichiY[j-1]:=k;
+        //         tmpStr:=sss[j];
+        //         sss[j]:=sss[j-1];
+        //         sss[j-1]:=tmpStr;
+        //         end;
+        //     end;
+        //     end;
+        // for i := 7 to 10 do
+        //     begin
+        //     for j := 8 to 10 do
+        //     begin
+        //     if ichiX[j]<ichiX[j-1] then
+        //         begin
+        //         k:=ichiX[j];
+        //         ichiX[j]:=ichiX[j-1];
+        //         ichiX[j-1]:=k;
+        //         k:=ichiY[j];
+        //         ichiY[j]:=ichiY[j-1];
+        //         ichiY[j-1]:=k;
+        //         tmpStr:=sss[j];
+        //         sss[j]:=sss[j-1];
+        //         sss[j-1]:=tmpStr;
+        //         end;
+        //     end;
+        //     end;
+    
+        // // Output to web page
+        // for i := 1 to 11 do
+        //     begin
+        //     if i<10 then prefix:= '●0' else prefix:= '●';
+        //     nowtext:=StringReplace(nowtext, prefix+IntToStr(i), sss[i-1], [rfReplaceAll]);
+        //     end;
+    
+    
+        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr  + '</body>', [rfReplaceAll]);
+        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr3 + '</body>', [rfReplaceAll]);
+        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr4 + '</body>', [rfReplaceAll]);
+        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr5 + '</body>', [rfReplaceAll]);
+        // nowtext:=StringReplace(nowtext, '</body>', '<br><br>' + outStr6 + '</body>', [rfReplaceAll]);
+    
+        // WebBrowser1.LoadFromStrings(nowtext,'');
+        // ImageTest.Bitmap.assign(ImageCam.Bitmap);
+        // //ImageTest.Bitmap.assign(BitmapBlue);
+        // //ImageTest.Bitmap.assign(BitmapBlack);
+  
+        keyok   = true; 
+        //label3.innerText   = '●●●';
+        outStr = outStr + res;
+    } else {
+        //label3.innerText   = '●●〇';
+        keyok   = false; 
+    }
+
+
 
     working = false;
 }
@@ -789,10 +1019,10 @@ function resiz() {
     BuffW              = ww;
     BuffH              = hh;
 
-    MaxLetterW         = Math.round(ww / 50.0);
+    MaxLetterW         = Math.round(ww / 45.0);
     MaxLetterH         = MaxLetterW;
     MinLetterW         = Math.round(MaxLetterW / 10.0);
-    MinLetterH         = Math.round(hh / 50.0);
+    MinLetterH         = Math.round(hh / 65.0);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
