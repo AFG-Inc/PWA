@@ -61,9 +61,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = true;
+let  isShowBlue        = false;
 let  isShow            = false;
-let  isShowLetterRect  = true;
+let  isShowLetterRect  = false;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
@@ -852,10 +852,10 @@ function OCRWork() {
                 tmpRect  = RectF(Math.trunc(smx * (i+1)), Math.trunc(BuffH * starty[i]), Math.trunc(smx * (i+1) + smy), BuffH);
                 TakeBWPicture(tmpRect);
                 keyword  = '円';
-                res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 4.0, 0.5, keyword);
+                res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 4.2, 0.3, keyword);
                 enarray  = getStrArray(res, keyword);
                 encount  = enarray.length;
-                label3.innerText   = `円: ${i}  c: ${encount}`;
+                //label3.innerText   = `円: ${i}  c: ${encount}`;
                 if (encount == keycount[i]) {
                     // Output to web page
                     let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
@@ -863,29 +863,29 @@ function OCRWork() {
                         prefix  = 'n001';
                         tmpStr  = String(arr[0][2]);
                         nowtext = nowtext.replace( prefix, tmpStr );   
-                        for ( j = 2; j < keycount[i]; j++) {
-                            prefix      = '**' + String(j-1) + '-' + String(i+1);
-                            tmpStr      = String(arr[j-1][2]);
-                            if (tmpStr == 'NaN') {
-                                tmpStr  = '*********';
-                            }
-                            nowtext = nowtext.replace( prefix, tmpStr );
-                        }
-                        prefix  = '**r' + String(i+1);
-                        tmpStr  = String(arr[keycount[i]-1][2]);
-                        nowtext = nowtext.replace( prefix, tmpStr );                        
-                    } else {
-                        for ( j = 1; j < keycount[i]; j++) {
-                            prefix      = '**' + String(j) + '-' + String(i+1);
-                            tmpStr      = String(arr[j-1][2]);
-                            if (tmpStr == 'NaN') {
-                                tmpStr  = '*********';
-                            }
-                            nowtext = nowtext.replace( prefix, tmpStr );
-                        }
-                        prefix  = '**r' + String(i+1);
-                        tmpStr  = String(arr[keycount[i]-1][2]);
-                        nowtext = nowtext.replace( prefix, tmpStr );
+                    //     for ( j = 2; j < keycount[i]; j++) {
+                    //         prefix      = '**' + String(j-1) + '-' + String(i+1);
+                    //         tmpStr      = String(arr[j-1][2]);
+                    //         if (tmpStr == 'NaN') {
+                    //             tmpStr  = '*********';
+                    //         }
+                    //         nowtext = nowtext.replace( prefix, tmpStr );
+                    //     }
+                    //     prefix  = '**r' + String(i+1);
+                    //     tmpStr  = String(arr[keycount[i]-1][2]);
+                    //     nowtext = nowtext.replace( prefix, tmpStr );                        
+                    // } else {
+                    //     for ( j = 1; j < keycount[i]; j++) {
+                    //         prefix      = '**' + String(j) + '-' + String(i+1);
+                    //         tmpStr      = String(arr[j-1][2]);
+                    //         if (tmpStr == 'NaN') {
+                    //             tmpStr  = '*********';
+                    //         }
+                    //         nowtext = nowtext.replace( prefix, tmpStr );
+                    //     }
+                    //     prefix  = '**r' + String(i+1);
+                    //     tmpStr  = String(arr[keycount[i]-1][2]);
+                    //     nowtext = nowtext.replace( prefix, tmpStr );
                     }
                 } else {
                    keyok = false; 
