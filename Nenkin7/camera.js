@@ -3,25 +3,27 @@
 // コード: Alexander Belov
 "use strict";
 
-let video    = document.getElementById('video');
-let mainimg  = document.getElementById('mainimg');
-let canvas   = document.getElementById('canvas');
-let label    = document.getElementById('label');
-let label2   = document.getElementById('label2');
-let label3   = document.getElementById('label3');
-let shaba    = document.getElementById('shaba');
-let timg     = document.getElementById('tst');
-let ww       = 0;
-let hh       = 0;
-let context  = canvas.getContext('2d');
-let context2 = mainimg.getContext('2d');
-let videoasp = 1.6;
-let vasp     = 0;
+let video     = document.getElementById('video');
+let mainimg   = document.getElementById('mainimg');
+let canvas    = document.getElementById('canvas');
+let label     = document.getElementById('label');
+let label2    = document.getElementById('label2');
+let label3    = document.getElementById('label3');
+let shaba     = document.getElementById('shaba');
+let timg      = document.getElementById('tst');
+let ww        = 0;
+let hh        = 0;
+let context   = canvas.getContext('2d');
+let context2  = mainimg.getContext('2d');
+let videoasp  = 1.6;
+let vasp      = 0;
 
-let videostop= false;
-video.hidden = true;
-canvas.hidden = true;
+let videostop = false;
 let w,h,leftPos;
+
+video.hidden  = true;
+canvas.hidden = true;
+shaba.hidden  = true;
 
 // OCR用↓↓↓ ===========================================================================================
 
@@ -56,9 +58,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = false;
+let  isShowBlue        = true;
 let  isShow            = false;
-let  isShowLetterRect  = false;
+let  isShowLetterRect  = true;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
@@ -87,23 +89,10 @@ for (let i=0; i<FontCount; i++){
 // OCR用↑↑↑ ===========================================================================================
 
 function openCamera() {
-    // let sst = '';
-    // let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };
+    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 30 };
 
-    // for (let constraint in supportedConstraints) {
-    //   if (supportedConstraints.hasOwnProperty(constraint)) {
-    //     sst = sst + constraint + ' \ ';
-    //   }
-    // }
-
-    // label3.innerText   = sst;
-
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 0.01 };
-    let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 0.137 };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 0.137 };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'auto', focusDistance: 0.137 };
-    //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'none', focusDistance: 0.137 };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -129,25 +118,10 @@ function openCamera() {
 function snap() {
     context.drawImage(video,0,0,ww,hh,0,0,ww,hh);
     context2.drawImage(canvas,0,0,w,h);
-
-    // let imageData = context.getImageData(0, 0, ww, hh);
-    // let data      = imageData.data;
-    // let sred      = 0;
- 
-    // for (let i = 0; i < data.length; i += 4) {
-    //     sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-    //     data[i]     = sred;
-    //     data[i + 1] = sred;
-    //     data[i + 2] = sred;
-    // }
-    // context.putImageData(imageData, 0, 0);
-
-
     if (working == false){
         working = true;
         OCRWork();
     }
-
     if (videostop == false){
         setTimeout(snap, 50);
     }
@@ -183,14 +157,6 @@ function TakeBWPicture(Area) {
 
     let imageData = context.getImageData(ax, ay, aBuffW, aBuffH);
     let data      = imageData.data;
- 
-    // for (let i = 0; i < data.length; i += 4) {
-    //     sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3.0);
-    //     data[i]     = sred;
-    //     data[i + 1] = sred;
-    //     data[i + 2] = sred;
-    // }
-    // context.putImageData(imageData, 0, 0);    
 
     for (yy = 0; yy < smallHeight; yy++){
         for (xx = 0; xx < smallWidth; xx++){
@@ -241,7 +207,6 @@ function TakeBWPicture(Area) {
                     data[sm+1] = mmsred;
                     data[sm+2] = mmsred;
                 }
-                BuffBlue[smb] = mmsred;
                 if ( mmsred > 140 ) {
                     if (isShowBW == true) { 
                         data[sm]   = 255;
@@ -257,6 +222,10 @@ function TakeBWPicture(Area) {
                     }
                     BuffBlack[smb] = 0;
                 }
+                if ( mmsred > 200 ) {
+                    mmsred = 255;
+                }
+                BuffBlue[smb] = mmsred;
             }
             
         }
@@ -487,8 +456,6 @@ function ManDistance(x1,y1,x2,y2) {
     return manX + manY;
 }
 
-
-
 function KanjiAnalize() {
     let  i;              
     let  j;             
@@ -694,210 +661,275 @@ function GetClustersFromLettersCollection(LetterRecs,
         //    }
         //}
     }
-    //label3.innerText   = sss;
     return OutText;
+}
+
+function getStrArray(str, key) {
+    let numStr = '';
+    let xStr = '';
+    let yStr = '';
+    let gnumbers = true;
+    let gX = false;
+    let gY = false;
+    let tmpStr = '';
+    let nowChar = '';
+    let poss1 = 0;
+    let poss2 = 0;
+    let number = 0;
+    let outarray = new Array();
+
+    for (let i = 0; i <= str.length; i++) {
+        nowChar = str.charAt(i);
+        if (gX == true) {
+            if (nowChar != ',') {
+                xStr = xStr + nowChar;
+            }
+        }
+        if (gY == true) {
+            if (nowChar != ']') {
+                yStr = yStr + nowChar;
+            }
+        }
+        if (nowChar == '[') {
+            gnumbers = false;
+            gX = true;
+        }
+        if (nowChar == ',') {
+            gY = true;
+            gX = false;
+        }
+
+        if (nowChar == ']') {
+            gnumbers = false;
+            gY = false;
+        }
+        if (gnumbers == true) {
+            number = str.charCodeAt(i);
+            if (number < 100) {
+                numStr = numStr + nowChar;
+            }
+        }
+        if ((nowChar == '|') || (i == str.length)) {
+            poss1 = tmpStr.indexOf('[');
+            poss2 = tmpStr.indexOf(key);
+            if (poss2 == poss1 - 1) {
+
+                let ara = new Array();
+                ara.push(parseInt(xStr));
+                ara.push(parseInt(yStr));
+                ara.push(parseInt(numStr));
+                outarray.push(ara);
+            }
+            tmpStr = '';
+            numStr = '';
+            xStr = '';
+            yStr = '';
+            gnumbers = true;
+            gX = false;
+            gY = false;
+        } else {
+            tmpStr = tmpStr + nowChar;
+        }
+    }
+    return outarray;
 }
 
 function OCRWork() {
     let i, j        = 0;
     let tmpRect     = new Uint32Array(4);   // OCR area Rect
     let tsukiarray  = new Array();
-    let gnumbers    = false;
-    let gX, gY      = false;
+    let saiarray    = new Array();
+    let sarray      = new Array();
+    let enarray     = new Array();
     let nowtext     = textHtml.value;
-    let xStr, yStr  = '';
-    let numStr      = '';
     let keyword     = '';
-    let outStr      = '';
     let tmpStr      = '';
-    let nowChar     = '';
     let prefix      = '';
-    let poss1       = 0;
-    let poss2       = 0;
-    let number      = 0;
+    let res         = '';
     let tsukicount  = 0;
-    let res;
-
-    // let imageData = context2.getImageData(10, 10, 80, 80);
-    // let data      = imageData.data;
-    // let sred      = 0;
- 
-    // for (let i = 0; i < data.length; i += 4) {
-    //     sred = Math.round((data[i] + data[i + 1] + data[i + 2]) / 6.0);
-    //     data[i]     = sred;
-    //     data[i + 1] = sred;
-    //     data[i + 2] = sred;
-    // }
-    // context2.putImageData(imageData, 10, 10);
+    let saicount    = 0;
+    let encount     = 0;
 
     
     // Sign 1
     tmpRect = RectF(0, 0, Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.09)); // 0 ~ 1.0 percent
     TakeBWPicture(tmpRect);
-    keyword = 'れまでの年金';
-    //keyword = 'これまでの';
+    keyword = 'これまでの年金';
     res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword );
-    //label2.innerText   = res;
     if (res.indexOf(keyword) >= 0) { 
         keyok  = true; 
-        //label3.innerText   = '●';
-        outStr = outStr + res;
     } else {
-        //label3.innerText   = '〇';
         keyok  = false; 
     }
-
     
     // Sign 2
     if (keyok == true){
         tmpRect = RectF(0, Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.20), Math.trunc(BuffH * 0.43));
         TakeBWPicture(tmpRect);
-        //keyword:= '老齢年金';
         keyword = '年金の';
         res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword);
-        //label2.innerText   = res;
         if (res.indexOf(keyword) >= 0) { 
             keyok   = true; 
-            //label3.innerText   = '●●';
-            outStr = outStr + res;
         } else {
-            //label3.innerText   = '●〇';
             keyok   = false; 
         }
     }
 
     // 月
-    if (keyok   == true){
-        tmpRect  = RectF(0, Math.trunc(BuffH * 0.14), BuffW, Math.trunc(BuffH * 0.36));
+    if (keyok == true){
+        tmpRect    = RectF(0, Math.trunc(BuffH * 0.14), BuffW, Math.trunc(BuffH * 0.36));
         TakeBWPicture(tmpRect);
-        keyword  = '月';
-        res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 2.5, 0.5, keyword);
-        numStr   = '';
-        xStr     = '';
-        yStr     = '';
-        gnumbers = true;
-        gX       = false;
-        gY       = false;
-        //label2.innerText  = 'OK1'; 
-        for ( i  = 0; i  <= res.length; i++ ){
-            nowChar       = res.charAt(i);
-            if (gX == true) {
-                if (nowChar!=',') { 
-                    xStr = xStr + nowChar
-                }
-            }
-            if (gY == true) {
-                if (nowChar!=']') { 
-                    yStr = yStr + nowChar; 
-                }
-            }
-            if (  nowChar == '[') {
-                gnumbers  = false;
-                gX        = true;
-            }
-            if (  nowChar == ',') {
-                gY        = true;
-                gX        = false;
-            }            
+        keyword    = '月';
+        res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 2.5, 0.5, keyword);
+        tsukiarray = getStrArray(res, keyword);
+        tsukicount = tsukiarray.length;
 
-            if (  nowChar == ']') {
-                gnumbers  = false;
-                gY        = false;
+        if (tsukicount == 11) {
+            // Output to web page
+            let arr1 = tsukiarray.slice(0,4).sort(function (a, b) { return a[0] - b[0] });
+            let arr2 = tsukiarray.slice(4,7).sort(function (a, b) { return a[0] - b[0] });
+            let arr3 = tsukiarray.slice(7).sort(function (a, b) { return a[0] - b[0] });
+            for ( i = 1; i<= 4; i++) {
+                prefix = '●0' + i;
+                tmpStr  = String(arr1[i-1][2]);
+                nowtext = nowtext.replace( prefix, tmpStr );
             }
-            if ( gnumbers == true ){
-                number = res.charCodeAt(i);
-                if (number < 100) {
-                    numStr = numStr + nowChar;
+            for ( i = 5; i<= 7; i++) {
+                prefix = '●0' + i;
+                tmpStr  = String(arr2[i-5][2]);
+                nowtext = nowtext.replace( prefix, tmpStr );
+            }
+            for ( i = 8; i<= 11; i++) {
+                if (i < 10) { 
+                    prefix = '●0' + i;
+                } else { 
+                    prefix = '●' + i;
                 }
+                tmpStr  = String(arr3[i-8][2]);
+                nowtext = nowtext.replace( prefix, tmpStr );
             }
-
-            if (( nowChar == '|') || (i == res.length)){
-                poss1 = tmpStr.indexOf('[');
-                poss2 = tmpStr.indexOf('月');
-                if ( poss2 == poss1-1 ) {
-
-                    let ara   = new Array();
-                    ara.push(parseInt(xStr));
-                    ara.push(parseInt(yStr));
-                    ara.push(parseInt(numStr));
-                    tsukiarray.push(ara);
-                    tsukicount++;
-                }
-                tmpStr   = '';
-                numStr   = '';
-                xStr     = '';
-                yStr     = '';
-
-                gnumbers = true;
-                gX       = false;
-                gY       = false;
-            } else {
-                tmpStr   = tmpStr + nowChar;
-            }
+        } else {
+            keyok   = false; 
         }
-
-        //label3.innerText   = '月: ' + tsukicount;
-        tmpStr = '';
     } 
 
-
-    if ((keyok == true) && (tsukicount == 11)) {
-        // Output to web page
-
-        let arr1 = tsukiarray.slice(0,4).sort(function (a, b) { return a[0] - b[0] });
-        let arr2 = tsukiarray.slice(4,7).sort(function (a, b) { return a[0] - b[0] });
-        let arr3 = tsukiarray.slice(7).sort(function (a, b) { return a[0] - b[0] });
-        
-
-        for ( i = 1; i<= 4; i++) {
-            prefix = '●0' + i;
-            tmpStr  = String(arr1[i-1][2]);
-            nowtext = nowtext.replace( prefix, tmpStr );
-        }
-
-        for ( i = 5; i<= 7; i++) {
-            prefix = '●0' + i;
-            tmpStr  = String(arr2[i-5][2]);
-            nowtext = nowtext.replace( prefix, tmpStr );
-        }
-
-        for ( i = 8; i<= 11; i++) {
-            if (i < 10) { 
-                prefix = '●0' + i;
-            } else { 
-                prefix = '●' + i;
+    // 歳
+    if (keyok   == true){
+        tmpRect  = RectF(Math.trunc(BuffW * 0.20), Math.trunc(BuffH * 0.40), BuffW, Math.trunc(BuffH * 0.46));
+        TakeBWPicture(tmpRect);
+        keyword  = '歳';
+        res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 2.5, 0.5, keyword);
+        saiarray = getStrArray(res, keyword);
+        saicount = saiarray.length;
+        if (saicount == 4) {
+            // Output to web page
+            sarray  = saiarray.sort(function (a, b) { return a[0] - b[0] });
+            for ( i  = 1; i<= 4; i++) {
+                prefix      = '**s' + i;
+                tmpStr      = String(sarray[i-1][2]);
+                if (tmpStr == 'NaN') {
+                    tmpStr  = '**';
+                    sarray[i-1][2] = 0;
+                }
+                nowtext = nowtext.replace( prefix, tmpStr );
             }
-            tmpStr  = String(arr3[i-8][2]);
-            nowtext = nowtext.replace( prefix, tmpStr );
+        } else {
+            keyok   = false; 
         }
+    } 
+
+    //円
+    if (keyok   == true){
+        let keycount = new Uint32Array([7,9,9,10]);
+        let starty   = new Float32Array([0.62,0.5,0.5,0.47]);
+        let smx      = BuffW * 0.20;
+        let smy      = BuffW * 0.18;
+        for ( i = 0; i < 4; i++){
+            if (sarray[i][2] > 0) {
+                tmpRect  = RectF(Math.trunc(smx * (i+1)), Math.trunc(BuffH * starty[i]), Math.trunc(smx * (i+1) + smy), BuffH);
+                TakeBWPicture(tmpRect);
+                keyword  = '円';
+                res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 4.0, 0.5, keyword);
+                enarray  = getStrArray(res, keyword);
+                encount  = enarray.length;
+                label3.innerText   = `円: ${i}  c: ${encount}`;
+                if (encount == keycount[i]) {
+                    // Output to web page
+                    let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
+                    if (i == 3){
+                        prefix  = 'n001';
+                        tmpStr  = String(arr[0][2]);
+                        nowtext = nowtext.replace( prefix, tmpStr );   
+                        for ( j = 2; j < keycount[i]; j++) {
+                            prefix      = '**' + String(j-1) + '-' + String(i+1);
+                            tmpStr      = String(arr[j-1][2]);
+                            if (tmpStr == 'NaN') {
+                                tmpStr  = '*********';
+                            }
+                            nowtext = nowtext.replace( prefix, tmpStr );
+                        }
+                        prefix  = '**r' + String(i+1);
+                        tmpStr  = String(arr[keycount[i]-1][2]);
+                        nowtext = nowtext.replace( prefix, tmpStr );                        
+                    } else {
+                        for ( j = 1; j < keycount[i]; j++) {
+                            prefix      = '**' + String(j) + '-' + String(i+1);
+                            tmpStr      = String(arr[j-1][2]);
+                            if (tmpStr == 'NaN') {
+                                tmpStr  = '*********';
+                            }
+                            nowtext = nowtext.replace( prefix, tmpStr );
+                        }
+                        prefix  = '**r' + String(i+1);
+                        tmpStr  = String(arr[keycount[i]-1][2]);
+                        nowtext = nowtext.replace( prefix, tmpStr );
+                    }
+                } else {
+                   keyok = false; 
+                   break;
+                }
+            } else {
+                for ( j = 1; j < keycount[i]; j++) {
+                    prefix      = '**' + String(j) + '-' + String(i+1);
+                    tmpStr  = '*********';
+                    nowtext = nowtext.replace( prefix, tmpStr );
+                    prefix  = '**r' + String(i+1);
+                    nowtext = nowtext.replace( prefix, tmpStr );
+                }
+            }
+        }
+    }     
 
 
-        shaba.hidden = true;
-        mainimg.hidden = true;
-        label2.innerText  = 'OK WEB'; 
+    // Stop camera
+    if (keyok == true){
+        shaba.hidden     = true;
+        mainimg.hidden   = true;
+        //label2.innerText = 'OK WEB'; 
         document.getElementById("outbody").innerHTML = nowtext;
-        videostop = true;
+        videostop        = true;
 
-        let vstream = video.srcObject;
-        let tracks  = vstream.getTracks();
+        let vstream      = video.srcObject;
+        let tracks       = vstream.getTracks();
         tracks.forEach(function(track) {
-          track.stop();
+        track.stop();
         });
-        video.srcObject = null;
+        video.srcObject  = null;
+        document.body.style.backgroundColor = 'white';
 
-    
-  
-        keyok   = true; 
-        //label3.innerText   = '●●●';
-        outStr = outStr + res;
-    } else {
-        //label3.innerText   = '●●〇';
-        keyok   = false; 
+        if (isShowBlue==true) {
+            let elem = document.createElement("img");
+            elem.setAttribute("src", canvas.toDataURL());
+            document.getElementById("outbody").appendChild(elem);
+        }
     }
 
-
-
     working = false;
+}
+
+function dataclick(elementid){
+    let text = document.getElementById(elementid).innerText;
+    alert(text);
 }
 
 function resiz() {
@@ -913,24 +945,23 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    //label.innerText    = w + " XYZ " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh + "  VASP:" + vasp;
+    shaba.hidden       = false;
 
-    //let tmpStr = '';
-    //for (let i=0; i<TestSquareSmall; i++){
-    //    tmpStr = tmpStr + KanjiSmall[KanjiSmallLen * 0 + i] + ',';
-    //}
     let tmpStr2 = '';
     for (let i=0; i<TestSquareSmall; i++){
         tmpStr2 = tmpStr2 + KanjiSmall[KanjiSmallLen * 1 + i] + ',';
     }
 
+    label.hidden       = true;
     //label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
     //label2.style.top   = Math.round(h/2.0) + "px";  
     label2.style.top   = Math.round(h - 60) + "px";  
+    label2.hidden      = true;
     //label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
     label3.style.top   = Math.round(h - 40) + "px";  
+    label2.hidden      = true;
     mainimg.width      = w;
     mainimg.height     = h;
     mainimg.style.left = leftPos + "px";  
