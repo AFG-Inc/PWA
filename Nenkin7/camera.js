@@ -24,6 +24,9 @@ let w,h,leftPos;
 video.hidden  = true;
 canvas.hidden = true;
 shaba.hidden  = true;
+label.hidden  = true;
+label2.hidden = true;
+label3.hidden = true;
 
 // OCR用↓↓↓ ===========================================================================================
 
