@@ -103,15 +103,15 @@ function setPaper() {
     }
     if (paperNum == 1) {
         loadText('https://afg-inc.github.io/PWA/Nenkin8/Teikibin1.htm', 'text');
-        paper.value = "年金定期便 用紙 1";
+        paper.value = "用紙 1";
         shaba.src = "shablon1.png";
     } else if (paperNum == 2) {
         loadText('https://afg-inc.github.io/PWA/Nenkin8/Teikibin2.htm', 'text');
-        paper.value = "年金定期便 用紙 2";
+        paper.value = "用紙 2";
         shaba.src = "shablon2.png";
     } else {
         loadText('https://afg-inc.github.io/PWA/Nenkin8/Teikibin3.htm', 'text');
-        paper.value = "年金定期便 用紙 3";
+        paper.value = "用紙 3";
         shaba.src = "shablon3.png";
     }
 }
@@ -1016,7 +1016,7 @@ function OCRWork() {
                 let arr3 = tsukiarray.slice(7).sort(function (a, b) { return a[0] - b[0] });
 
 
-                txtstart    = 55;
+                txtstart    = 54;
                 txtend      = 64;
                 for ( i = 1; i<= 4; i++) {
                     prefix  = '●0' + i;
@@ -1027,7 +1027,7 @@ function OCRWork() {
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
                 }
 
-                txtstart    = 72;
+                txtstart    = 71;
                 txtend      = 78;
                 for ( i = 5; i<= 7; i++) {
                     prefix  = '●0' + i;
@@ -1039,7 +1039,7 @@ function OCRWork() {
                 }
 
 
-                txtstart    = 99;
+                txtstart    = 98;
                 txtend      = 108;
                 for ( i = 8; i<= 11; i++) {
                     if (i < 10) { 
@@ -1092,9 +1092,6 @@ function OCRWork() {
 
     // Stop camera
     if (keyok == true){
-        shaba.hidden     = true;
-        mainimg.hidden   = true;
-        //label2.innerText = 'OK WEB'; 
         document.getElementById("outbody").innerHTML = nowtext.join('\n');
         videostop        = true;
 
@@ -1111,6 +1108,8 @@ function OCRWork() {
             elem.setAttribute("src", canvas.toDataURL());
             document.getElementById("outbody").appendChild(elem);
         }
+        shaba.hidden     = true;
+        mainimg.hidden   = true;        
     }
 
     working = false;
