@@ -1133,7 +1133,9 @@ function resiz() {
     }
     shaba.width        = w;
     shaba.height       = h;
-    shaba.hidden       = false;
+    if (videostop == false){
+        shaba.hidden   = false;
+    }
 
     let tmpStr2 = '';
     for (let i=0; i<TestSquareSmall; i++){
