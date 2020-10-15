@@ -778,7 +778,7 @@ function OCRWork() {
     let saiarray    = new Array();
     let sarray      = new Array();
     let enarray     = new Array();
-    let nowtext     = textHtml.value.split();
+    let nowtext     = textHtml.value.split("\u0013");
     let keyword     = '';
     let tmpStr      = '';
     let prefix      = '';
@@ -790,7 +790,10 @@ function OCRWork() {
     let txtstep     = 0;
     let txtsm       = 0;
     
-    label3.innerText = 'OK1 LEN: ' + tsukiarray.length; 
+    for (i=0; i<50; i++){
+        tmpStr = tmpStr + ' ' + nowtext[0].charCodeAt(i);
+    }
+    label3.innerText = 'OKwww : ' + tmpStr; 
 
     // Sign 1
     tmpRect = RectF(0, 0, Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.09)); // 0 ~ 1.0 percent
