@@ -30,7 +30,7 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-//canvas.hidden = true;
+canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
@@ -70,9 +70,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = true;
+let  isShowBlue        = false;
 let  isShow            = false;
-let  isShowLetterRect  = true;
+let  isShowLetterRect  = false;
 let  autofocus         = false;
   // TST
 let  testNum           = 0;
