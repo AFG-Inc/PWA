@@ -18,7 +18,11 @@ let hh        = 0;
 let context   = canvas.getContext('2d');
 let context2  = mainimg.getContext('2d');
 let videoasp  = 1.6;
+//let videoasp  = 2.9;
 let vasp      = 0;
+let camx      = 0;
+let camy      = 0;
+let camzoom   = 0.75;
 
 let ttt       = '';
 
@@ -26,7 +30,7 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-canvas.hidden = true;
+//canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
@@ -66,9 +70,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = false;
+let  isShowBlue        = true;
 let  isShow            = false;
-let  isShowLetterRect  = false;
+let  isShowLetterRect  = true;
 let  autofocus         = false;
   // TST
 let  testNum           = 0;
@@ -119,10 +123,10 @@ function setPaper() {
 function openCamera() {
     let constraints; 
     if (autofocus == false) {
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 30 };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 19.5 };
     } else {
-        //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 19.5 };
+        //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     }
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };
@@ -132,11 +136,11 @@ function openCamera() {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
                 video.play();
-                hh   = video.videoHeight;
-                ww   = video.videoWidth;
+                hh   = video.videoHeight * camzoom;
+                ww   = video.videoWidth  * camzoom;
                 vasp = ww / hh;
                 if (vasp < videoasp){
-                    hh = Math.round(ww/videoasp);
+                    hh = Math.round(ww / videoasp);
                 } else {
                     ww = Math.round(hh * videoasp);
                 }          
@@ -150,7 +154,8 @@ function openCamera() {
 }
 
 function snap() {
-    context.drawImage(video,0,0,ww,hh,0,0,ww,hh);
+    context.drawImage(video,camx,camy,ww,hh,0,0,ww,hh);
+    //context.drawImage(video,camx,camy,ww,hh);
     context2.drawImage(canvas,0,0,w,h);
     if (working == false){
         working = true;
@@ -823,7 +828,7 @@ function OCRWork() {
 
         // 月
         if (keyok == true){
-            tmpRect    = RectF(0, Math.trunc(BuffH * 0.14), BuffW, Math.trunc(BuffH * 0.36));
+            tmpRect    = RectF(0, Math.trunc(BuffH * 0.14), BuffW, Math.trunc(BuffH * 0.40));
             TakeBWPicture(tmpRect);
             keyword    = '月';
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 2.5, 0.5, keyword);
@@ -1160,6 +1165,9 @@ function resiz() {
     canvas.height      = hh;
     canvas.style.left  = 0 + "px";  
     canvas.style.top   = h + "px";  
+
+    camx = Math.round((video.videoWidth  - video.videoWidth  * camzoom) / 2.0);
+    camy = Math.round((video.videoHeight - video.videoHeight * camzoom) / 2.0);
 
     BuffW              = ww;
     BuffH              = hh;
