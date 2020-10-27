@@ -32,7 +32,7 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-//canvas.hidden = true;
+canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
@@ -72,10 +72,10 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = true;
+let  isShowBlue        = false;
 let  isShow            = false;
-let  isShowLetterRect  = true;
-let  autofocus         = true;
+let  isShowLetterRect  = false;
+let  autofocus         = false;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
@@ -125,9 +125,9 @@ function setPaper() {
 function openCamera() {
     let constraints; 
     if (autofocus == false) {
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 19.5 };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160, focusMode: 'manual', focusDistance: 19.5 } };
     } else {
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 19.5 };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160, focusMode: 'continuous', focusDistance: 19.5 } };
         //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     }
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
