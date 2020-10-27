@@ -119,10 +119,10 @@ function setPaper() {
 function openCamera() {
     let constraints; 
     if (autofocus == false) {
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'manual', focusDistance: 30 };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160, focusMode: 'manual', focusDistance: 19.5 } };
     } else {
-        //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };
-        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+        constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160, focusMode: 'continuous', focusDistance: 19.5 } };
+        //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     }
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };

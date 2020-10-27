@@ -23,6 +23,8 @@ let vasp      = 0;
 let camx      = 0;
 let camy      = 0;
 let camzoom   = 0.75;
+//let camzoom   = 1.0;
+let nzoom     = 400.0;
 
 let ttt       = '';
 
@@ -30,11 +32,11 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-canvas.hidden = true;
+//canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = true;
+label3.hidden = false;
 
 // OCR用↓↓↓ ===========================================================================================
 
@@ -70,10 +72,10 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = false;
+let  isShowBlue        = true;
 let  isShow            = false;
-let  isShowLetterRect  = false;
-let  autofocus         = false;
+let  isShowLetterRect  = true;
+let  autofocus         = true;
   // TST
 let  testNum           = 0;
 let  keyok             = false;
@@ -135,6 +137,24 @@ function openCamera() {
         .then(function(stream) {
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
+
+                //const track = stream.getVideoTracks()[0];
+                //const capabilities = track.getCapabilities();
+                //const settings = track.getSettings();
+            
+                //const input = document.querySelector('input[type="range"]');
+            
+                // Check whether zoom is supported or not.
+                //if (!('zoom' in capabilities)) {
+                //    label3.innerText   = 'Z:' + settings.zoom;
+                //} else {
+                //    label3.innerText   = 'ZOOM xxx';
+                //}
+
+                //track.applyConstraints({
+                //    advanced: [{ pan: 0, tilt: 0, zoom: 2 }],
+                //});
+
                 video.play();
                 hh   = video.videoHeight * camzoom;
                 ww   = video.videoWidth  * camzoom;
@@ -985,7 +1005,7 @@ function OCRWork() {
         tmpRect = RectF(0, 0, Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.09)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
         keyword = 'これまで';
-        res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword );
+        res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.5, keyword );
         if (res.indexOf(keyword) >= 0) { 
             keyok  = true; 
         } else {
@@ -1007,10 +1027,10 @@ function OCRWork() {
 
         // 月
         if (keyok == true){
-            tmpRect    = RectF(0, Math.trunc(BuffH * 0.18), BuffW, Math.trunc(BuffH * 0.40));
+            tmpRect    = RectF(0, Math.trunc(BuffH * 0.17), BuffW, Math.trunc(BuffH * 0.42));
             TakeBWPicture(tmpRect);
             keyword    = '月';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.6, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             tsukiarray = getStrArray(res, keyword);
             tsukicount = tsukiarray.length;
 
@@ -1065,32 +1085,32 @@ function OCRWork() {
         }         
 
         // 円
-        // if (keyok   == true){
-        //     let ekeycount = new Uint32Array([5]);
-        //     tmpRect  = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.5), Math.trunc(BuffW * 0.68), BuffH);
-        //     TakeBWPicture(tmpRect);
-        //     keyword  = '円';
-        //     res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 4.2, 0.3, keyword);
-        //     enarray  = getStrArray(res, keyword);
-        //     encount  = enarray.length;
-        //     //label3.innerText   = `円: ${i}  c: ${encount}`;
-        //     if (encount == ekeycount[0]) {
-        //         // Output to web page
-        //         let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-        //         txtstart    = 137;
-        //         txtend      = 183;
-        //         for ( j = 1; j <= encount; j++) {
-        //             prefix      = '**' + String(j);
-        //             tmpStr      = String(arr[j-1][2]);
-        //             if (tmpStr == 'NaN') {
-        //                 tmpStr  = '*********';
-        //             }
-        //             textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-        //         }
-        //     } else {
-        //         keyok = false; 
-        //     }
-        // }   
+        if (keyok   == true){
+            let ekeycount = new Uint32Array([5]);
+            tmpRect  = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.5), Math.trunc(BuffW * 0.68), BuffH);
+            TakeBWPicture(tmpRect);
+            keyword  = '円';
+            res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 12.5, 0.5, keyword);
+            enarray  = getStrArray(res, keyword);
+            encount  = enarray.length;
+            //label3.innerText   = `円: ${i}  c: ${encount}`;
+            if (encount == ekeycount[0]) {
+                // Output to web page
+                let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
+                txtstart    = 137;
+                txtend      = 183;
+                for ( j = 1; j <= encount; j++) {
+                    prefix      = '**' + String(j);
+                    tmpStr      = arr[j-1][2].toLocaleString();
+                    if (tmpStr == 'NaN') {
+                        tmpStr  = '*********';
+                    }
+                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                }
+            } else {
+                keyok = false; 
+            }
+        }   
     } else {
 
     }
@@ -1155,7 +1175,7 @@ function resiz() {
     label2.hidden      = true;
     //label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
-    label3.style.top   = Math.round(h - 40) + "px";  
+    label3.style.top   = Math.round(h + 40) + "px";  
     label2.hidden      = true;
     mainimg.width      = w;
     mainimg.height     = h;
