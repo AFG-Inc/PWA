@@ -960,6 +960,9 @@ function OCRWork() {
     if ((keyok   == true) && (tableNum == 2)){
         textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
         textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
+
+        //label3.innerText = nowtext[0];
+
         document.getElementById("outbody").innerHTML = nowtext.join('\n');
         videostop        = true;
 
