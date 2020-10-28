@@ -103,6 +103,11 @@ for (let i=0; i<FontCount; i++){
 
 function reload() {
     location.reload();
+    //document.getElementById("outbody").innerHTML = '';
+    //openCamera();
+    //shaba.hidden     = false;
+    //mainimg.hidden   = false;
+    //videostop        = false;
 }
 
 function setFocus() {
