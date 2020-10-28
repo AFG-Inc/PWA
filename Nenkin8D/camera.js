@@ -37,7 +37,7 @@ canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = false;
+label3.hidden = true;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
