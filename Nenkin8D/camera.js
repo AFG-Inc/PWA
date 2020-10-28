@@ -37,7 +37,7 @@ canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = true;
+label3.hidden = false;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
@@ -143,7 +143,8 @@ function openCamera() {
 
     //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160, focusMode: 'continuous', focusDistance: 19.5 } };
 
-    constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+    //constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
+    constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 } };
     //}
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous' };
     //let constraints = { audio: false, video: { facingMode: 'environment', width: 3840, height: 2160 }, focusMode: 'continuous', focusDistance: 30 };
