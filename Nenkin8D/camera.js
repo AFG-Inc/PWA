@@ -11,8 +11,8 @@ let label2    = document.getElementById('label2');
 let label3    = document.getElementById('label3');
 let shaba     = document.getElementById('shaba');
 let timg      = document.getElementById('tst');
-let focus     = document.getElementById('focus');
-let paper     = document.getElementById('paper');
+//let focus     = document.getElementById('focus');
+//let paper     = document.getElementById('paper');
 let ww        = 0;
 let hh        = 0;
 let context   = canvas.getContext('2d');
@@ -37,9 +37,9 @@ canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = false;
-focus.hidden  = false;
-paper.hidden  = false;
+label3.hidden = true;
+//focus.hidden  = false;
+//paper.hidden  = false;
 
 // OCR用↓↓↓ ===========================================================================================
 
@@ -91,7 +91,7 @@ let  Kanji             = '';
 
 KanjiList = '※〒0123456789*()～これまでのと月円年金加入国民合歳特別■';
 //loadText('https://afg-inc.github.io/PWA/Nenkin8/KanjiList.str', 'Kanji');
-loadText('https://afg-inc.github.io/PWA/Nenkin8/Teikibin2.htm', 'text');
+loadText('https://afg-inc.github.io/PWA/Nenkin8D/Teikibin2.htm', 'text');
 //loadText('Teikibin2.htm', 'text');
 
 for (let i=0; i<FontCount; i++){
@@ -101,9 +101,13 @@ for (let i=0; i<FontCount; i++){
 
 // OCR用↑↑↑ ===========================================================================================
 
+function reload() {
+    location.reload();
+}
+
 function setFocus() {
-    autofocus = focus.checked;
-    openCamera();
+    //autofocus = focus.checked;
+    //openCamera();
 }
 
 function setPaper() {
@@ -954,6 +958,8 @@ function OCRWork() {
 
     // Stop camera
     if ((keyok   == true) && (tableNum == 2)){
+        textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
+        textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
         document.getElementById("outbody").innerHTML = nowtext.join('\n');
         videostop        = true;
 
