@@ -936,7 +936,7 @@ function OCRWork() {
         // 円
         if ((keyok   == true) && (tableNum == 2)){
             let ekeycount = new Uint32Array([5]);
-            tmpRect  = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.5), Math.trunc(BuffW * 0.70), BuffH);
+            tmpRect  = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.5), Math.trunc(BuffW * 0.69), BuffH);
             TakeBWPicture(tmpRect);
             keyword  = '円';
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 12.5, 0.5, keyword);
