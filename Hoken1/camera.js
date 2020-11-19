@@ -33,7 +33,7 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-canvas.hidden = true;
+canvas.hidden = false;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
@@ -76,9 +76,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = false;
+let  isShowBlue        = true;
 let  isShow            = false;
-let  isShowLetterRect  = false;
+let  isShowLetterRect  = true;
 let  autofocus         = false;
   // TST
 let  testNum           = 0;
@@ -844,7 +844,7 @@ function OCRWork() {
         // Sign 1
         tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
-        keyword = '生命保険証券';
+        keyword = '保険証券';
         res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.5, keyword );
         if (res.indexOf(keyword) >= 0) { 
             keyok  = true; 
@@ -865,7 +865,7 @@ function OCRWork() {
         //     }
         // }
 
-        // 月
+        // 号
         if ((keyok == true) && (tableNum == 1)) {
             tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
@@ -874,29 +874,49 @@ function OCRWork() {
             tsukiarray = getStrArray(res, keyword);
             tsukicount = tsukiarray.length;
 
+
             if (tsukicount == 1) {
-
-                txtstart    = 3;
-                txtend      = 5;
-                prefix  = '●';
-                textreplace(nowtext, txtstart, txtend, prefix, tsukiarray[0]);
-                shaba.src = "shablonT2.png";
-                tableNum = 2;
-
+                tmpStr      = tsukiarray[0][2];
+                if (tmpStr == 'NaN') {
+                    keyok   = false; 
+                } else {
+                    txtstart    = 2;
+                    txtend      = 5;
+                    prefix  = '●';
+                    label3.innerText   = 'WWW1 ' + text;
+                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                    label3.innerText   = 'WWW2';
+                    shaba.src = "shablonT2.png";
+                    tableNum = 2;
+                }
             } else {
                 keyok   = false; 
             }
         }         
 
+        //label3.innerText   = 'WWW3';
         // 円1
         if ((keyok   == true) && (tableNum == 2)){
+
+            label3.innerText   = 'AA1';
             let ekeycount = new Uint32Array([3]);
+
+            label3.innerText   = 'AA2';
             tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.30), BuffW, Math.trunc(BuffH * 0.41));
+            label3.innerText   = 'AA3';
             TakeBWPicture(tmpRect);
             keyword  = '円';
+
+            label3.innerText   = 'A1';
+
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            label3.innerText   = 'A2';
             enarray  = getStrArray(res, keyword);
+            label3.innerText   = 'A3';
             encount  = enarray.length;
+
+            label3.innerText   = 'A4';
+
             label3.innerText   = `円1: ${i}  c: ${encount}`;
             if (encount == ekeycount[0]) {
                 // Output to web page
@@ -1011,11 +1031,11 @@ function resiz() {
     //label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
     //label2.style.top   = Math.round(h/2.0) + "px";  
-    label2.style.top   = Math.round(h - 60) + "px";  
+    label2.style.top   = Math.round(h - 70) + "px";  
     label2.hidden      = true;
     //label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
-    label3.style.top   = Math.round(h + 40) + "px";  
+    label3.style.top   = Math.round(h - 40) + "px";  
     label2.hidden      = true;
     mainimg.width      = w;
     mainimg.height     = h;
@@ -1026,7 +1046,7 @@ function resiz() {
     canvas.style.left  = 0 + "px";  
     canvas.style.top   = h + "px";  
 
-    label3.innerText   = 'w:'+w+' h:'+h+' ww:'+ww+' hh:'+hh;
+    //label3.innerText   = 'w:'+w+' h:'+h+' ww:'+ww+' hh:'+hh;
 
     //camx = Math.round((video.videoWidth  - video.videoWidth  * camzoom) / 2.0);
     //camy = Math.round((video.videoHeight - video.videoHeight * camzoom) / 2.0);
@@ -1034,10 +1054,10 @@ function resiz() {
     BuffW              = ww;
     BuffH              = hh;
 
-    MaxLetterW         = Math.round(ww / 45.0);
+    MaxLetterW         = Math.round(ww / 20.0);
     MaxLetterH         = MaxLetterW;
     MinLetterW         = 1.0; // Math.round(ww / 18.0);
-    MinLetterH         = Math.round(hh / 65.0);
+    MinLetterH         = Math.round(hh / 100.0);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
