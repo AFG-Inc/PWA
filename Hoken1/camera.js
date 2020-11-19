@@ -90,13 +90,13 @@ let  text              = '';
 let  Kanji             = '';
 
 KanjiList = '※〒0123456789生命保険証券医療カン死亡円年月号金民合歳特別■';
-//loadText('https://afg-inc.github.io/PWA/Nenkin8/KanjiList.str', 'Kanji');
-loadText('https://afg-inc.github.io/PWA/Nenkin8D/Teikibin2.htm', 'text');
+//loadText('https://afg-inc.github.io/PWA/Hoken1/KanjiList.str', 'Kanji');
+loadText('https://afg-inc.github.io/PWA/Hoken1/Hoken1.htm', 'text');
 //loadText('Teikibin2.htm', 'text');
 
 for (let i=0; i<FontCount; i++){
     //loadData(i+'.dat', i);
-    loadData('https://afg-inc.github.io/PWA/Nenkin8D/' + i + '.dat', i);
+    loadData('https://afg-inc.github.io/PWA/Hoken1/' + i + '.dat', i);
 }
 
 // OCR用↑↑↑ ===========================================================================================
@@ -121,15 +121,15 @@ function setPaper() {
     //     paperNum = 1;
     // }
     // if (paperNum == 1) {
-    //     loadText('https://afg-inc.github.io/PWA/Nenkin8D/Teikibin1.htm', 'text');
+    //     loadText('https://afg-inc.github.io/PWA/Hoken1/Teikibin1.htm', 'text');
     //     paper.value = "用紙 1";
     //     shaba.src = "shablon1.png";
     // } else if (paperNum == 2) {
-    //     loadText('https://afg-inc.github.io/PWA/Nenkin8D/Teikibin2.htm', 'text');
+    //     loadText('https://afg-inc.github.io/PWA/Hoken1/Teikibin2.htm', 'text');
     //     paper.value = "用紙 2";
     //     shaba.src = "shablon2.png";
     // } else {
-    //     loadText('https://afg-inc.github.io/PWA/Nenkin8D/Teikibin3.htm', 'text');
+    //     loadText('https://afg-inc.github.io/PWA/Hoken1/Teikibin3.htm', 'text');
     //     paper.value = "用紙 3";
     //     shaba.src = "shablon3.png";
     // }
@@ -842,9 +842,9 @@ function OCRWork() {
   
     } else if (paperNum == 2) { // 用紙２対応 ========================================================================
         // Sign 1
-        tmpRect = RectF(0, 0, Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.09)); // 0 ~ 1.0 percent
+        tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
-        keyword = 'これまで';
+        keyword = '生命保険証券';
         res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.5, keyword );
         if (res.indexOf(keyword) >= 0) { 
             keyok  = true; 
@@ -867,59 +867,20 @@ function OCRWork() {
 
         // 月
         if ((keyok == true) && (tableNum == 1)) {
-            tmpRect    = RectF(0, Math.trunc(BuffH * 0.17), BuffW, Math.trunc(BuffH * 0.42));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
-            keyword    = '月';
+            keyword    = '号';
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             tsukiarray = getStrArray(res, keyword);
             tsukicount = tsukiarray.length;
 
-            if (tsukicount == 11) {
-                // Output to web page
-                let arr1 = tsukiarray.slice(0,4).sort(function (a, b) { return a[0] - b[0] });
-                let arr2 = tsukiarray.slice(4,7).sort(function (a, b) { return a[0] - b[0] });
-                let arr3 = tsukiarray.slice(7).sort(function (a, b) { return a[0] - b[0] });
+            if (tsukicount == 1) {
 
-
-                txtstart    = 54;
-                txtend      = 64;
-                for ( i = 1; i<= 4; i++) {
-                    prefix  = '●0' + i;
-                    tmpStr  = String(arr1[i-1][2]);
-                    if (tmpStr == 'NaN') {
-                        tmpStr  = '0';
-                    }
-                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-                }
-
-                txtstart    = 71;
-                txtend      = 78;
-                for ( i = 5; i<= 7; i++) {
-                    prefix  = '●0' + i;
-                    tmpStr  = String(arr2[i-5][2]);
-                    if (tmpStr == 'NaN') {
-                        tmpStr  = '0';
-                    }
-                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-                }
-
-
-                txtstart    = 98;
-                txtend      = 108;
-                for ( i = 8; i<= 11; i++) {
-                    if (i < 10) { 
-                        prefix = '●0' + i;
-                    } else { 
-                        prefix = '●' + i;
-                    }
-                    tmpStr  = String(arr3[i-8][2]);
-                    if (tmpStr == 'NaN') {
-                        tmpStr  = '0';
-                    }
-                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-                }
-
-                shaba.src = "shablon22.png";
+                txtstart    = 3;
+                txtend      = 5;
+                prefix  = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tsukiarray[0]);
+                shaba.src = "shablonT2.png";
                 tableNum = 2;
 
             } else {
@@ -927,23 +888,54 @@ function OCRWork() {
             }
         }         
 
-        // 円
+        // 円1
         if ((keyok   == true) && (tableNum == 2)){
-            let ekeycount = new Uint32Array([5]);
-            tmpRect  = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.5), Math.trunc(BuffW * 0.68), BuffH);
+            let ekeycount = new Uint32Array([3]);
+            tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.30), BuffW, Math.trunc(BuffH * 0.41));
             TakeBWPicture(tmpRect);
             keyword  = '円';
-            res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 12.5, 0.5, keyword);
+            res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             enarray  = getStrArray(res, keyword);
             encount  = enarray.length;
-            //label3.innerText   = `円: ${i}  c: ${encount}`;
+            label3.innerText   = `円1: ${i}  c: ${encount}`;
             if (encount == ekeycount[0]) {
                 // Output to web page
                 let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-                txtstart    = 137;
-                txtend      = 183;
+                txtstart    = 6;
+                txtend      = 10;
                 for ( j = 1; j <= encount; j++) {
-                    prefix      = '**' + String(j);
+                    prefix      = '■' + String(j);
+                    tmpStr      = arr[j-1][2].toLocaleString();
+                    if (tmpStr == 'NaN') {
+                        tmpStr  = '*********';
+                    }
+                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                }
+                shaba.src = "shablonT3.png";
+                tableNum = 3;
+            } else {
+                keyok = false; 
+            }
+        }   
+
+
+        // 円2
+        if ((keyok   == true) && (tableNum == 3)){
+            let ekeycount = new Uint32Array([4]);
+            tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.53), Math.trunc(BuffW * 0.61), Math.trunc(BuffH * 0.71));
+            TakeBWPicture(tmpRect);
+            keyword  = '円';
+            res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            enarray  = getStrArray(res, keyword);
+            encount  = enarray.length;
+            label3.innerText   = `円2: ${i}  c: ${encount}`;
+            if (encount == ekeycount[0]) {
+                // Output to web page
+                let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
+                txtstart    = 6;
+                txtend      = 10;
+                for ( j = 1; j <= encount; j++) {
+                    prefix      = '▲' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
                     if (tmpStr == 'NaN') {
                         tmpStr  = '*********';
@@ -959,7 +951,7 @@ function OCRWork() {
     }
 
     // Stop camera
-    if ((keyok   == true) && (tableNum == 2)){
+    if ((keyok   == true) && (tableNum == 3)){
         textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
         textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
 
