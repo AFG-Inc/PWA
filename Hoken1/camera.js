@@ -92,7 +92,7 @@ let  Kanji             = '';
 KanjiList = '※〒0123456789生命保険証券医療カン死亡円年月号金民合歳特別■';
 //loadText('https://afg-inc.github.io/PWA/Hoken1/KanjiList.str', 'Kanji');
 loadText('https://afg-inc.github.io/PWA/Hoken1/Hoken1.htm', 'text');
-//loadText('Teikibin2.htm', 'text');
+//loadText('Hoken1.htm', 'text');
 
 for (let i=0; i<FontCount; i++){
     //loadData(i+'.dat', i);
@@ -902,7 +902,7 @@ function OCRWork() {
             let ekeycount = new Uint32Array([3]);
 
             label3.innerText   = 'AA2';
-            tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.30), BuffW, Math.trunc(BuffH * 0.41));
+            tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.31), BuffW, Math.trunc(BuffH * 0.41));
             label3.innerText   = 'AA3';
             TakeBWPicture(tmpRect);
             keyword  = '円';
@@ -942,7 +942,7 @@ function OCRWork() {
         // 円2
         if ((keyok   == true) && (tableNum == 3)){
             let ekeycount = new Uint32Array([4]);
-            tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.53), Math.trunc(BuffW * 0.61), Math.trunc(BuffH * 0.71));
+            tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.54), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.71));
             TakeBWPicture(tmpRect);
             keyword  = '円';
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
@@ -955,13 +955,14 @@ function OCRWork() {
                 txtstart    = 6;
                 txtend      = 10;
                 for ( j = 1; j <= encount; j++) {
-                    prefix      = '▲' + String(j);
+                    prefix      = 'X' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
                     if (tmpStr == 'NaN') {
                         tmpStr  = '*********';
                     }
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
                 }
+                tableNum = 4;
             } else {
                 keyok = false; 
             }
@@ -971,7 +972,7 @@ function OCRWork() {
     }
 
     // Stop camera
-    if ((keyok   == true) && (tableNum == 3)){
+    if ((keyok   == true) && (tableNum == 4)){
         textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
         textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
 
