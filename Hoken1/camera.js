@@ -477,11 +477,16 @@ function getBoxesFromBufferArea(buff,
         context.strokeStyle = "rgb(0,128,0)";
     }
     for ( y = 1; y < Math.trunc( (area[3]-area[1]) / MinLetterH ); y++ ) {
-        for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinLetterW); x++ ) {
-            StartX  = x * MinLetterW - 4 + Math.trunc(area[0]);
+        //for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinLetterW); x++ ) {
+        for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinLetterH); x++ ) {
+            //StartX  = x * MinLetterW - 4 + Math.trunc(area[0]);
+            StartX  = x * MinLetterH - 4 + Math.trunc(area[0]);
             StartY  = y * MinLetterH - 4 + Math.trunc(area[1]);
-            NowRect = GetKanjiRect( buff, StartX, StartY, MinLetterW, MinLetterH, width, height,
-            MinLetterW, MinLetterH, MaxLetterW, MaxLetterH);
+            //NowRect = GetKanjiRect( buff, StartX, StartY, MinLetterW, MinLetterH, width, height,
+            //MinLetterW, MinLetterH, MaxLetterW, MaxLetterH);
+            NowRect = GetKanjiRect( buff, StartX, StartY, MinLetterH, MinLetterH, width, height,
+            MinLetterH, MinLetterH, MaxLetterW, MaxLetterH);
+                
             if (NowRect[0] < 100000) { // No error
                 addRect = true;
                 wr = NowRect[2] - NowRect[0];
