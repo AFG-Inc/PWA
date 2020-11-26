@@ -44,7 +44,7 @@ label3.hidden = true;
 // OCR用↓↓↓ ===========================================================================================
 
 const TestSquareSmall  = 20;
-const KanjiCount       = 35;
+const KanjiCount       = 3127;
 const KanjiNumsLen     = 4;
 const FontCount        = 1;
 const MaxError         = 22000;
@@ -89,8 +89,8 @@ let  KanjiList         = '';
 let  text              = '';
 let  Kanji             = '';
 
-KanjiList = '※〒0123456789生命保険証券医療カン死亡円年月号金民合歳特別■';
-//loadText('https://afg-inc.github.io/PWA/Hoken1/KanjiList.str', 'Kanji');
+//KanjiList = '※〒0123456789生命保険証券医療カン死亡円年月号金民合歳特別■';
+loadText('https://afg-inc.github.io/PWA/Hoken1/KanjiList.str', 'Kanji');
 loadText('https://afg-inc.github.io/PWA/Hoken1/Hoken1.htm', 'text');
 //loadText('Hoken1.htm', 'text');
 
