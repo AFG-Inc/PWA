@@ -58,6 +58,7 @@ let  MaxLetterW        = 10;
 let  MaxLetterH        = 10;
 let  MinLetterW        = 10;
 let  MinLetterH        = 10;
+let  MinProbeSquare    = 10;
 let  averageWidth      = 10;
 let  LettersCount      = 0;
 let  paperNum          = 2;
@@ -473,55 +474,70 @@ function getBoxesFromBufferArea(buff,
     let addRect    = true;
     let aWidth     = 0;
 
+    function probeRect(){
+        if (NowRect[0] < 100000) { // No error
+            addRect = true;
+            wr = NowRect[2] - NowRect[0];
+            hr = NowRect[3] - NowRect[1];
+            for ( i = 0;  i < collection.length; i++ ) {
+                if (( collection[i][0] == NowRect[0] ) &&
+                    ( collection[i][1] == NowRect[1] ) &&
+                    ( collection[i][2] == NowRect[2] ) &&
+                    ( collection[i][3] == NowRect[3] )) {
+                    addRect = false;
+                    break;
+                } else {
+                    if (( collection[i][0] == NowRect[0] ) &&
+                        ( collection[i][1] == NowRect[1] )) {
+                        wc = collection[2] - collection[0];
+                        hc = collection[3] - collection[1];
+                        if (Math.abs(wc-hc) > Math.abs(wr-hr)){
+                            collection[i] = NowRect;
+                        }
+                        addRect = false;
+                        break;
+                    }
+                }
+            }
+            //if ((wr > hr * 1.3) || (hr > wr * 1.3)) { addRect = false }
+            //if (wr > hr * stepX) { addRect = false }
+            if ( addRect == true ) {
+                aWidth = aWidth + wr;
+                collection.push( NowRect );
+                count++;
+                if ( isShowLetterRect == true ) {
+                    context.strokeRect( NowRect[0], NowRect[1], wr, hr );
+                }
+            }           
+        }
+
+    }
+
     if ( isShowLetterRect == true ) {
         context.strokeStyle = "rgb(0,128,0)";
     }
-    for ( y = 1; y < Math.trunc( (area[3]-area[1]) / MinLetterH ); y++ ) {
+    //for ( y = 1; y < Math.trunc( (area[3]-area[1]) / MinLetterH ); y++ ) {
+    for ( y = 1; y < Math.trunc( (area[3]-area[1]) / MinProbeSquare ); y++ ) {
         //for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinLetterW); x++ ) {
-        for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinLetterH); x++ ) {
-            //StartX  = x * MinLetterW - 4 + Math.trunc(area[0]);
-            StartX  = x * MinLetterH - 4 + Math.trunc(area[0]);
-            StartY  = y * MinLetterH - 4 + Math.trunc(area[1]);
+        for ( x = 1; x < Math.trunc( (area[2]-area[0]) / MinProbeSquare ); x++ ) {
+            //StartX  = x * MinLetterW + Math.trunc(area[0]);
+            //StartY  = y * MinLetterH + Math.trunc(area[0]);
+            StartX  = x * MinProbeSquare + Math.trunc(area[0]);
+            StartY  = y * MinProbeSquare + Math.trunc(area[1]);
             //NowRect = GetKanjiRect( buff, StartX, StartY, MinLetterW, MinLetterH, width, height,
             //MinLetterW, MinLetterH, MaxLetterW, MaxLetterH);
-            NowRect = GetKanjiRect( buff, StartX, StartY, MinLetterH, MinLetterH, width, height,
-            MinLetterH, MinLetterH, MaxLetterW, MaxLetterH);
-                
-            if (NowRect[0] < 100000) { // No error
-                addRect = true;
-                wr = NowRect[2] - NowRect[0];
-                hr = NowRect[3] - NowRect[1];
-                for ( i = 0;  i < collection.length; i++ ) {
-                    if (( collection[i][0] == NowRect[0] ) &&
-                        ( collection[i][1] == NowRect[1] ) &&
-                        ( collection[i][2] == NowRect[2] ) &&
-                        ( collection[i][3] == NowRect[3] )) {
-                        addRect = false;
-                        break;
-                    } else {
-                        if (( collection[i][0] == NowRect[0] ) &&
-                            ( collection[i][1] == NowRect[1] )) {
-                            wc = collection[2] - collection[0];
-                            hc = collection[3] - collection[1];
-                            if (Math.abs(wc-hc) > Math.abs(wr-hr)){
-                                collection[i] = NowRect;
-                            }
-                            addRect = false;
-                            break;
-                        }
-                    }
-                }
-                //if ((wr > hr * 1.3) || (hr > wr * 1.3)) { addRect = false }
-                //if (wr > hr * stepX) { addRect = false }
-                if ( addRect == true ) {
-                    aWidth = aWidth + wr;
-                    collection.push( NowRect );
-                    count++;
-                    if ( isShowLetterRect == true ) {
-                        context.strokeRect( NowRect[0], NowRect[1], wr, hr );
-                    }
-                }           
-            }
+            NowRect = GetKanjiRect( buff, StartX, StartY, MinProbeSquare, MinProbeSquare, width, height,
+                MinProbeSquare, MinProbeSquare, MaxLetterW, MaxLetterH);
+            probeRect();
+
+            //StartX  = x * MinProbeSquare + Math.trunc(area[0] + MinProbeSquare/2.0);
+            //StartY  = y * MinProbeSquare + Math.trunc(area[1] + MinProbeSquare/2.0);
+
+            //NowRect = GetKanjiRect( buff, StartX, StartY, MinProbeSquare, MinProbeSquare, width, height,
+            //    MinProbeSquare, MinProbeSquare, MaxLetterW, MaxLetterH);
+            //probeRect();
+            
+
         }
     }
 
@@ -1216,6 +1232,8 @@ function resiz() {
     MaxLetterH         = MaxLetterW;
     MinLetterW         = 2.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
+
+    MinProbeSquare     = Math.round(MinLetterH / 2.0);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
