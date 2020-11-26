@@ -719,10 +719,10 @@ function GetClustersFromLettersCollection(LetterRecs,
                 MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
                 KanjiAnalize();
                 for ( i = 0; i < KanjiNumsLen; i++ ) {
-                    if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
+                    //if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
                         sss = sss + KanjiList.charAt(KanjiNums[i]);
                         break;
-                    }
+                    //}
                 }
                 testNum++;
             }
@@ -883,9 +883,7 @@ function OCRWork() {
                     txtstart    = 2;
                     txtend      = 5;
                     prefix  = '●';
-                    label3.innerText   = 'WWW1 ' + text;
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-                    label3.innerText   = 'WWW2';
                     shaba.src = "shablonT2.png";
                     tableNum = 2;
                 }
@@ -894,9 +892,38 @@ function OCRWork() {
             }
         }         
 
+        // 保険
+        if ((keyok == true) && (tableNum == 1)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
+            TakeBWPicture(tmpRect);
+            keyword    = '保険';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            tsukiarray = getStrArray(res, keyword);
+            tsukicount = tsukiarray.length;
+
+
+            if (tsukicount == 1) {
+                tmpStr      = tsukiarray[0][2];
+                if (tmpStr == 'NaN') {
+                    keyok   = false; 
+                } else {
+                    txtstart    = 6;
+                    txtend      = 8;
+                    prefix  = '●';
+                    label3.innerText   = 'WWW1 ' + text;
+                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                    label3.innerText   = 'WWW2';
+                    shaba.src = "shablonT2.png";
+                    tableNum = 7;
+                }
+            } else {
+                keyok   = false; 
+            }
+        }                 
+
         //label3.innerText   = 'WWW3';
         // 円1
-        if ((keyok   == true) && (tableNum == 2)){
+        if ((keyok   == true) && (tableNum == 7)){
 
             label3.innerText   = 'AA1';
             let ekeycount = new Uint32Array([3]);
@@ -921,8 +948,8 @@ function OCRWork() {
             if (encount == ekeycount[0]) {
                 // Output to web page
                 let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-                txtstart    = 6;
-                txtend      = 10;
+                txtstart    = 9;
+                txtend      = 13;
                 for ( j = 1; j <= encount; j++) {
                     prefix      = '■' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
@@ -932,7 +959,7 @@ function OCRWork() {
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
                 }
                 shaba.src = "shablonT3.png";
-                tableNum = 3;
+                tableNum = 11;
             } else {
                 keyok = false; 
             }
@@ -940,7 +967,7 @@ function OCRWork() {
 
 
         // 円2
-        if ((keyok   == true) && (tableNum == 3)){
+        if ((keyok   == true) && (tableNum == 11)){
             let ekeycount = new Uint32Array([4]);
             tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.54), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.71));
             TakeBWPicture(tmpRect);
@@ -952,8 +979,8 @@ function OCRWork() {
             if (encount == ekeycount[0]) {
                 // Output to web page
                 let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-                txtstart    = 6;
-                txtend      = 10;
+                txtstart    = 14;
+                txtend      = 18;
                 for ( j = 1; j <= encount; j++) {
                     prefix      = 'X' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
@@ -962,7 +989,7 @@ function OCRWork() {
                     }
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
                 }
-                tableNum = 4;
+                tableNum = 12;
             } else {
                 keyok = false; 
             }
@@ -972,7 +999,7 @@ function OCRWork() {
     }
 
     // Stop camera
-    if ((keyok   == true) && (tableNum == 4)){
+    if ((keyok   == true) && (tableNum == 12)){
         textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
         textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
 
