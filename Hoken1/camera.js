@@ -720,9 +720,10 @@ function GetClustersFromLettersCollection(LetterRecs,
                 KanjiAnalize();
                 for ( i = 0; i < KanjiNumsLen; i++ ) {
                     //if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
+                    if (filterOk == true) {
                         sss = sss + KanjiList.charAt(KanjiNums[i]);
                         break;
-                    //}
+                    }
                 }
                 testNum++;
             }
@@ -906,7 +907,7 @@ function OCRWork() {
 
         // 日付
         if ((keyok == true) && (tableNum == 3)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.24), Math.trunc(BuffW * 0.95), Math.trunc(BuffH * 0.28));
             TakeBWPicture(tmpRect);
             keyword    = '日';
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
@@ -928,10 +929,10 @@ function OCRWork() {
 
         // 保険契約者
         if ((keyok == true) && (tableNum == 4)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.30), Math.trunc(BuffW * 0.50), Math.trunc(BuffH * 0.34));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.10), Math.trunc(BuffH * 0.30), Math.trunc(BuffW * 0.47), Math.trunc(BuffH * 0.34));
             TakeBWPicture(tmpRect);
             keyword    = '様';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -950,10 +951,10 @@ function OCRWork() {
 
         // 被保険者
         if ((keyok == true) && (tableNum == 5)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.50), Math.trunc(BuffH * 0.41));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.10), Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.47), Math.trunc(BuffH * 0.41));
             TakeBWPicture(tmpRect);
             keyword    = '様';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -973,10 +974,10 @@ function OCRWork() {
 
         // 受取人等
         if ((keyok == true) && (tableNum == 6)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.37), Math.trunc(BuffH * 0.47));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.35), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '様';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1026,10 +1027,10 @@ function OCRWork() {
 
         // 支払期間
         if ((keyok == true) && (tableNum == 8)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0.5), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.47));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.5), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '年';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1048,10 +1049,10 @@ function OCRWork() {
         
         // 保険料支払方法
         if ((keyok == true) && (tableNum == 9)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.80), Math.trunc(BuffH * 0.47));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.78), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '払';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1070,10 +1071,10 @@ function OCRWork() {
 
         // 配当金支払方法
         if ((keyok == true) && (tableNum == 10)) {
-            tmpRect    = RectF(Math.trunc(BuffW * 0.80), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 1.00), Math.trunc(BuffH * 0.47));
+            tmpRect    = RectF(Math.trunc(BuffW * 0.82), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.95), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
-            keyword    = '払';
-            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            keyword    = '立';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.2, keyword);
             //label3.innerText   = 'res: ' + res;
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1093,7 +1094,7 @@ function OCRWork() {
         // 円2
         if ((keyok   == true) && (tableNum == 11)){
             let ekeycount = new Uint32Array([4]);
-            tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.54), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.71));
+            tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.52), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.70));
             TakeBWPicture(tmpRect);
             keyword  = '円';
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
@@ -1208,7 +1209,7 @@ function resiz() {
 
     MaxLetterW         = Math.round(ww / 20.0);
     MaxLetterH         = MaxLetterW;
-    MinLetterW         = 1.0; // Math.round(ww / 18.0);
+    MinLetterW         = 2.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
