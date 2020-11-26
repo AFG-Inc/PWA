@@ -33,11 +33,11 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-canvas.hidden = true;
+canvas.hidden = false;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = true;
+label3.hidden = false;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
@@ -76,9 +76,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = false;
+let  isShowBlue        = true;
 let  isShow            = false;
-let  isShowLetterRect  = false;
+let  isShowLetterRect  = true;
 let  autofocus         = false;
   // TST
 let  testNum           = 0;
@@ -833,6 +833,8 @@ function OCRWork() {
     let encount     = 0;
     let txtstart    = 0;
     let txtend      = 0;
+    let pos1        = 0;
+    let pos2        = 0;
     
     //if (text.length > 0){
     //    nowtext     = text.split('\n');
@@ -842,28 +844,17 @@ function OCRWork() {
   
     } else if (paperNum == 2) { // 用紙２対応 ========================================================================
         // Sign 1
+
         tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
-        keyword = '保険証券';
+        keyword = '保険';
         res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.5, keyword );
         if (res.indexOf(keyword) >= 0) { 
             keyok  = true; 
+
         } else {
             keyok  = false; 
         }
-        
-        // Sign 2
-        // if (keyok == true){
-        //     tmpRect = RectF(0, Math.trunc(BuffH * 0.40), Math.trunc(BuffW * 0.20), Math.trunc(BuffH * 0.48));
-        //     TakeBWPicture(tmpRect);
-        //     keyword = 'これまで';
-        //     res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 1.5, 0.5, keyword);
-        //     if (res.indexOf(keyword) >= 0) { 
-        //         keyok   = true; 
-        //     } else {
-        //         keyok   = false; 
-        //     }
-        // }
 
         // 号
         if ((keyok == true) && (tableNum == 1)) {
@@ -893,63 +884,130 @@ function OCRWork() {
         }         
 
         // 保険
-        if ((keyok == true) && (tableNum == 1)) {
+        if ((keyok == true) && (tableNum == 2)) {
             tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
             keyword    = '保険';
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
-            tsukiarray = getStrArray(res, keyword);
-            tsukicount = tsukiarray.length;
-
-
-            if (tsukicount == 1) {
-                tmpStr      = tsukiarray[0][2];
-                if (tmpStr == 'NaN') {
-                    keyok   = false; 
-                } else {
-                    txtstart    = 6;
-                    txtend      = 8;
-                    prefix  = '●';
-                    label3.innerText   = 'WWW1 ' + text;
-                    textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
-                    label3.innerText   = 'WWW2';
-                    shaba.src = "shablonT2.png";
-                    tableNum = 7;
-                }
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 6;
+                txtend     = 8;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT3.png";
+                tableNum   = 3;
             } else {
-                keyok   = false; 
+                keyok  = false; 
             }
+        }
+
+        // 日付
+        if ((keyok == true) && (tableNum == 3)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
+            TakeBWPicture(tmpRect);
+            keyword    = '日';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if ((res.indexOf('年') >= 0) && (res.indexOf('月') >= 0) && (res.indexOf('日') >= 0)) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 9;
+                txtend     = 11;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT4.png";
+                tableNum   = 4;
+            } else {
+                keyok  = false; 
+            }            
         }                 
 
-        //label3.innerText   = 'WWW3';
+        // 保険契約者
+        if ((keyok == true) && (tableNum == 4)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.30), Math.trunc(BuffW * 0.50), Math.trunc(BuffH * 0.34));
+            TakeBWPicture(tmpRect);
+            keyword    = '様';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 12;
+                txtend     = 14;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT5.png";
+                tableNum   = 5;
+            } else {
+                keyok  = false; 
+            }            
+        }   
+
+        // 被保険者
+        if ((keyok == true) && (tableNum == 5)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.50), Math.trunc(BuffH * 0.41));
+            TakeBWPicture(tmpRect);
+            keyword    = '様';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 15;
+                txtend     = 17;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT6.png";
+                tableNum   = 6;
+            } else {
+                keyok  = false; 
+            }            
+        }  
+
+
+        // 受取人等
+        if ((keyok == true) && (tableNum == 6)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.37), Math.trunc(BuffH * 0.47));
+            TakeBWPicture(tmpRect);
+            keyword    = '様';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 18;
+                txtend     = 20;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT7.png";
+                tableNum   = 7;
+            } else {
+                keyok  = false; 
+            }            
+        }  
+
         // 円1
         if ((keyok   == true) && (tableNum == 7)){
-
-            label3.innerText   = 'AA1';
             let ekeycount = new Uint32Array([3]);
-
-            label3.innerText   = 'AA2';
             tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.31), BuffW, Math.trunc(BuffH * 0.41));
-            label3.innerText   = 'AA3';
             TakeBWPicture(tmpRect);
             keyword  = '円';
-
-            label3.innerText   = 'A1';
-
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
-            label3.innerText   = 'A2';
             enarray  = getStrArray(res, keyword);
-            label3.innerText   = 'A3';
             encount  = enarray.length;
-
-            label3.innerText   = 'A4';
-
-            label3.innerText   = `円1: ${i}  c: ${encount}`;
+            //label3.innerText   = `円1: ${i}  c: ${encount}`;
             if (encount == ekeycount[0]) {
                 // Output to web page
                 let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-                txtstart    = 9;
-                txtend      = 13;
+                txtstart    = 21;
+                txtend      = 25;
                 for ( j = 1; j <= encount; j++) {
                     prefix      = '■' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
@@ -958,14 +1016,80 @@ function OCRWork() {
                     }
                     textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
                 }
-                shaba.src = "shablonT3.png";
-                tableNum = 11;
+                shaba.src = "shablonT8.png";
+                tableNum = 8;
             } else {
                 keyok = false; 
             }
         }   
 
 
+        // 支払期間
+        if ((keyok == true) && (tableNum == 8)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0.5), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.47));
+            TakeBWPicture(tmpRect);
+            keyword    = '年';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 25;
+                txtend     = 27;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT9.png";
+                tableNum   = 9;
+            } else {
+                keyok  = false; 
+            }            
+        }       
+        
+        // 保険料支払方法
+        if ((keyok == true) && (tableNum == 9)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.80), Math.trunc(BuffH * 0.47));
+            TakeBWPicture(tmpRect);
+            keyword    = '払';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 28;
+                txtend     = 30;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT10.png";
+                tableNum   = 10;
+            } else {
+                keyok  = false; 
+            }            
+        }           
+
+        // 配当金支払方法
+        if ((keyok == true) && (tableNum == 10)) {
+            tmpRect    = RectF(Math.trunc(BuffW * 0.80), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 1.00), Math.trunc(BuffH * 0.47));
+            TakeBWPicture(tmpRect);
+            keyword    = '払';
+            res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
+            //label3.innerText   = 'res: ' + res;
+            if (res.indexOf(keyword) >= 0) { 
+                pos1       = res.indexOf('|') + 1;
+                pos2       = res.indexOf('[');
+                tmpStr     = res.substring(pos1, pos2)
+                txtstart   = 31;
+                txtend     = 33;
+                prefix     = '●';
+                textreplace(nowtext, txtstart, txtend, prefix, tmpStr);
+                shaba.src  = "shablonT11.png";
+                tableNum   = 11;
+            } else {
+                keyok  = false; 
+            }            
+        }   
+        
         // 円2
         if ((keyok   == true) && (tableNum == 11)){
             let ekeycount = new Uint32Array([4]);
@@ -975,12 +1099,12 @@ function OCRWork() {
             res = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             enarray  = getStrArray(res, keyword);
             encount  = enarray.length;
-            label3.innerText   = `円2: ${i}  c: ${encount}`;
+            //label3.innerText   = `円2: ${i}  c: ${encount}`;
             if (encount == ekeycount[0]) {
                 // Output to web page
                 let arr  = enarray.sort(function (a, b) { return a[1] - b[1] });
-                txtstart    = 14;
-                txtend      = 18;
+                txtstart    = 34;
+                txtend      = 39;
                 for ( j = 1; j <= encount; j++) {
                     prefix      = 'X' + String(j);
                     tmpStr      = arr[j-1][2].toLocaleString();
