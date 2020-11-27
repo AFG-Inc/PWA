@@ -33,11 +33,11 @@ let videostop = false;
 let w,h,leftPos;
 
 video.hidden  = true;
-canvas.hidden = false;
+canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = false;
+label3.hidden = true;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
@@ -77,9 +77,9 @@ let  KanjiFont         = new Uint32Array(KanjiCount);
 let  KanjiNums         = new Uint32Array(KanjiNumsLen);
   // SHOW
 let  isShowBW          = false;
-let  isShowBlue        = true;
+let  isShowBlue        = false;
 let  isShow            = false;
-let  isShowLetterRect  = true;
+let  isShowLetterRect  = false;
 let  autofocus         = false;
   // TST
 let  testNum           = 0;
@@ -741,10 +741,10 @@ function GetClustersFromLettersCollection(LetterRecs,
                 KanjiAnalize();
                 for ( i = 0; i < KanjiNumsLen; i++ ) {
                     //if ((KanjiNums[i]>1) && (KanjiNums[i]<38) && (filterOk == true)) {
-                    if (filterOk == true) {
+                    //if (filterOk == true) {
                         sss = sss + KanjiList.charAt(KanjiNums[i]);
                         break;
-                    }
+                    //}
                 }
                 testNum++;
             }
