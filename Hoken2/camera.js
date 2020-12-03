@@ -37,7 +37,7 @@ canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = true;
+label3.hidden = false;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
@@ -954,6 +954,8 @@ function OCRWork() {
             keyok  = false; 
         }
 
+        label3.innerText   = KanjiListD;
+
         // 号
         if ((keyok == true) && (tableNum == 1)) {
             tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.22));
@@ -986,7 +988,7 @@ function OCRWork() {
             tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
             keyword    = '保険';
-            lettersType= 0;
+            lettersType= 1;
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
