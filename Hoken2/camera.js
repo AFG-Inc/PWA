@@ -745,6 +745,7 @@ function GetClustersFromLettersCollection(LetterRecs,
     
     let i,j,lena  = 0;
     let x,y       = 0;
+    let kw, kh    = 0;
     let clarray   = new Array();
     let isNewCl   = false;
     let filterOk  = false;
@@ -801,8 +802,11 @@ function GetClustersFromLettersCollection(LetterRecs,
             j = clarray[y][x];
             filterOk = true;
             if ( x > 0 ){
+                kw = (LetterRecs[j][2]-LetterRecs[j][0]);
+                kh = (LetterRecs[j][3]-LetterRecs[j][1]);
                 if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
-                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.8) { filterOk = false }
+                if (kw/kh < 0.75) { filterOk = false }
+                if (kh/kw < 0.75) { filterOk = false }
             }
             if ( clarray[y].length >= keylen ) {
                 MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
