@@ -743,7 +743,7 @@ function GetClustersFromLettersCollection(LetterRecs,
     stepY,
     KeyWords){
     
-    let i,j,k     = 0;
+    let i,j,lena  = 0;
     let x,y       = 0;
     let clarray   = new Array();
     let isNewCl   = false;
@@ -802,7 +802,7 @@ function GetClustersFromLettersCollection(LetterRecs,
             filterOk = true;
             if ( x > 0 ){
                 if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
-                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.8) { filterOk = false }
+                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.75) { filterOk = false }
             }
             if ( clarray[y].length >= keylen ) {
                 MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
@@ -825,7 +825,8 @@ function GetClustersFromLettersCollection(LetterRecs,
                     } else if (lettersType == 2){ 
                         //日付
                         nowLetter = KanjiListD.charAt(KanjiNumsD[i]);
-                        if ((KanjiNumsD[i]<12) || (nowLetter=='年') || (nowLetter=='月') || (nowLetter=='日')){
+                        lena      = sss.length;
+                        if ((KanjiNumsD[i]<=12) || ((nowLetter=='年') && (lena==4)) || ((nowLetter=='月') && (lena==7)) || ((nowLetter=='日') && (lena==10))){
                             sss = sss + nowLetter;
                             break;
                         }
@@ -1300,10 +1301,10 @@ function resiz() {
 
     MaxLetterW         = Math.round(ww / 20.0);
     MaxLetterH         = MaxLetterW;
-    MinLetterW         = 2.0; // Math.round(ww / 18.0);
+    MinLetterW         = 1.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
-    MinProbeSquare     = Math.round(MinLetterH * 0.6);
+    MinProbeSquare     = Math.round(MinLetterH * 0.5);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
