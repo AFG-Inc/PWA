@@ -3,7 +3,7 @@
 // コード: Alexander Belov
 "use strict";
 
-let version   = 1.0;
+let version   = 1.01;
 let video     = document.getElementById('video');
 let mainimg   = document.getElementById('mainimg');
 let canvas    = document.getElementById('canvas');
@@ -1271,18 +1271,12 @@ function resiz() {
         shaba.hidden   = false;
     }
 
-    //let tmpStr2 = '';
-    //for (let i=0; i<TestSquareSmall; i++){
-    //    tmpStr2 = tmpStr2 + KanjiSmall[KanjiSmallLen * 1 + i] + ',';
-    //}
 
     label.hidden       = true;
-    //label2.innerText   = tmpStr;
     label2.style.left  = "10px";  
     //label2.style.top   = Math.round(h/2.0) + "px";  
     label2.style.top   = Math.round(h - 70) + "px";  
     label2.hidden      = true;
-    //label3.innerText   = tmpStr2;
     label3.style.left  = "10px";  
     label3.style.top   = Math.round(h - 40) + "px";  
     label2.hidden      = true;
@@ -1308,7 +1302,7 @@ function resiz() {
     MinLetterW         = 1.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
-    MinProbeSquare     = Math.round(MinLetterH * 0.5);
+    MinProbeSquare     = Math.round(MinLetterH * 0.6);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
