@@ -3,6 +3,7 @@
 // コード: Alexander Belov
 "use strict";
 
+let version   = 1.0;
 let video     = document.getElementById('video');
 let mainimg   = document.getElementById('mainimg');
 let canvas    = document.getElementById('canvas');
@@ -1221,9 +1222,8 @@ function OCRWork() {
     } 
     // Stop camera
     if ((keyok   == true) && (tableNum == 12)){
-        textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
-        textreplace(nowtext, 0, 2, '■H', String(window.innerHeight - 40));
-
+        textreplace(nowtext, 0, 2, '■', String(version));
+        
         //label3.innerText = nowtext[0];
 
         document.getElementById("outbody").innerHTML = nowtext.join('\n');
