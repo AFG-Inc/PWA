@@ -813,11 +813,13 @@ function GetClustersFromLettersCollection(LetterRecs,
                     KanjiAnalizeD();
                 }
                 for ( i = 0; i < KanjiNumsLen; i++ ) {
-                    if ((lettersType == 0) && (filterOk == true)) {
-                        sss = sss + KanjiList.charAt(KanjiNums[i]);
-                        break;
+                    if (lettersType == 0){
+                        if (filterOk == true) {
+                            sss = sss + KanjiList.charAt(KanjiNums[i]);
+                            break;
+                        }
                     } else {
-                        sss = sss + KanjiList.charAt(KanjiNums[i]);
+                        sss = sss + KanjiListD.charAt(KanjiNumsD[i]);
                         break;
                     }
                 }
