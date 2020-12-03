@@ -37,7 +37,7 @@ canvas.hidden = true;
 shaba.hidden  = true;
 label.hidden  = true;
 label2.hidden = true;
-label3.hidden = false;
+label3.hidden = true;
 //focus.hidden  = false;
 //paper.hidden  = false;
 
@@ -106,7 +106,7 @@ let  Kanji             = '';
 
 //KanjiList = '※〒0123456789生命保険証券医療カン死亡円年月号金民合歳特別■';
 loadText('https://afg-inc.github.io/PWA/Hoken2/KanjiList.str', 'Kanji');
-loadText('https://afg-inc.github.io/PWA/Hoken2/KanjiListD.str','KanjiD');
+loadText('https://afg-inc.github.io/PWA/Hoken2/dKanjiList.str','KanjiD');
 loadText('https://afg-inc.github.io/PWA/Hoken2/Hoken1.htm', 'text');
 //loadText('Hoken1.htm', 'text');
 
@@ -560,7 +560,9 @@ function getBoxesFromBufferArea(buff,
     if ( count > 0 ) { 
         averageWidth = aWidth / count 
     }
+
     return GetClustersFromLettersCollection(collection, StepX, StepY, KeyWords);
+
 }
 
 function ManDistance(x1,y1,x2,y2) {
@@ -605,9 +607,9 @@ function KanjiAnalize() {
                 if (KanjiNumm != j) {
                     KanjiNumm = j;
                     for (k=0; k<=lena; k++) {
-                        KanjiNumsD[lena-k] = KanjiNumsD[lena-k-1];
+                        KanjiNums[lena-k] = KanjiNums[lena-k-1];
                     }
-                    KanjiNumsD[0] = j;
+                    KanjiNums[0] = j;
 			    }
 		    }
             Smes = Smes + SquareSmall;
@@ -620,7 +622,7 @@ function KanjiAnalizeD() {
     let  i;              
     let  j;             
     let  k;             
-    let  lena        = KanjiNumsLenD-1;
+    let  lena        = KanjiNumsLen-1;
     let  NowZure     = 0;
     let  MinZure     = Number.MAX_VALUE;
     let  MaxZure     = 0;
@@ -634,7 +636,7 @@ function KanjiAnalizeD() {
     for (j=0; j<KanjiCountD; j++) { 
         KanjiZureD[j] = Number.MAX_VALUE; 
     }
-  
+
     for (i=0; i<FontCount; i++) {
         Smes = 0;
         for (j=0; j<KanjiCountD; j++) {
@@ -941,7 +943,6 @@ function OCRWork() {
 
     if (paperNum == 2) { // 用紙２対応 ========================================================================
         // Sign 1
-
         tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
         keyword = '保険';
@@ -954,8 +955,6 @@ function OCRWork() {
             keyok  = false; 
         }
 
-        label3.innerText   = KanjiListD;
-
         // 号
         if ((keyok == true) && (tableNum == 1)) {
             tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.22));
@@ -965,8 +964,6 @@ function OCRWork() {
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             tsukiarray = getStrArray(res, keyword);
             tsukicount = tsukiarray.length;
-
-
             if (tsukicount == 1) {
                 tmpStr      = tsukiarray[0][2];
                 if (tmpStr == 'NaN') {
@@ -988,7 +985,7 @@ function OCRWork() {
             tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
             keyword    = '保険';
-            lettersType= 1;
+            lettersType= 0;
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             if (res.indexOf(keyword) >= 0) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1010,7 +1007,6 @@ function OCRWork() {
             keyword    = '日';
             lettersType= 1;
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
-            //label3.innerText   = 'res: ' + res;
             if ((res.indexOf('年') >= 0) && (res.indexOf('月') >= 0) && (res.indexOf('日') >= 0)) { 
                 pos1       = res.indexOf('|') + 1;
                 pos2       = res.indexOf('[');
