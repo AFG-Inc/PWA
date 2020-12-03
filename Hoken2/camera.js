@@ -752,6 +752,7 @@ function GetClustersFromLettersCollection(LetterRecs,
     let keylen    = 0;
     let OutText   = '';
     let kWords    = KeyWords.split('|');
+    let nowLetter = '';
 
     // Clusterization
     for (i = 0; i < LetterRecs.length; i++) {
@@ -801,6 +802,7 @@ function GetClustersFromLettersCollection(LetterRecs,
             filterOk = true;
             if ( x > 0 ){
                 if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
+                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.8) { filterOk = false }
             }
             if ( clarray[y].length >= keylen ) {
                 MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
@@ -818,6 +820,13 @@ function GetClustersFromLettersCollection(LetterRecs,
                     if (lettersType == 0){
                         if (filterOk == true) {
                             sss = sss + KanjiList.charAt(KanjiNums[i]);
+                            break;
+                        }
+                    } else if (lettersType == 2){ 
+                        //日付
+                        nowLetter = KanjiListD.charAt(KanjiNumsD[i]);
+                        if ((KanjiNumsD[i]<12) || (nowLetter=='年') || (nowLetter=='月') || (nowLetter=='日')){
+                            sss = sss + nowLetter;
                             break;
                         }
                     } else {
