@@ -1014,7 +1014,7 @@ function OCRWork() {
             tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.24), Math.trunc(BuffW * 0.95), Math.trunc(BuffH * 0.28));
             TakeBWPicture(tmpRect);
             keyword    = '日';
-            lettersType= 1;
+            lettersType= 2;
             res        = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 5.5, 0.5, keyword);
             if ((res.indexOf('年') >= 0) && (res.indexOf('月') >= 0) && (res.indexOf('日') >= 0)) { 
                 pos1       = res.indexOf('|') + 1;
@@ -1303,7 +1303,7 @@ function resiz() {
     MinLetterW         = 2.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
-    MinProbeSquare     = Math.round(MinLetterH * 0.8);
+    MinProbeSquare     = Math.round(MinLetterH * 0.6);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
