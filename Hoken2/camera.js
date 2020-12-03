@@ -3,7 +3,7 @@
 // コード: Alexander Belov
 "use strict";
 
-let version   = 1.01;
+let version   = 1.02;
 let video     = document.getElementById('video');
 let mainimg   = document.getElementById('mainimg');
 let canvas    = document.getElementById('canvas');
@@ -1302,7 +1302,7 @@ function resiz() {
     MinLetterW         = 1.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
-    MinProbeSquare     = Math.round(MinLetterH * 0.6);
+    MinProbeSquare     = Math.round(MinLetterH * 0.25);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
