@@ -862,9 +862,7 @@ function OCRWork() {
     //    nowtext     = text.split('\n');
     //} 
 
-    if (paperNum == 1) {
-  
-    } else if (paperNum == 2) { // 用紙２対応 ========================================================================
+    if (paperNum == 2) { // 用紙２対応 ========================================================================
         // Sign 1
 
         tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
@@ -903,10 +901,9 @@ function OCRWork() {
             } else {
                 keyok   = false; 
             }
-        }         
 
-        // 保険
-        if ((keyok == true) && (tableNum == 2)) {
+        } else if ((keyok == true) && (tableNum == 2)) {
+            // 保険
             tmpRect    = RectF(Math.trunc(BuffW * 0.48), Math.trunc(BuffH * 0.17), Math.trunc(BuffW * 0.70), Math.trunc(BuffH * 0.22));
             TakeBWPicture(tmpRect);
             keyword    = '保険';
@@ -924,10 +921,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }
-        }
-
-        // 日付
-        if ((keyok == true) && (tableNum == 3)) {
+        } else if ((keyok == true) && (tableNum == 3)) {
+            // 日付
             tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.24), Math.trunc(BuffW * 0.95), Math.trunc(BuffH * 0.28));
             TakeBWPicture(tmpRect);
             keyword    = '日';
@@ -946,10 +941,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }                 
-
-        // 保険契約者
-        if ((keyok == true) && (tableNum == 4)) {
+        } else if ((keyok == true) && (tableNum == 4)) {
+            // 保険契約者
             tmpRect    = RectF(Math.trunc(BuffW * 0.10), Math.trunc(BuffH * 0.30), Math.trunc(BuffW * 0.47), Math.trunc(BuffH * 0.34));
             TakeBWPicture(tmpRect);
             keyword    = '様';
@@ -968,10 +961,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }   
-
-        // 被保険者
-        if ((keyok == true) && (tableNum == 5)) {
+        } else if ((keyok == true) && (tableNum == 5)) {
+            // 被保険者
             tmpRect    = RectF(Math.trunc(BuffW * 0.10), Math.trunc(BuffH * 0.36), Math.trunc(BuffW * 0.47), Math.trunc(BuffH * 0.41));
             TakeBWPicture(tmpRect);
             keyword    = '様';
@@ -990,11 +981,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }  
-
-
-        // 受取人等
-        if ((keyok == true) && (tableNum == 6)) {
+        } else if ((keyok == true) && (tableNum == 6)) {
+            // 受取人等
             tmpRect    = RectF(Math.trunc(BuffW * 0.05), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.35), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '様';
@@ -1013,10 +1001,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }  
-
-        // 円1
-        if ((keyok   == true) && (tableNum == 7)){
+        } else if ((keyok   == true) && (tableNum == 7)){
+            // 円1
             let ekeycount = new Uint32Array([3]);
             tmpRect  = RectF(Math.trunc(BuffW * 0.79), Math.trunc(BuffH * 0.31), BuffW, Math.trunc(BuffH * 0.41));
             TakeBWPicture(tmpRect);
@@ -1043,11 +1029,8 @@ function OCRWork() {
             } else {
                 keyok = false; 
             }
-        }   
-
-
-        // 支払期間
-        if ((keyok == true) && (tableNum == 8)) {
+        } else if ((keyok == true) && (tableNum == 8)) {
+            // 支払期間
             tmpRect    = RectF(Math.trunc(BuffW * 0.5), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '年';
@@ -1066,10 +1049,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }       
-        
-        // 保険料支払方法
-        if ((keyok == true) && (tableNum == 9)) {
+        } else if ((keyok == true) && (tableNum == 9)) {
+            // 保険料支払方法
             tmpRect    = RectF(Math.trunc(BuffW * 0.62), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.78), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '払';
@@ -1088,10 +1069,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }           
-
-        // 配当金支払方法
-        if ((keyok == true) && (tableNum == 10)) {
+        } else if ((keyok == true) && (tableNum == 10)) {
+            // 配当金支払方法
             tmpRect    = RectF(Math.trunc(BuffW * 0.82), Math.trunc(BuffH * 0.43), Math.trunc(BuffW * 0.95), Math.trunc(BuffH * 0.47));
             TakeBWPicture(tmpRect);
             keyword    = '立';
@@ -1110,10 +1089,8 @@ function OCRWork() {
             } else {
                 keyok  = false; 
             }            
-        }   
-        
-        // 円2
-        if ((keyok   == true) && (tableNum == 11)){
+        } else if ((keyok   == true) && (tableNum == 11)){
+            // 円2
             let ekeycount = new Uint32Array([4]);
             tmpRect  = RectF(Math.trunc(BuffW * 0.42), Math.trunc(BuffH * 0.52), Math.trunc(BuffW * 0.60), Math.trunc(BuffH * 0.70));
             TakeBWPicture(tmpRect);
@@ -1140,10 +1117,7 @@ function OCRWork() {
                 keyok = false; 
             }
         }   
-    } else {
-
-    }
-
+    } 
     // Stop camera
     if ((keyok   == true) && (tableNum == 12)){
         textreplace(nowtext, 0, 2, '■W', String(window.innerWidth  - 20));
