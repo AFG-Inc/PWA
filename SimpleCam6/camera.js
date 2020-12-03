@@ -13,7 +13,7 @@ ww = 0;
 hh = 0;
 
 function openCamera() {
-	var constraints = { audio: false, video: { facingMode: 'environment', width: { ideal: 9600 }, height: { ideal: 12800 } } };
+	var constraints = { audio: false, photo: false, video: { facingMode: 'environment', width: { ideal: 9600 }, height: { ideal: 12800 } } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
@@ -63,7 +63,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " x " + h + "  ASPa:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.left = leftPos + "px";  
