@@ -1303,7 +1303,7 @@ function resiz() {
     MinLetterW         = 2.0; // Math.round(ww / 18.0);
     MinLetterH         = Math.round(hh / 100.0);
 
-    MinProbeSquare     = Math.round(MinLetterH / 2.0);
+    MinProbeSquare     = Math.round(MinLetterH * 0.8);
 
     BuffBlack          = new Uint32Array(BuffW * BuffH);
     BuffBlue           = new Uint32Array(BuffW * BuffH); 
