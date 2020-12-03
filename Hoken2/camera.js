@@ -802,7 +802,7 @@ function GetClustersFromLettersCollection(LetterRecs,
             filterOk = true;
             if ( x > 0 ){
                 if ((LetterRecs[j][0]-LetterRecs[clarray[y][x-1]][0]) < (LetterRecs[j][2] - LetterRecs[j][0])/2.0 ) { filterOk = false }
-                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.75) { filterOk = false }
+                if ((LetterRecs[j][2]-LetterRecs[j][0])/(LetterRecs[j][3]-LetterRecs[j][1]) < 0.8) { filterOk = false }
             }
             if ( clarray[y].length >= keylen ) {
                 MakeTestSquare(BuffBlue, BuffW, BuffH, LetterRecs[j], TestSquareSmall);
