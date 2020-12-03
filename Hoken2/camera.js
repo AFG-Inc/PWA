@@ -945,7 +945,7 @@ function OCRWork() {
         tmpRect = RectF(Math.trunc(BuffW * 0.25), Math.trunc(BuffH * 0.06), Math.trunc(BuffW * 0.75), Math.trunc(BuffH * 0.12)); // 0 ~ 1.0 percent
         TakeBWPicture(tmpRect);
         keyword = '保険';
-        lettersType = 0;
+        lettersType = 1;
         res     = getBoxesFromBufferArea( BuffBlack, BuffW, BuffH, tmpRect, 3.5, 0.5, keyword );
         if (res.indexOf(keyword) >= 0) { 
             keyok  = true; 
