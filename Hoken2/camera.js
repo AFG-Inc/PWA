@@ -3,7 +3,7 @@
 // コード: Alexander Belov
 "use strict";
 
-let version   = 1.02;
+let version   = 1.03;
 let video     = document.getElementById('video');
 let mainimg   = document.getElementById('mainimg');
 let canvas    = document.getElementById('canvas');
