@@ -19,7 +19,7 @@ function openCamera() {
             
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
-                video.loop = true;
+                //video.loop = true;
                 video.play();
 			    ww = video.videoWidth;
 			    hh = video.videoHeight;
@@ -49,6 +49,7 @@ function snap() {
       data[i + 2] = sred;
      }
     context.putImageData(imageData, x, x);
+    video.play();
 
     setTimeout(snap, 10);
 }
@@ -65,7 +66,7 @@ function resiz() {
        leftPos = Math.round((window.innerWidth - w) / 2.0)
     }
 
-	labe.innerText = w + " x " + h + "  ASP:" + videoasp + " Video: " + ww + " x " + hh;
+	labe.innerText = w + " x " + h + "  ASPa:" + videoasp + " Video: " + ww + " x " + hh;
     canvas.width   = w;
     canvas.height  = h;
     canvas.style.left = leftPos + "px";  
