@@ -19,6 +19,7 @@ function openCamera() {
             
             video.srcObject = stream;
             video.onloadedmetadata = function(e) {
+                video.loop = true;
                 video.play();
 			    ww = video.videoWidth;
 			    hh = video.videoHeight;
