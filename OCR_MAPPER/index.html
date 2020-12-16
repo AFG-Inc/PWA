@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OCR MAPPER</title>
+<meta charset="utf-8">
+<style>
+  table.tableA {
+    border: 10px white solid;
+    border-collapse: collapse;
+  }
+  table.tableA th,
+  table.tableA td {
+    border: 10px white solid;
+  }
+  table.tableB {
+    border: 10px white solid;
+    border-collapse: collapse;
+  }
+  table.tableB th,
+  table.tableB td {
+    border: 10px lightblue solid;
+  }
+  table.tableC {
+    border: 2px black solid;
+    border-collapse: collapse;
+  }
+  table.tableC th,
+  table.tableC td {
+    border: 2px black solid;
+  }  
+  </style>
+
+</head>
+    <body bgcolor="LightYellow" topMargin=0 leftMargin=0 bottomMargin=0 rightMargin=0>
+      <table class="tableA" width=100% bgcolor=white border=0 cellpadding=10>
+        <tr><th width=50% bgcolor=lightgreen>マッピング用画像ファイル</th><th bgcolor=lightgreen>データ設定</th></tr>
+        <tr><td width=50% rowspan="2"><canvas id="canvas"></canvas><br><input  id="inputimage" type=file onchange="setimage(this)"/><br><div id="label1"></div></td>
+          <td align="center" valign="top">
+            <div id="appname"><h3>アプリのタイトル</h3><input id="appnameinput" type="text" align="center" value="OCR_Insurance1" style="text-align:center"/></div><br>
+            <div id="outname"><h3>出力項目名</h3><input id="outputname" type="text" align="center" value="" style="text-align:center"/></div>
+            <div>
+            <select id="outnameslist" size="1" style="width:170px;" onchange="outnameschange()">
+              <option>証券番号</option>
+              <option>保険種類</option>
+              <option>契約日</option>
+              <option>保険契約者</option>
+              <option>被保険者</option>
+              <option>受取人</option>
+              <option>保険料内約</option>
+              <option>証券番号</option>
+              <option>印鑑</option>
+              <option>支払期間</option>
+              <option>証券番号</option>
+              <option>保険料支払方法</option>
+              <option>配当金支払方法</option>
+              <option>保険金額</option>
+            </select>
+            </div>
+            <br>
+            <table class="tableB" width=100% height=100 bgcolor=pink cellpadding=10>
+              <tr><td onclick="setdata(1)"><input id=d1 type="radio" checked=true value="d1" onclick="setdata(1)"><b>サイン</b></td></tr>
+            </table>
+            <br>
+            <table class="tableB" width=100% height=100 bgcolor="silver" cellpadding="10">
+              <tr><td onclick="setdata(2)"><input id=d2 type="radio" value="d2" onclick="setdata(2)"><b>テキスト</b></td></tr>
+            </table>
+            <br>
+            <table class="tableB" width=100% height=100  bgcolor="lightblue" cellpadding="10">
+              <tr><td onclick="setdata(3)" colspan=2><input id=d3 type="radio" value="d3" onclick="setdata(3)"><b>数字</b></td></tr>
+              <tr>
+                <td width=100></td>
+                <td onclick="setdata(3)">
+                <table class="tableC" bgcolor="white" width=100%>
+                <tr>
+                  <td align="center" onclick="setakey(1)"><input id=k1 type="radio" value="k1" checked="true" onclick="setakey(1)"><b>なし</b></td>
+                  <td align="center" onclick="setakey(2)"><input id=k2 type="radio" value="k2" onclick="setakey(2)"><b>円</b></td>
+                  <td align="center" onclick="setakey(3)"><input id=k3 type="radio" value="k3" onclick="setakey(3)"><b>歳</b></td>
+                  <td align="center" onclick="setakey(4)"><input id=k4 type="radio" value="k4" onclick="setakey(4)"><b>号</b></td>
+                </tr>              
+                </table>
+              </td></tr>
+            </table>
+            <br>
+            <table class="tableB" width=100% height=100 bgcolor="#ffaaff" cellpadding="10">
+              <tr><td onclick="setdata(4)"><input id=d4 type="radio" value="d4" onclick="setdata(4)"><b>日付</b></td></tr>
+            </table>
+            <br>
+            <table class="tableB" width=100% height=100 bgcolor="lightgreen" cellpadding="10">
+              <tr><td onclick="setdata(5)"><input id=d5 type="radio" value="d5" onclick="setdata(5)"><b>画像</b></td></tr>
+            </table>
+            <br>
+            <button onclick="setarea()">エリア登録</button> <button onclick="deleteArea()">エリアの削除</button>
+            <br>
+            <br>
+            <select id="areaslist" size="10" style="width:180px;" onchange="areaslistchange()">
+            </select>
+          </td></tr>
+          <tr><td align="center" bgcolor="LightYellow"><div id="appname"><h3>OCRマップのJSONファイル</h3><textarea id="JSONtext" cols="120" rows="40"></textarea></div></td></tr>
+      </table>
+    </body>
+    <script>
+      let mainimagefile    = "";
+      let mainimage        = new Image();
+      let label1           = document.getElementById("label1");
+      let areaslist        = document.getElementById("areaslist");
+      let outnameslist     = document.getElementById("outnameslist");
+      let canvas           = document.getElementById("canvas");
+      let context          = canvas.getContext('2d');
+      let h,w              = 0;
+      let x0,y0,x,y        = 0;
+      let dataType         = "サイン";
+      let keyType          = 1;
+      let linecolor        = "red";
+      let isDrawArea       = false;
+      let videoasp         = 1.0;
+      let areas            = [];
+
+      areaslist.hidden     = true;
+      
+      mainimage.onload     = function() {
+        w                  = this.naturalWidth;
+        h                  = this.naturalHeight;
+        videoasp           = w / h;
+        canvas.width       = w;
+        canvas.height      = h;
+        label1.innerText   = w + " " + h + " " + videoasp + " " + mainimage.src;
+        mainimage.hidden   = true;
+        context.drawImage( mainimage, 0, 0, w, h );
+        
+      };
+      canvas.onmousedown   = function(ev) {
+        context.drawImage( mainimage, 0, 0, w, h );
+        isDrawArea         = true;
+        let rect           = canvas.getBoundingClientRect();
+        x0                 = ev.clientX - rect.left,
+        y0                 = ev.clientY - rect.top;
+      };
+      canvas.onmouseup     = function(ev) {
+        isDrawArea = false;
+      };
+      canvas.onmouseleave  = function(ev) {
+        if (isDrawArea == true){
+          context.drawImage( mainimage, 0, 0, w, h );
+        };
+        isDrawArea = false;
+      };
+      canvas.onmousemove   = function(ev) {
+        if (isDrawArea == true){
+          context.drawImage( mainimage, 0, 0, w, h );
+          let rect           = canvas.getBoundingClientRect();
+          x                  = ev.clientX - rect.left,
+          y                  = ev.clientY - rect.top;
+          context.beginPath();
+          context.lineWidth = "3";
+          context.strokeStyle = linecolor;
+          context.rect(x0, y0, x - x0, y - y0);
+          context.stroke();
+        }
+      };
+      
+      function outnameschange(){
+        document.getElementById("outputname").value = outnameslist.options[outnameslist.selectedIndex].value;
+      }
+
+      function setimage(inputData){
+        mainimagefile    = window.URL.createObjectURL(inputData.files[0]);
+        mainimage.src    = mainimagefile;
+      }
+
+      function setdata(datanum){
+        if (datanum!=1) { document.getElementById("d1").checked =false; } else { document.getElementById("d1").checked = true; dataType = "サイン";   linecolor = "red"; }
+        if (datanum!=2) { document.getElementById("d2").checked =false; } else { document.getElementById("d2").checked = true; dataType = "テキスト"; linecolor = "black";}
+        if (datanum!=3) { document.getElementById("d3").checked =false; } else { document.getElementById("d3").checked = true; dataType = "数字";     linecolor = "blue"; }
+        if (datanum!=4) { document.getElementById("d4").checked =false; } else { document.getElementById("d4").checked = true; dataType = "日付";     linecolor = "purple"; }
+        if (datanum!=5) { document.getElementById("d5").checked =false; } else { document.getElementById("d5").checked = true; dataType = "画像";     linecolor = "green"; }
+      }
+
+      function setakey(keynum){
+        if (keynum!=1) { document.getElementById("k1").checked =false; } else { document.getElementById("k1").checked = true; keyType = ""; }
+        if (keynum!=2) { document.getElementById("k2").checked =false; } else { document.getElementById("k2").checked = true; keyType = "円"; }
+        if (keynum!=3) { document.getElementById("k3").checked =false; } else { document.getElementById("k3").checked = true; keyType = "歳"; }
+        if (keynum!=4) { document.getElementById("k4").checked =false; } else { document.getElementById("k4").checked = true; keyType = "号"; }
+      }
+
+      function areaslistchange(){
+        let index  = areaslist.selectedIndex;
+        let outstr = "";
+        dataType   = areas[index].datatype;
+        if (areas[index].datatype != "サイン") { outstr = areas[index].outname; keyType = areas[index].keytype; }
+        document.getElementById("outputname").value = outstr;
+        if (areas[index].datatype == "サイン") { linecolor = "red"; }
+        if (areas[index].datatype == "テキスト") { linecolor = "black"; }
+        if (areas[index].datatype == "数字") { linecolor = "blue"; }
+        if (areas[index].datatype == "日付") { linecolor = "purple"; }
+        if (areas[index].datatype == "画像") { linecolor = "green"; }
+        x0 = areas[index].left   * w;
+        y0 = areas[index].top    * h;
+        x  = areas[index].right  * w;
+        y  = areas[index].bottom * h;
+        context.drawImage( mainimage, 0, 0, w, h );
+        context.beginPath();
+        context.lineWidth = "3";
+        context.strokeStyle = linecolor;
+        context.rect(x0, y0, x - x0, y - y0);
+        context.stroke();
+      }
+
+      function setarea(){
+        let nowarea          = {};
+        nowarea["datatype"]  = dataType;
+        if (dataType!="サイン") { nowarea["outname"] = document.getElementById("outputname").value; }
+        if (dataType=="数字"){ nowarea["keytype"]    = keyType; }
+        nowarea["left"]      = (x0 / w).toFixed(6);
+        nowarea["top"]       = (y0 / h).toFixed(6);
+        nowarea["right"]     = (x  / w).toFixed(6);
+        nowarea["bottom"]    = (y  / h).toFixed(6);
+        areas.push(nowarea);
+        setOutJSON();
+      }
+
+      function deleteArea(){
+        let index  = areaslist.selectedIndex;
+        if (index>=0){
+          areas.splice( index, 1 );
+          context.drawImage( mainimage, 0, 0, w, h );
+        }
+        setOutJSON();
+      }
+
+      function setOutJSON(){
+        if (areas.length>0){
+          let optionstring     = "";
+          for (let i=0; i<areas.length; i++){
+            if (areas[i].datatype == "サイン"){
+              optionstring = optionstring + "<option>" + areas[i].datatype + "</option>";
+            } else {
+              optionstring = optionstring + "<option>" + areas[i].datatype + "　" + areas[i].outname + "</option>";
+            }
+          }
+          areaslist.innerHTML  = optionstring;
+          areaslist.hidden     = false;
+        } else {
+          areaslist.hidden     = true;
+        }
+        let outJSON          = {};
+        outJSON["apptitle"]  = document.getElementById("appnameinput").value;
+        outJSON["videoasp"]  = videoasp.toFixed(6);
+        outJSON["areas"]     = areas;
+        document.getElementById("JSONtext").value = JSON.stringify(outJSON).replace(/,/g, ","+"\n");
+      }
+    </script>
+
+</html>
